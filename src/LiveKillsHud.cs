@@ -11,11 +11,12 @@ public sealed class XUiC_BloodmoonKills : XUiController
         base.Update(dt);
         if (label == null || Time.unscaledTime < nextRefresh) return;
         nextRefresh = Time.unscaledTime + 0.2f;
-        var night = BloodmoonRecording.LiveNight;
         var player = xui.playerUI.entityPlayer;
         long kills;
-        bool visible = night != null && player != null && night.Kills.TryGetValue(player.EntityName, out kills);
+        bool visible = player != null && BloodmoonHudDisplay.TryValue(BloodmoonRecording.LiveNight,
+            BloodmoonRecording.FinishedNight, BloodmoonRecording.FinishedAt, Time.unscaledTime, player.EntityName, out kills);
         label.IsVisible = visible;
-        if (visible) label.Text = night.Kills[player.EntityName].ToString(CultureInfo.InvariantCulture);
+        if (visible) label.Text = BloodmoonHudDisplay.Value(BloodmoonRecording.LiveNight,
+            BloodmoonRecording.FinishedNight, player.EntityName).ToString(CultureInfo.InvariantCulture);
     }
 }

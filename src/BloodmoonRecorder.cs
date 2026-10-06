@@ -35,6 +35,7 @@ namespace ModStatistik
         private float nextSave;
         private bool dirty;
         private BloodmoonNight live;
+        internal BloodmoonNight FinishedNight { get; private set; }
         internal BloodmoonNight LiveNight { get { if (!state.Active) return null; if (live == null) live = new BloodmoonNight(state.Day, state.Players.ToDictionary(p => p.Name, p => p.Kills, StringComparer.Ordinal)); return live; } }
         private HashSet<int> completed;
         internal bool Active { get { return state.Active; } }
@@ -92,6 +93,7 @@ namespace ModStatistik
                         (rows.Length == 0 ? "(keine Spieler)" : rows) + "\n\n");
                 }
                 completed.Add(state.Day);
+                FinishedNight = LiveNight;
                 state.Active = false; dirty = true; Save();
             }
             else if (dirty && realTime >= nextSave) { Save(); nextSave = realTime + 5; }
