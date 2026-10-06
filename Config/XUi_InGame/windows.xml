@@ -7,9 +7,8 @@
           <headerbg />
           <sprite depth="1" style="icon32px" pos="4,-5" sprite="ui_game_symbol_players" />
           <label style="header.name" text="Blutmond-Statistik" />
-          <label name="statisticsVersion" pos="810,-8" width="200" height="38" font_size="26" justify="center" text="Version 0.0.0.7" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-          <simplebutton name="statisticsUpdate" pos="1100,-5" width="205" height="34" caption="Update" font_size="20" />
-          <label name="statisticsUpdateStatus" pos="520,-22" width="275" height="26" font_size="16" justify="right" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+          <label name="statisticsVersion" pos="0,-22" width="1320" height="28" font_size="26" justify="center" text="Version 0.0.0.9" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
+          <simplebutton name="statisticsUpdate" pos="1200,-5" width="105" height="34" caption="GitHub" font_size="20" />
           <simplebutton name="statisticsReleaseNotes" pos="370,-5" width="140" height="34" caption="Release Notes" font_size="18" visible="false" />
         </rect>
         <rect name="statisticsHeader" pos="0,-43" height="50" width="1320">
@@ -29,7 +28,7 @@
           <label name="nightHeader9" pos="1118,-25" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
           <label name="nightHeader10" pos="1210,-25" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
         </rect>
-        <grid name="statisticsRows" pos="0,-93" width="1320" height="598" rows="13" cols="1" cell_height="46" arrangement="vertical" repeat_content="true">
+        <grid name="statisticsRows" pos="0,-93" width="1320" height="552" rows="12" cols="1" cell_height="46" arrangement="vertical" repeat_content="true">
           <rect name="row" controller="StatistikRow, Mod_Statistik" width="1320" height="46" depth="1">
             <sprite name="background" color="[darkGrey]" height="46" width="1320" type="sliced" />
             <sprite name="backgroundMain" depth="10" sprite="menu_empty3px" width="1320" height="46" color="[black]" type="sliced" fillcenter="false" />
@@ -58,6 +57,12 @@
           <pager name="playerPager" pos="1190,-6" contents_parent="bloodmoonStatistics" />
           <pager name="nightPager" pos="1070,-6" contents_parent="bloodmoonStatistics" primary_pager="false" />
           <simplebutton name="statisticsSourceMode" pos="12,-7" width="135" height="36" caption="Server / Lokal" font_size="20" enabled="false" />
+          <label name="statisticsUpdateStatus" pos="765,-25" width="285" height="26" font_size="18" justify="right" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+        </rect>
+        <rect name="bloodmoonCountdownBar" pos="0,-645" width="1320" height="46" depth="1">
+          <sprite color="[mediumGrey]" height="46" width="1320" type="sliced" />
+          <sprite depth="10" sprite="menu_empty3px" width="1320" height="46" color="[black]" type="sliced" fillcenter="false" />
+          <label name="bloodmoonCountdown" pos="12,-23" width="1296" height="38" font_size="22" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
         </rect>
       </rect>
     </rect>
