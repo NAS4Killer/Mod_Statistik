@@ -1,0 +1,5 @@
+Mod_Statistik 0.0.0.9
+Realzeitberechnung korrigiert: Falls der Client keine direkte Zeitgeschwindigkeit bekommt, wird sie aus der eingestellten Dauer eines Spieltags berechnet.
+Gesamte feste Blutmond-Informationszeile horizontal zentriert.
+Enthaelt die vorher lokal getesteten Aenderungen aus 0.0.0.8: kurzer GitHub-Button, zentrierte Version, eingerichtete GitHub-Updatequelle und feste Anzeige von Blutmondtag, Ingame-Restzeit und Realzeit.
+Countdown verwendet den Spiel-/Servertermin und beruecksichtigt angepasste Nachtzeiten.

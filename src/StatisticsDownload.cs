@@ -8,7 +8,7 @@ namespace ModStatistik
 {
     public sealed class StatisticsDownload
     {
-        public const string Version = "0.0.0.7";
+        public const string Version = "0.0.0.9";
         public const string DefaultUrl = "";
         private const int MaximumBytes = 2 * 1024 * 1024;
         private readonly string directory;

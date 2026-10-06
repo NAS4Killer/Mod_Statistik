@@ -21,7 +21,7 @@ internal static class StatisticsUpdater
         string file = Path.Combine(modPath, "Config", "UpdateRepository.txt");
         string value = File.Exists(file) ? File.ReadAllText(file).Trim().TrimEnd('/') : "";
         if (System.Text.RegularExpressions.Regex.IsMatch(value, @"^https://github\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")) Repository = value;
-        else status = "Updatequelle fehlt";
+        else status = "";
     }
     private const int MaxPackageSize = 20 * 1024 * 1024;
     private static readonly object Gate = new object();
@@ -43,8 +43,8 @@ internal static class StatisticsUpdater
         {
             lock (Gate)
             {
-                if (Repository == null) return "Update";
-                if (pending || available == null) return "Github";
+                if (Repository == null) return "GitHub";
+                if (pending || available == null) return "GitHub";
                 string version = ParseVersion(available.tag_name).ToString();
                 return (preparedPayload == null ? "Download " : "Installieren ") + version;
             }

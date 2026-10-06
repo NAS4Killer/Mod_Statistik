@@ -1,4 +1,4 @@
-# Mod_Statistik 0.0.0.7
+# Mod_Statistik 0.0.0.9
 
 Doppel-I oeffnet den Blutmond-Tab im Spielermenue.
 Spieler stehen untereinander; Rekord und Blutmond-Tage stehen als Spalten.
@@ -16,6 +16,10 @@ Server / Lokal ist als deaktivierter Button vorbereitet. Lokaler Pfad: Data/bloo
 
 Der Button neben der Version folgt dem MiniMap-Ablauf: Github, Download mit Versionsnummer, Installieren mit Versionsnummer. Die letzte Aktion startet einen versteckten Installer, der auf das Ende des Spiels wartet. Neue Releases werden beim ersten Oeffnen automatisch geprueft. Release Notes oeffnen die angebotene Version.
 
-Die eigene GitHub-Projektadresse muss in Config/UpdateRepository.txt stehen. Es ist aktuell keine Adresse hinterlegt. ZIP-Name: Mod_Statistik-vA.B.C.D.zip, stabiler Release-Tag vA.B.C.D, GitHub-Asset mit SHA256-Digest.
+Die GitHub-Projektadresse steht in Config/UpdateRepository.txt. Die Adresse https://github.com/NAS4Killer/Mod_Statistik ist hinterlegt. ZIP-Name: Mod_Statistik-vA.B.C.D.zip, stabiler Release-Tag vA.B.C.D, GitHub-Asset mit SHA256-Digest.
 
 Updates erhalten Data/bloodmoon_kills.txt und Config/UpdateRepository.txt. Gespeicherte TXT-URL bleibt im bestehenden AppData-Verzeichnis erhalten.
+
+Unter den Spielerzeilen steht der naechste Blutmond mit verbleibender Ingame-Zeit und geschaetzter Realzeit bei der aktuellen Spielgeschwindigkeit. Der Termin kommt aus dem Spielzustand, einschliesslich zufaellig festgelegter Blutmondtage. Zwoelf Spieler werden pro Seite angezeigt.
+
+Falls die direkte Zeitgeschwindigkeit auf einem Client fehlt, wird die Realzeit aus der eingestellten Tagesdauer berechnet. Die gesamte Blutmondanzeige ist zentriert.
