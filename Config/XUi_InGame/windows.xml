@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='utf-8'?>
+<configs>
+  <insertAfter xpath="/windows/window[@name='players']/rect[@name='tabs']/rect[@name='tabsContents']/rect[@tab_key='xuiPlayers']">
+    <rect controller="TabSelectorTab" tab_key="modStatistikBlutmond" tab_caption_key="Blutmond">
+      <rect name="bloodmoonStatistics" controller="BloodmoonStatistics, Mod_Statistik" width="1320" height="730">
+        <rect name="header" height="43" depth="1">
+          <headerbg />
+          <sprite depth="1" style="icon32px" pos="4,-5" sprite="ui_game_symbol_players" />
+          <label style="header.name" text="Blutmond-Statistik" />
+          <label name="statisticsVersion" pos="810,-8" width="200" height="38" font_size="26" justify="center" text="Version 0.0.0.7" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+          <simplebutton name="statisticsUpdate" pos="1100,-5" width="205" height="34" caption="Update" font_size="20" />
+          <label name="statisticsUpdateStatus" pos="520,-22" width="275" height="26" font_size="16" justify="right" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+          <simplebutton name="statisticsReleaseNotes" pos="370,-5" width="140" height="34" caption="Release Notes" font_size="18" visible="false" />
+        </rect>
+        <rect name="statisticsHeader" pos="0,-43" height="50" width="1320">
+          <sprite name="background" color="[mediumGrey]" height="44" width="1314" type="sliced" pos="3,-3" />
+          <sprite name="backgroundMain" depth="10" sprite="menu_empty3px" width="1320" height="47" color="[black]" type="sliced" fillcenter="false" />
+          <label name="nameHeader" pos="12,-25" width="180" height="38" font_size="26" justify="left" text="Name" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
+          <label name="recordHeader" pos="195,-25" width="95" height="38" font_size="26" justify="center" text="Rekord" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
+          <label name="nightHeader0" pos="290,-25" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+          <label name="nightHeader1" pos="382,-25" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+          <label name="nightHeader2" pos="474,-25" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+          <label name="nightHeader3" pos="566,-25" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+          <label name="nightHeader4" pos="658,-25" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+          <label name="nightHeader5" pos="750,-25" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+          <label name="nightHeader6" pos="842,-25" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+          <label name="nightHeader7" pos="934,-25" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+          <label name="nightHeader8" pos="1026,-25" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+          <label name="nightHeader9" pos="1118,-25" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+          <label name="nightHeader10" pos="1210,-25" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+        </rect>
+        <grid name="statisticsRows" pos="0,-93" width="1320" height="598" rows="13" cols="1" cell_height="46" arrangement="vertical" repeat_content="true">
+          <rect name="row" controller="StatistikRow, Mod_Statistik" width="1320" height="46" depth="1">
+            <sprite name="background" color="[darkGrey]" height="46" width="1320" type="sliced" />
+            <sprite name="backgroundMain" depth="10" sprite="menu_empty3px" width="1320" height="46" color="[black]" type="sliced" fillcenter="false" />
+            <label name="playerName" pos="12,-24" width="180" height="38" font_size="26" justify="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
+            <label name="record" pos="195,-24" width="95" height="38" font_size="26" justify="center" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
+            <label name="value0" pos="290,-24" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="value1" pos="382,-24" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="value2" pos="474,-24" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="value3" pos="566,-24" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="value4" pos="658,-24" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="value5" pos="750,-24" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="value6" pos="842,-24" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="value7" pos="934,-24" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="value8" pos="1026,-24" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="value9" pos="1118,-24" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="value10" pos="1210,-24" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+          </rect>
+        </grid>
+        <rect pos="0,-691" width="1320" height="49" depth="3">
+          <sprite name="background" color="[mediumGrey]" height="49" width="1320" type="sliced" />
+          <sprite name="backgroundMain" depth="10" sprite="menu_empty3px" width="1320" height="49" color="[black]" type="sliced" fillcenter="false" />
+          <label name="urlCaption" pos="159,-25" width="90" height="38" font_size="22" justify="left" text="TXT-URL" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
+          <textfield name="statisticsUrl" pos="255,-7" width="365" height="36" font_size="20" character_limit="2048" focus_on_open="false" clear_on_open="false" value="" />
+          <simplebutton name="saveStatisticsUrl" pos="630,-7" width="125" height="36" caption="Speichern" font_size="22" />
+          <label name="statisticsStatus" pos="765,-25" width="285" height="38" font_size="18" justify="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
+          <pager name="playerPager" pos="1190,-6" contents_parent="bloodmoonStatistics" />
+          <pager name="nightPager" pos="1070,-6" contents_parent="bloodmoonStatistics" primary_pager="false" />
+          <simplebutton name="statisticsSourceMode" pos="12,-7" width="135" height="36" caption="Server / Lokal" font_size="20" enabled="false" />
+        </rect>
+      </rect>
+    </rect>
+  </insertAfter>
+</configs>
