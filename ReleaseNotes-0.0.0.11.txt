@@ -1,0 +1,18 @@
+Mod_Statistik 0.0.0.11 - Direkt-Sync
+
+- Eigener Entwicklungszweig direkt-sync fuer Statistik ueber die Spielverbindung.
+- Einzelspieler und Gastgeber lesen Data/bloodmoon_kills.txt im Mod-Ordner.
+- Verbundene Spieler erhalten die ausgewerteten Werte von der Server-Mod.
+- Automatische Anfrage beim Oeffnen des Tabs und alle 5 Sekunden bei offenem Tab.
+- Unveraenderte Werte werden bestaetigt, ohne die ganze Statistik erneut zu senden.
+- TXT-URL, Speichern und Server / Lokal entfallen; kein VPS erforderlich.
+- Begrenzte Teilpakete, Pruefsumme, Anfragebegrenzung und Erhalt letzter gueltiger Werte bei Fehlern.
+- Updates beruecksichtigen ausschliesslich Direkt-Sync-Releases und pruefen die Paketkennung.
+
+Voraussetzung: dieselbe Direkt-Sync-Version auf Server und Clients.
+Die Serverdatei muss im bestehenden Blutmond-Protokollformat vorliegen.
+Diese Mod liest das Protokoll; sie erzeugt keine neuen Kill-Eintraege.
+
+Pruefung: gegen installierte Spielbibliotheken gebaut; automatisierter simulierter
+Server-/Client-Ablauf einschliesslich Mehrteilpaketen, Cache, Fehlern und Weltwechsel bestanden.
+Ein gemeinsamer Test mit laufendem Spielserver steht noch aus.

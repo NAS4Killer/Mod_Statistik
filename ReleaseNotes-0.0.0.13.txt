@@ -1,0 +1,23 @@
+Mod_Statistik 0.0.0.13 - Automatische Blutmond-Aufzeichnung
+
+- Lokales Spiel und Server erstellen Data/bloodmoon_kills.txt im Mod-Ordner automatisch.
+- Die Mod liest die Spielzeit direkt im Spiel und beginnt zum eingestellten Blutmondstart (normal 22 Uhr).
+- Start-, Zwischen- und Endwerte stammen aus den vorhandenen Zombie-Kill-Zaehlern des Spiels.
+- Ausserhalb des Blutmonds werden keine Spieler-Kill-Zaehler fuer die Aufzeichnung gelesen.
+- Das Ende der Nacht (normal 4 Uhr) schreibt einen END-Block im vorhandenen TXT-Format.
+- Spaetere Beitritte, ausgeloggte Spieler und zurueckgesetzte Gesamtzaehler werden beruecksichtigt.
+- Zwischenstaende werden bei Aenderungen alle 5 echten Sekunden sowie beim Ausloggen und Weltende gesichert.
+- Gesicherte Zwischenstaende werden nach einem Neustart fortgesetzt; bereits abgeschlossene Tage werden nicht doppelt geschrieben.
+- Fehlerhafte TXT-Dateien werden vor dem Neuanlegen unveraendert als .invalid-*.bak gesichert.
+- Verbundene Clients schreiben keine Statistikdatei; die Direkt-Sync-Uebertragung bleibt erhalten.
+
+Zwischenstaende: Data/bloodmoon_state-<Weltkennung>.json. Dateien bleiben bei Mod-Updates erhalten.
+Beschadigte Zwischenstaende oder Schreibfehler stoppen die Aufzeichnung mit einem Hinweis.
+Bei erstmaliger Aktivierung mitten in einer Nacht kann nur ab diesem Zeitpunkt gezaehlt werden.
+Bei einem Absturz kann die seit der letzten Sicherung noch ungesicherte Zeit fehlen.
+Die bisherige externe Server-Aufzeichnung darf nicht gleichzeitig dieselbe TXT beschreiben.
+
+Pruefungen: Build gegen installierte Spielbibliotheken; automatisierte Start-/End-,
+Neustart-, Beitritts-, Offline-, Zaehlerreset-, Duplikat- und Dateifehlerpruefungen;
+simulierte direkte Server-/Client-Uebertragung bestanden.
+Der Test waehrend eines echten Blutmonds steht noch aus.
