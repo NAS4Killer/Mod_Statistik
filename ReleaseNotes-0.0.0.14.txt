@@ -1,0 +1,14 @@
+Mod_Statistik 0.0.0.14 - Sekuendliche Kill-Abfrage und Live-Anzeige
+
+- Kill-Zaehler werden waehrend des Blutmonds regulaer einmal pro echter Sekunde gelesen.
+- Beim Beginn werden die Startwerte sofort erfasst; Ausloggen und Weltende sichern weiterhin den letzten Stand.
+- Oben links im lokalen Spiel erscheint waehrend des Blutmonds die eigene Kill-Zahl in Rot, auch bei geschlossenem Statistikmenue.
+- Die laufende Nacht wird in der Tabelle angezeigt; geoeffnete Tabellen werden sekuendlich aktualisiert.
+- Seitenwechsel bleiben bei neuen Kill-Werten erhalten.
+- Laufende Werte liegen im Speicher; die bisherige 5-Sekunden-Sicherung und der END-Block am Nachtende bleiben erhalten.
+- Direkt-Sync-Antworten enthalten ebenfalls die laufende Nacht.
+
+Die rote HUD-Zahl nutzt in dieser Version die lokale Aufzeichnung.
+Pruefungen: Build gegen Spielbibliotheken; simulierter Beginn, sekuendlicher
+Abstand, Live-Tabellenwerte und Ende mit erhaltener fertiger Nacht bestanden.
+HUD-Position und Darstellung muessen im Spiel visuell geprueft werden.

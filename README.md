@@ -1,25 +1,76 @@
-# Mod_Statistik 0.0.0.9
+# Mod_Statistik 0.0.1.0 - Direkt-Sync
 
-Doppel-I oeffnet den Blutmond-Tab im Spielermenue.
-Spieler stehen untereinander; Rekord und Blutmond-Tage stehen als Spalten.
-Rot kennzeichnet den Hoechstwert je Nacht sowie den hoechsten Spielerrekord. Gleichstaende werden gemeinsam markiert. Fehlende Werte erscheinen als â€”.
-Die TXT wird beim Oeffnen und alle 60 Sekunden bei offenem Tab automatisch geladen.
-Die Downloadadresse kann unten eingetragen und gespeichert werden. Leere Adresse verwendet die mitgelieferte lokale Datei.
-Rekorde beziehen sich auf alle abgeschlossenen Naechte der geladenen Datei.
-Installation bei beendetem Spiel: ZIP in Mods entpacken.
+Dieser Zweig uebertraegt Blutmondstatistik ueber die bestehende Spielverbindung.
+Im Einzelspieler und beim Gastgeber liegt die TXT unter
+`Mods/Mod_Statistik/Data/bloodmoon_kills.txt`. Auf einem dedizierten Server gilt
+derselbe relative Pfad innerhalb seiner Mod-Installation.
+Die Mod erstellt eine fehlende TXT und zeichnet neue Blutmondnaechte selbst auf.
+Sie liest die Spielzeit im laufenden Spiel und beginnt beim konfigurierten
+Blutmondstart (normal 22 Uhr). Dann erfasst sie die Zombie-Kill-Startwerte
+und zaehlt die Zuwachse bis zum konfigurierten Ende (normal 4 Uhr).
+Ausserhalb der Nacht werden fuer die Aufzeichnung keine Kill-Zaehler gelesen.
 
-Elf kompakte Tagesspalten pro Seite. Native Seitensteuerung unten rechts. Die aktive URL bleibt sichtbar.
+Zwischenstaende liegen unter Data/bloodmoon_state-<Weltkennung>.json,
+werden bei Aenderungen alle 5 echten Sekunden und beim Ausloggen/Weltende
+gesichert und nach einem Neustart fortgesetzt. Spaetere Beitritte beginnen
+mit dem dann vorhandenen Gesamtzaehler. Werte ausgeloggter Spieler bleiben
+erhalten; ein Zaehlerreset zieht keine bereits gezaehlten Kills ab.
+Der END-Block entspricht dem vorhandenen TXT-Format. Abgeschlossene Tage
+werden nicht doppelt geschrieben. Das Protokoll bleibt eine Datei im
+Mod-Ordner; Tage bereits vorhandener Historie werden dabei beibehalten.
 
-Server / Lokal ist als deaktivierter Button vorbereitet. Lokaler Pfad: Data/bloodmoon_kills.txt innerhalb der Mod. Aktuell ist keine Server-URL eingerichtet.
+Fehlerhafte TXT-Dateien werden vor dem Neuanlegen unveraendert als
+bloodmoon_kills.txt.invalid-*.bak gesichert. Beschadigte JSON-Zwischenstaende
+und Schreibfehler stoppen die Aufzeichnung mit einem Hinweis.
+Mod-Updates erhalten den gesamten vorhandenen Data-Ordner.
+Wird die Mod mitten in einer Nacht aktiviert, beginnt die Zaehlung erst dann.
+Bei einem Absturz koennen seit der letzten Sicherung entstandene Kills fehlen.
+Die externe Server-Aufzeichnung darf nicht gleichzeitig in dieselbe TXT schreiben.
 
-## Updates
 
-Der Button neben der Version folgt dem MiniMap-Ablauf: Github, Download mit Versionsnummer, Installieren mit Versionsnummer. Die letzte Aktion startet einen versteckten Installer, der auf das Ende des Spiels wartet. Neue Releases werden beim ersten Oeffnen automatisch geprueft. Release Notes oeffnen die angebotene Version.
+Server und Spieler brauchen dieselbe Direkt-Sync-Version dieser Mod.
+Bei verbundenen Spielern liest die Mod keine eigene lokale Statistikdatei.
+Beim Oeffnen des Blutmond-Tabs und alle 5 Sekunden bei offenem Tab fragt sie
+den Server automatisch an. Empfangene Werte bleiben im Arbeitsspeicher.
+Unveraenderte Werte werden mit einer kurzen Antwort bestaetigt.
+Eine vollstaendige neue Statistik wird in begrenzten Teilpaketen uebertragen
+und vor der Anzeige mit SHA256 geprueft. Bei Fehlern bleiben die letzten
+gueltigen Werte sichtbar; beim Weltwechsel wird dieser Zwischenspeicher geleert.
 
-Die GitHub-Projektadresse steht in Config/UpdateRepository.txt. Die Adresse https://github.com/NAS4Killer/Mod_Statistik ist hinterlegt. ZIP-Name: Mod_Statistik-vA.B.C.D.zip, stabiler Release-Tag vA.B.C.D, GitHub-Asset mit SHA256-Digest.
+Spieler stehen untereinander, Rekord und Tage oben. Hoechstwerte und
+Rekordhalter sind rot markiert, einschliesslich Gleichstaenden.
+Die zentrierte Zeile unter der Tabelle zeigt den naechsten Blutmond und
+verbleibende Spielzeit sowie geschaetzte Realzeit aus dem Spielzustand.
+Seitenwechsel stehen unten rechts im Stil des Originalmenues.
 
-Updates erhalten Data/bloodmoon_kills.txt und Config/UpdateRepository.txt. Gespeicherte TXT-URL bleibt im bestehenden AppData-Verzeichnis erhalten.
+## Installation und Updates
 
-Unter den Spielerzeilen steht der naechste Blutmond mit verbleibender Ingame-Zeit und geschaetzter Realzeit bei der aktuellen Spielgeschwindigkeit. Der Termin kommt aus dem Spielzustand, einschliesslich zufaellig festgelegter Blutmondtage. Zwoelf Spieler werden pro Seite angezeigt.
+Bei beendetem Spiel bzw. Server das ZIP in dessen Mods-Ordner entpacken.
+Vorhandene echte Protokolldaten sichern und wieder in Data/bloodmoon_kills.txt
+ablegen. Die mitgelieferte Datei ist ein alter Datenstand fuer die Anzeige; neue Naechte werden ergaenzt.
 
-Falls die direkte Zeitgeschwindigkeit auf einem Client fehlt, wird die Realzeit aus der eingestellten Tagesdauer berechnet. Die gesamte Blutmondanzeige ist zentriert.
+GitHub-Updates verwenden Config/UpdateRepository.txt und ausschliesslich
+Release-Tags `direkt-sync-vA.B.C.D` mit
+`Mod_Statistik-direkt-sync-vA.B.C.D.zip`. Die Kennung SYNC_MODE verhindert
+Paketwechsel zum URL-Zweig. Der Installer erhaelt die vorhandene TXT und
+Updateadresse und wartet auf das Ende des Spiels. Release Notes bzw. der
+Neustarthinweis stehen links neben dem Updatebutton.
+
+Pruefungen: erfolgreicher Build gegen die Spielbibliotheken; automatisierte
+Protokoll- und simulierte Server-/Client-Pruefungen. Der gemeinsame Test mit
+einem laufenden Spielserver steht noch aus.
+
+Die Gastgeber-/Client-Rolle wird beim Weltwechsel bestimmt und fuer die Sitzung gespeichert.
+
+Automatische Aufzeichnung durch automatisierte Ablauf- und Dateifehlerpruefungen geprueft.
+Ein Test waehrend eines echten Blutmonds steht noch aus.
+
+## Laufende Anzeige
+
+Waehrend der Nacht werden Kill-Zaehler regulaer einmal pro echter Sekunde gelesen.
+Die laufende Nacht steht in der Tabelle; nur der geoeffnete Tab wird sekuendlich aktualisiert.
+Oben links im lokalen Spiel erscheint waehrend der Nacht die eigene Kill-Zahl rot.
+Die HUD-Anzeige verwendet die lokale Aufzeichnung und liest keine eigenen Kill-Zaehler.
+Ausloggen und Weltende sichern zusaetzlich den letzten Stand.
+
+Die Realzeitberechnung verwendet die Tagesdauer; kein GetFloat-Zugriff auf TimeOfDayIncPerSec.

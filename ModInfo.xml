@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <xml>
-  <Name value="Mod_Statistik"/>
-  <DisplayName value="Blutmond-Statistik"/>
-  <Description value="Blutmond-Kills als zweiter Spieler-Tab mit Doppel-I und TXT-Import."/>
-  <Version value="0.0.0.9"/>
+  <Name value="Mod_Statistik" />
+  <DisplayName value="Blutmond-Statistik · Direkt-Sync" />
+  <Description value="Blutmond-Statistik direkt ueber die Spielverbindung. Derselbe Mod-Stand auf Server und Clients erforderlich." />
+  <Version value="0.0.1.0" />
 </xml>
