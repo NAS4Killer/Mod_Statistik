@@ -1,0 +1,10 @@
+Mod_Statistik 0.0.0.12 - Direkt-Sync
+
+- Gastgeber-/Client-Rolle wird beim Wechsel der Spielwelt bestimmt.
+- Die bestimmte Rolle bleibt fuer die Sitzung gespeichert.
+- Laufende Updates und Statistikanfragen verwenden diese gespeicherte Rolle.
+- Beim Verlassen und Beitreten einer Welt werden Statistikcache und Anfragen zurueckgesetzt.
+
+Pruefung: Spielbibliotheken-Build und simulierte Server-/Client-Uebertragung;
+100 Spielupdates ohne erneute Rollenabfrage sowie erneute Bestimmung beim Weltwechsel.
+Die automatische Kill-Aufzeichnung ist weiterhin noch nicht eingebaut.

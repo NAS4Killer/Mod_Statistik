@@ -5,7 +5,6 @@ using UnityEngine;
 
 public sealed class XUiC_BloodmoonStatistics : XUiController
 {
-    private XUiC_TextInput urlInput;
     private XUiC_StatistikRow[] rows;
     private XUiC_TabSelectorTab tab;
     private BloodmoonLog shownData;
@@ -13,18 +12,15 @@ public sealed class XUiC_BloodmoonStatistics : XUiController
     private int playerPage;
     private bool wasSelected;
     private float nextRefresh;
-    private float nextDownload;
+    private float nextSync;
     private string message;
     private XUiC_Paging playerPager, nightPager;
 
     public override void Init()
     {
         base.Init();
-        urlInput = GetChildById("statisticsUrl") as XUiC_TextInput;
-        if (urlInput != null) urlInput.SupportBbCode = false;
         rows = GetChildById("statisticsRows").Children.OfType<XUiC_StatistikRow>().ToArray();
         tab = Parent as XUiC_TabSelectorTab;
-        Bind("saveStatisticsUrl", SaveUrl);
         Bind("statisticsUpdate", delegate { if (StatisticsUpdater.Press()) Application.OpenURL(StatisticsUpdater.RepositoryUrl); });
         Bind("statisticsReleaseNotes", delegate { string url = StatisticsUpdater.ReleaseNotesUrl; if (url != null) Application.OpenURL(url); });
         playerPager = GetChildById("playerPager") as XUiC_Paging;
@@ -53,54 +49,38 @@ public sealed class XUiC_BloodmoonStatistics : XUiController
         {
             message = null;
             StatisticsUpdater.EnsureChecked();
-            if (urlInput != null) urlInput.Text = StatisticsRuntime.Download.Snapshot().Url;
-            StatisticsRuntime.Download.RefreshAsync();
+            StatisticsSync.Request();
             Render();
         }
-        if (selected && Time.unscaledTime >= nextDownload)
-        { nextDownload = Time.unscaledTime + 60f; if (wasSelected) StatisticsRuntime.Download.RefreshAsync(); }
+        if (selected && Time.unscaledTime >= nextSync)
+        { nextSync = Time.unscaledTime + 5f; if (wasSelected) StatisticsSync.Request(); }
         wasSelected = selected;
         if (selected && Time.unscaledTime >= nextRefresh)
         {
-            nextRefresh = Time.unscaledTime + 0.2f;
+            nextRefresh = Time.unscaledTime + 1f;
             Render();
         }
-    }
-
-    private void SaveUrl()
-    {
-        try
-        {
-            StatisticsRuntime.Download.SaveUrl(urlInput == null ? "" : urlInput.Text);
-            message = "Adresse gespeichert.";
-            StatisticsRuntime.Download.RefreshAsync();
-        }
-        catch (ArgumentException e) { message = e.Message; }
-        catch (InvalidOperationException e) { message = e.Message; }
-        catch (Exception) { message = "Adresse konnte nicht gespeichert werden."; }
-        Render();
     }
 
     private void Render()
     {
-        var state = StatisticsRuntime.Download.Snapshot();
-        if (state.Data != shownData) { nightPage = 0; playerPage = 0; shownData = state.Data; }
+        var state = StatisticsSync.Snapshot();
+        if (state.Data != shownData) shownData = state.Data;
         int nightPages = Math.Max(1, state.Data == null ? 0 : (state.Data.Nights.Count + 10) / 11);
         int playerPages = Math.Max(1, state.Data == null ? 0 : (state.Data.Players.Count + 11) / 12);
         nightPage = Math.Min(nightPage, nightPages - 1);
         playerPage = Math.Min(playerPage, playerPages - 1);
-        SetLabel("statisticsVersion", "Version " + StatisticsDownload.Version);
+        SetLabel("statisticsVersion", "Version " + StatisticsRuntime.Version);
         var updateLabel = GetChildById("statisticsUpdate").GetChildById("btnLabel").ViewComponent as XUiV_Label;
         if (updateLabel != null) { updateLabel.Text = StatisticsUpdater.Caption; updateLabel.Color = StatisticsUpdater.IsGreen ? (Color)new Color32(70,230,70,255) : Color.white; }
         SetLabel("statisticsUpdateStatus", StatisticsUpdater.Status);
         UpdateBloodmoonCountdown();
         var updateStatus = GetChildById("statisticsUpdateStatus").ViewComponent as XUiV_Label;
         if (updateStatus != null) updateStatus.Color = StatisticsUpdater.NeedsRestart ? Color.red : Color.white;
-        GetChildById("statisticsReleaseNotes").ViewComponent.IsVisible = StatisticsUpdater.ReleaseNotesUrl != null;
-        GetChildById("statisticsStatus").ViewComponent.IsVisible = StatisticsUpdater.Status.Length == 0;
-        string active = state.Url.Length == 0 ? "Data/bloodmoon_kills.txt" : state.Url;
-        string edited = urlInput == null ? "" : urlInput.Text;
-        SetLabel("statisticsStatus", state.LastError ?? (edited != state.Url ? "Aktuell: " + active : message ?? (state.Url.Length == 0 ? active : "")));
+        bool showReleaseNotes = StatisticsUpdater.ReleaseNotesUrl != null;
+        GetChildById("statisticsReleaseNotes").ViewComponent.IsVisible = showReleaseNotes;
+        GetChildById("statisticsUpdateStatus").ViewComponent.IsVisible = !showReleaseNotes && StatisticsUpdater.Status.Length != 0;
+        SetLabel("statisticsStatus", state.Error ?? message ?? (state.Busy && state.Data == null ? "Statistik wird vom Server geladen …" : ""));
         playerPager.SetLastPageByElementsAndPageLength(state.Data == null ? 0 : state.Data.Players.Count, 12);
         nightPager.SetLastPageByElementsAndPageLength(state.Data == null ? 0 : state.Data.Nights.Count, 11);
         playerPager.CurrentPageNumber = playerPage;
@@ -124,7 +104,7 @@ public sealed class XUiC_BloodmoonStatistics : XUiController
         var hours = GameUtils.CalcDuskDawnHours(GameStats.GetInt(EnumGameStats.DayLightLength));
         int dayLength = GameStats.GetInt(EnumGameStats.DayNightLength);
         if (dayLength <= 0) dayLength = GamePrefs.GetInt(EnumGamePrefs.DayNightLength);
-        double speed = BloodmoonCountdown.ResolveSpeed(GameStats.GetFloat(EnumGameStats.TimeOfDayIncPerSec), dayLength);
+        double speed = BloodmoonCountdown.ResolveSpeed(0, dayLength);
         SetLabel("bloodmoonCountdown", BloodmoonCountdown.Format(world.GetWorldTime(), day, hours.Item1, hours.Item2, speed));
     }
 

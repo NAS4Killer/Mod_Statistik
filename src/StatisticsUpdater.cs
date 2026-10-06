@@ -81,7 +81,9 @@ internal static class StatisticsUpdater
     internal static Version ParseVersion(string value)
     {
         if (value == null) throw new InvalidDataException("Version fehlt.");
-        string text = value.Trim().TrimStart('v', 'V');
+        string text = value.Trim();
+        if (text.StartsWith("direkt-sync-v", StringComparison.Ordinal)) text = text.Substring("direkt-sync-v".Length);
+        text = text.TrimStart('v', 'V');
         Version version;
         if (text.Split('.').Length != 4 || !Version.TryParse(text, out version))
             throw new InvalidDataException("Ungültige Versionsnummer.");
@@ -128,7 +130,7 @@ internal static class StatisticsUpdater
     private static HttpClient Client()
     {
         var client = new HttpClient { Timeout = TimeSpan.FromSeconds(45) };
-        client.DefaultRequestHeaders.UserAgent.ParseAdd("Mod_Statistik/" + ModStatistik.StatisticsDownload.Version);
+        client.DefaultRequestHeaders.UserAgent.ParseAdd("Mod_Statistik/" + ModStatistik.StatisticsRuntime.Version);
         client.DefaultRequestHeaders.Accept.ParseAdd("application/vnd.github+json");
         return client;
     }
@@ -137,7 +139,7 @@ internal static class StatisticsUpdater
     {
         status = "GitHub wird geprüft ...";
         using (var client = Client())
-        using (var response = await client.GetAsync("https://api.github.com/repos/" + new Uri(Repository).AbsolutePath.Trim('/') + "/releases/latest"))
+        using (var response = await client.GetAsync("https://api.github.com/repos/" + new Uri(Repository).AbsolutePath.Trim('/') + "/releases?per_page=100"))
         {
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound) { status = ""; return; }
             if (response.StatusCode == System.Net.HttpStatusCode.Forbidden || (int)response.StatusCode == 429)
@@ -145,11 +147,18 @@ internal static class StatisticsUpdater
             response.EnsureSuccessStatusCode();
             using (var stream = await response.Content.ReadAsStreamAsync())
             {
-                var release = (Release)new DataContractJsonSerializer(typeof(Release)).ReadObject(stream);
-                Version remote = ParseVersion(release.tag_name);
-                if (release.draft || release.prerelease) throw new InvalidDataException("Kein stabiles Release.");
-                if (remote <= ParseVersion(ModStatistik.StatisticsDownload.Version))
-                { status = ""; return; }
+                var releases = (Release[])new DataContractJsonSerializer(typeof(Release[])).ReadObject(stream);
+                Release release = null;
+                Version newest = ParseVersion(ModStatistik.StatisticsRuntime.Version);
+                foreach (var candidate in releases)
+                {
+                    if (candidate.draft || candidate.prerelease || candidate.tag_name == null ||
+                        !candidate.tag_name.StartsWith("direkt-sync-v", StringComparison.Ordinal)) continue;
+                    Version remote;
+                    try { remote = ParseVersion(candidate.tag_name); } catch (InvalidDataException) { continue; }
+                    if (remote > newest) { newest = remote; release = candidate; }
+                }
+                if (release == null) { status = ""; return; }
                 GetAsset(release);
                 lock (Gate) available = release;
                 status = "";
@@ -162,7 +171,7 @@ internal static class StatisticsUpdater
         string version = ParseVersion(release.tag_name).ToString();
         if (release.assets != null) foreach (Asset asset in release.assets)
         {
-            if (asset.name != "Mod_Statistik-v" + version + ".zip") continue;
+            if (asset.name != "Mod_Statistik-direkt-sync-v" + version + ".zip") continue;
             if (asset.size <= 0 || asset.size > MaxPackageSize || asset.digest == null ||
                 !System.Text.RegularExpressions.Regex.IsMatch(asset.digest, "^sha256:[a-fA-F0-9]{64}$"))
                 throw new InvalidDataException("ZIP-Prüfsumme fehlt oder Paket zu groß.");
@@ -176,7 +185,7 @@ internal static class StatisticsUpdater
     internal static void ExtractPackage(byte[] bytes, string directory, string version)
     {
         var allowed = new HashSet<string>(StringComparer.Ordinal) {
-            "ModInfo.xml", "Mod_Statistik.dll", "Config/XUi_InGame/windows.xml",
+            "ModInfo.xml", "Mod_Statistik.dll", "SYNC_MODE", "Config/XUi_InGame/windows.xml", "Config/XUi_InGame/xui.xml",
             "Config/Localization.txt", "Config/UpdateRepository.txt", "Data/bloodmoon_kills.txt", "VERSION", "README.md", "ReleaseNotes-" + version + ".txt"
         };
         var found = new HashSet<string>(StringComparer.Ordinal);
@@ -209,6 +218,8 @@ internal static class StatisticsUpdater
                 throw new InvalidDataException("Mod-Metadaten passen nicht zum Release.");
             using (var reader = new StreamReader(zip.GetEntry("Mod_Statistik/VERSION").Open()))
                 if (reader.ReadToEnd().Trim() != version) throw new InvalidDataException("Paketversion stimmt nicht.");
+            using (var channel = new StreamReader(zip.GetEntry("Mod_Statistik/SYNC_MODE").Open()))
+                if (channel.ReadToEnd().Trim() != "direkt-sync") throw new InvalidDataException("Falscher Entwicklungszweig.");
             foreach (string relative in allowed)
             {
                 string target = Path.Combine(directory, relative.Replace('/', Path.DirectorySeparatorChar));

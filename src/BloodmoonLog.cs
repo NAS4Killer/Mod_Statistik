@@ -26,6 +26,14 @@ namespace ModStatistik
         public IReadOnlyList<BloodmoonNight> Nights { get; private set; }
         public IReadOnlyList<string> Players { get; private set; }
 
+        internal static BloodmoonLog FromNights(System.Collections.Generic.IEnumerable<BloodmoonNight> nights)
+        {
+            var result = new BloodmoonLog();
+            result.Nights = nights.OrderByDescending(n => n.Day).ToList().AsReadOnly();
+            result.Players = result.Nights.SelectMany(n => n.Kills.Keys).Distinct(StringComparer.Ordinal).OrderBy(n => n, StringComparer.OrdinalIgnoreCase).ToList().AsReadOnly();
+            return result;
+        }
+
         public static BloodmoonLog Parse(string text)
         {
             if (text == null) throw new ArgumentNullException("text");
