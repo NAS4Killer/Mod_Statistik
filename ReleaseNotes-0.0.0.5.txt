@@ -1,0 +1,5 @@
+Mod_Statistik 0.0.0.5
+Originalfarben der Zeilen: darkGrey 64/64/64 und darkestGrey 32/32/32 mit voller Ausgangsdeckkraft; Transparenz durch das Spiel.
+Originale Kopfzeilen-Innenflaeche und native Seitenanzeige mit Zahlkasten und Pfeilen unten rechts.
+Tagesspalten auf 95 Pixel verdichtet; zehn Tage je Seite.
+Gespeicherte URL beim Oeffnen sichtbar. Ungespeicherte Aenderung zeigt die noch aktive Quelle zusaetzlich an.

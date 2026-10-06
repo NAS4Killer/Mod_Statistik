@@ -1,0 +1,43 @@
+=== Blutmond Tag 77 START 23.09.2026 20:51:56 (Ingame Tag 77 - 22:01) ===
+LukeDeeLuxe start_zombies=574
+NEK4Killer start_zombies=640
+Rafael start_zombies=208
+dTom start_zombies=2681
+
+=== Blutmond Tag 77 JOIN 23.09.2026 21:08:28 ===
+lemonade start_zombies=1825
+
+=== Blutmond Tag 77 END 23.09.2026 21:08:37 (Ingame Tag 78 - 04:01) ===
+LukeDeeLuxe start=574 end=628 bm_kills=54
+NEK4Killer start=640 end=691 bm_kills=51
+Rafael start=208 end=260 bm_kills=52
+dTom start=2681 end=2798 bm_kills=117
+lemonade start=1825 end=1825 bm_kills=0
+
+=== Blutmond Tag 84 START 30.09.2026 23:45:56 (Ingame Tag 84 - 22:01) ===
+LukeDeeLuxe start_zombies=796
+NEK4Killer start_zombies=717
+dTom start_zombies=3113
+lemonade start_zombies=2145
+
+=== Blutmond Tag 84 END 01.10.2026 00:02:36 (Ingame Tag 85 - 04:01) ===
+LukeDeeLuxe start=796 end=948 bm_kills=152
+NEK4Killer start=717 end=757 bm_kills=40
+dTom start=3113 end=3256 bm_kills=143
+lemonade start=2145 end=2195 bm_kills=50
+
+=== Blutmond Tag 84 START 01.10.2026 00:02:45 (Ingame Tag 85 - 00:02) ===
+LukeDeeLuxe start_zombies=953
+NEK4Killer start_zombies=758
+dTom start_zombies=3257
+lemonade start_zombies=2196
+
+=== Blutmond Tag 84 END 01.10.2026 00:02:55 (Ingame Tag 85 - 04:08) ===
+LukeDeeLuxe start=953 end=953 bm_kills=0
+NEK4Killer start=758 end=758 bm_kills=0
+dTom start=3257 end=3257 bm_kills=0
+lemonade start=2196 end=2196 bm_kills=0
+
+=== RESTORED Blutmond Tag 84 01.10.2026 15:47:21 from first completed END record ===
+{"LukeDeeLuxe": 152, "NEK4Killer": 40, "dTom": 143, "lemonade": 50}
+
