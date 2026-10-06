@@ -1,3 +1,38 @@
+# 0.0.2.0
+
+Mod_Statistik 0.0.2.0 - Fehlerkorrektur und 60 Sekunden Nachanzeige
+
+- Die rote eigene Kill-Zahl bleibt nach dem Blutmond 60 echte Sekunden sichtbar.
+- Angezeigt wird der endgueltig erfasste Kill-Wert; anschliessend wird die Zahl ausgeblendet.
+- Beim Weltwechsel wird die Nachanzeige zurueckgesetzt; eine neue Nacht zeigt ihre eigenen Werte.
+- Die Realzeitberechnung verwendet die Tagesdauer ohne den fehlerhaften GetFloat-Zugriff auf TimeOfDayIncPerSec.
+- TODO-Liste ergaenzt: Servereinrichtung, SecondMap-SSH-Abfragen abschalten bzw. umstellen und Server-HUD.
+
+Pruefung: Build gegen installierte Spielbibliotheken und automatisierte Grenzwertpruefungen fuer 60 Sekunden.
+Der Nutzer hat bestaetigt: Fehlermeldungen verschwunden und 60 Sekunden Nachanzeige funktionieren im Spiel.
+
+# 0.0.1.2
+
+Mod_Statistik 0.0.1.2
+
+- Rote Kill-Zahl nach dem Blutmond fuer 60 echte Sekunden anzeigen statt 69.
+- Endwert bleibt bis zum Ausblenden erhalten.
+
+Pruefung: Spielbibliotheken-Build und Nachanzeige-Grenzwerte bestanden.
+
+# 0.0.1.1
+
+Mod_Statistik 0.0.1.1 - Fehlerkorrektur und 69 Sekunden Nachanzeige
+
+- Die rote eigene Kill-Zahl bleibt nach dem Blutmond noch 69 echte Sekunden sichtbar.
+- Die Nachanzeige verwendet den endgueltig erfassten Kill-Wert, danach wird sie ausgeblendet.
+- Beim Weltwechsel werden diese Werte zurueckgesetzt; eine neue Nacht zeigt ihre eigenen Werte.
+- Enthalten ist die Fehlerkorrektur aus 0.0.1.0: kein GetFloat-Zugriff auf TimeOfDayIncPerSec.
+- Realzeit wird weiterhin aus der eingestellten Tagesdauer berechnet.
+
+Pruefungen: Build gegen Spielbibliotheken, 69-Sekunden-Grenze, Endwert,
+Ausblenden, neue Nacht und bisherige Aufzeichnungs-/Live-/Paketpruefungen.
+
 # 0.0.1.0
 
 Mod_Statistik 0.0.1.0 - Direkt-Sync und automatische Blutmondstatistik

@@ -13,6 +13,8 @@ namespace ModStatistik
         private static BloodmoonRecorder recorder;
         private static float retryAt, nextSample;
         internal static BloodmoonNight LiveNight { get { return recorder == null ? null : recorder.LiveNight; } }
+        internal static BloodmoonNight FinishedNight { get { return recorder == null ? null : recorder.FinishedNight; } }
+        internal static float FinishedAt { get; private set; }
         private static ulong lastTime = ulong.MaxValue;
         internal static string Error { get; private set; }
 
@@ -27,7 +29,7 @@ namespace ModStatistik
             if (recorder != null)
                 try { recorder.Flush(); } catch (Exception e) { Debug.LogWarning("[Mod_Statistik] Zwischenstand: " + e.GetType().Name); }
             world = localOrServer ? value : null;
-            recorder = null; retryAt = 0; nextSample = 0; lastTime = ulong.MaxValue; Error = null;
+            recorder = null; retryAt = 0; nextSample = 0; FinishedAt = 0; lastTime = ulong.MaxValue; Error = null;
         }
         internal static void Tick()
         {
@@ -47,8 +49,10 @@ namespace ModStatistik
                 var hours = GameUtils.CalcDuskDawnHours(GameStats.GetInt(EnumGameStats.DayLightLength));
                 bool inside = recorder.Active;
                 if (inside && Time.unscaledTime < nextSample) return;
+                var previousFinished = recorder.FinishedNight;
                 recorder.Step(now, GameStats.GetInt(EnumGameStats.BloodMoonDay), hours.Item1, hours.Item2,
                     Time.unscaledTime, Samples);
+                if (!ReferenceEquals(previousFinished, recorder.FinishedNight)) FinishedAt = Time.unscaledTime;
                 nextSample = Time.unscaledTime + 1f;
                 lastTime = now; Error = null;
             }
