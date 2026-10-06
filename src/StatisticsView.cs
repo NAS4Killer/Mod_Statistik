@@ -86,20 +86,22 @@ public sealed class XUiC_BloodmoonStatistics : XUiController
         var state = StatisticsRuntime.Download.Snapshot();
         if (state.Data != shownData) { nightPage = 0; playerPage = 0; shownData = state.Data; }
         int nightPages = Math.Max(1, state.Data == null ? 0 : (state.Data.Nights.Count + 10) / 11);
-        int playerPages = Math.Max(1, state.Data == null ? 0 : (state.Data.Players.Count + 12) / 13);
+        int playerPages = Math.Max(1, state.Data == null ? 0 : (state.Data.Players.Count + 11) / 12);
         nightPage = Math.Min(nightPage, nightPages - 1);
         playerPage = Math.Min(playerPage, playerPages - 1);
         SetLabel("statisticsVersion", "Version " + StatisticsDownload.Version);
         var updateLabel = GetChildById("statisticsUpdate").GetChildById("btnLabel").ViewComponent as XUiV_Label;
         if (updateLabel != null) { updateLabel.Text = StatisticsUpdater.Caption; updateLabel.Color = StatisticsUpdater.IsGreen ? (Color)new Color32(70,230,70,255) : Color.white; }
         SetLabel("statisticsUpdateStatus", StatisticsUpdater.Status);
+        UpdateBloodmoonCountdown();
         var updateStatus = GetChildById("statisticsUpdateStatus").ViewComponent as XUiV_Label;
         if (updateStatus != null) updateStatus.Color = StatisticsUpdater.NeedsRestart ? Color.red : Color.white;
         GetChildById("statisticsReleaseNotes").ViewComponent.IsVisible = StatisticsUpdater.ReleaseNotesUrl != null;
+        GetChildById("statisticsStatus").ViewComponent.IsVisible = StatisticsUpdater.Status.Length == 0;
         string active = state.Url.Length == 0 ? "Data/bloodmoon_kills.txt" : state.Url;
         string edited = urlInput == null ? "" : urlInput.Text;
         SetLabel("statisticsStatus", state.LastError ?? (edited != state.Url ? "Aktuell: " + active : message ?? (state.Url.Length == 0 ? active : "")));
-        playerPager.SetLastPageByElementsAndPageLength(state.Data == null ? 0 : state.Data.Players.Count, 13);
+        playerPager.SetLastPageByElementsAndPageLength(state.Data == null ? 0 : state.Data.Players.Count, 12);
         nightPager.SetLastPageByElementsAndPageLength(state.Data == null ? 0 : state.Data.Nights.Count, 11);
         playerPager.CurrentPageNumber = playerPage;
         nightPager.CurrentPageNumber = nightPage;
@@ -109,9 +111,21 @@ public sealed class XUiC_BloodmoonStatistics : XUiController
         long maximum = state.Data == null || state.Data.Players.Count == 0 ? 0 : state.Data.Nights.SelectMany(n => n.Kills.Values).Max();
         for (int i=0; i<rows.Length; i++)
         {
-            int index = playerPage*13+i;
+            int index = playerPage*12+i;
             rows[i].Render(state.Data, state.Data != null && index < state.Data.Players.Count ? state.Data.Players[index] : null, nightPage*11, maximum, i);
         }
+    }
+
+    private void UpdateBloodmoonCountdown()
+    {
+        var world = GameManager.Instance == null ? null : GameManager.Instance.World;
+        if (world == null) { SetLabel("bloodmoonCountdown", "Nächster Blutmond: noch nicht bekannt"); return; }
+        int day = GameStats.GetInt(EnumGameStats.BloodMoonDay);
+        var hours = GameUtils.CalcDuskDawnHours(GameStats.GetInt(EnumGameStats.DayLightLength));
+        int dayLength = GameStats.GetInt(EnumGameStats.DayNightLength);
+        if (dayLength <= 0) dayLength = GamePrefs.GetInt(EnumGamePrefs.DayNightLength);
+        double speed = BloodmoonCountdown.ResolveSpeed(GameStats.GetFloat(EnumGameStats.TimeOfDayIncPerSec), dayLength);
+        SetLabel("bloodmoonCountdown", BloodmoonCountdown.Format(world.GetWorldTime(), day, hours.Item1, hours.Item2, speed));
     }
 
     private void Bind(string id, Action action)
