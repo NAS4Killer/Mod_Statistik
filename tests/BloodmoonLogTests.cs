@@ -19,9 +19,6 @@ class BloodmoonLogTests
         bool rejected = false;
         try { BloodmoonLog.Parse("<html>404</html>"); } catch (FormatException) { rejected = true; }
         Require(rejected, "Fehlerseite darf keinen gueltigen Cache ersetzen.");
-        rejected = false;
-        try { StatisticsDownload.ValidateUrl("https://user:secret@example.invalid/file.txt"); } catch (ArgumentException) { rejected = true; }
-        Require(rejected, "Keine Zugangsdaten in Download-URLs.");
         Console.WriteLine("TXT-Auswertung: Tag 84 = 385, Tag 77 = 274; Duplikate, fehlende Werte, Nullwerte und Fehlerseiten geprueft.");
     }
 }

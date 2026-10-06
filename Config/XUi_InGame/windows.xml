@@ -7,9 +7,10 @@
           <headerbg />
           <sprite depth="1" style="icon32px" pos="4,-5" sprite="ui_game_symbol_players" />
           <label style="header.name" text="Blutmond-Statistik" />
-          <label name="statisticsVersion" pos="0,-22" width="1320" height="28" font_size="26" justify="center" text="Version 0.0.0.9" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
+          <label name="statisticsVersion" pos="0,-22" width="1320" height="28" font_size="26" justify="center" text="Version 0.0.1.0" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
           <simplebutton name="statisticsUpdate" pos="1200,-5" width="105" height="34" caption="GitHub" font_size="20" />
-          <simplebutton name="statisticsReleaseNotes" pos="370,-5" width="140" height="34" caption="Release Notes" font_size="18" visible="false" />
+          <simplebutton name="statisticsReleaseNotes" pos="1050,-5" width="140" height="34" caption="Release Notes" font_size="18" visible="false" />
+          <label name="statisticsUpdateStatus" pos="1020,-22" width="170" height="28" font_size="20" justify="right" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
         </rect>
         <rect name="statisticsHeader" pos="0,-43" height="50" width="1320">
           <sprite name="background" color="[mediumGrey]" height="44" width="1314" type="sliced" pos="3,-3" />
@@ -50,14 +51,9 @@
         <rect pos="0,-691" width="1320" height="49" depth="3">
           <sprite name="background" color="[mediumGrey]" height="49" width="1320" type="sliced" />
           <sprite name="backgroundMain" depth="10" sprite="menu_empty3px" width="1320" height="49" color="[black]" type="sliced" fillcenter="false" />
-          <label name="urlCaption" pos="159,-25" width="90" height="38" font_size="22" justify="left" text="TXT-URL" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
-          <textfield name="statisticsUrl" pos="255,-7" width="365" height="36" font_size="20" character_limit="2048" focus_on_open="false" clear_on_open="false" value="" />
-          <simplebutton name="saveStatisticsUrl" pos="630,-7" width="125" height="36" caption="Speichern" font_size="22" />
-          <label name="statisticsStatus" pos="765,-25" width="285" height="38" font_size="18" justify="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
+          <label name="statisticsStatus" pos="16,-25" width="1020" height="38" font_size="18" justify="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
           <pager name="playerPager" pos="1190,-6" contents_parent="bloodmoonStatistics" />
           <pager name="nightPager" pos="1070,-6" contents_parent="bloodmoonStatistics" primary_pager="false" />
-          <simplebutton name="statisticsSourceMode" pos="12,-7" width="135" height="36" caption="Server / Lokal" font_size="20" enabled="false" />
-          <label name="statisticsUpdateStatus" pos="765,-25" width="285" height="26" font_size="18" justify="right" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
         </rect>
         <rect name="bloodmoonCountdownBar" pos="0,-645" width="1320" height="46" depth="1">
           <sprite color="[mediumGrey]" height="46" width="1320" type="sliced" />
@@ -67,4 +63,9 @@
       </rect>
     </rect>
   </insertAfter>
+  <append xpath="/windows">
+    <window name="windowBloodmoonKills" anchor="TopLeft" pos="16,-16" width="180" height="48" controller="BloodmoonKills, Mod_Statistik">
+      <label name="liveKills" pos="0,0" width="180" height="48" font_size="36" color="255,0,0,255" text="" visible="false" justify="left" support_bb_code="false" />
+    </window>
+  </append>
 </configs>
