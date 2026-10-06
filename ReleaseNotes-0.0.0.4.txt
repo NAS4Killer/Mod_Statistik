@@ -1,0 +1,8 @@
+Mod_Statistik 0.0.0.4
+Spieler als Zeilen, Blutmond-Tage als Spalten, Rekord vor den Tagen.
+Hoechstwert je Blutmond und hoechster Spielerrekord rot; Gleichstaende ebenfalls rot.
+Rekorde aus allen protokollierten Naechten, unabhaengig von der angezeigten Seite.
+Originalmenue: 13 Zeilen mit 46 Pixeln, Rahmen, graue Flaechen und Fussleiste.
+Automatisches Laden beim Oeffnen und alle 60 Sekunden bei offenem Tab.
+TXT-Laden und Aktualisieren entfernt. Speichern setzt die URL und laedt automatisch.
+Tabbeschriftung Blutmond korrigiert; Navigation nur bei mehreren Seiten.

@@ -1,0 +1,2 @@
+Key,File,Type,UsedInMainMenu,NoTranslate,english,german
+modStatistikBlutmond,UI,Menu,false,false,Blood Moon,Blutmond
