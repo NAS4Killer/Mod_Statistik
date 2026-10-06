@@ -1,0 +1,9 @@
+Mod_Statistik 0.0.0.8
+GitHub-Button oben rechts von 205 auf 105 Pixel verkuerzt; Standardbeschriftung GitHub.
+Versionsanzeige mittig ueber die gesamte Kopfzeile.
+Updatequelle NAS4Killer/Mod_Statistik eingerichtet; Updatequelle fehlt entfernt.
+Feste Informationszeile unter den Spielerzeilen: naechster Blutmondtag samt Startzeit, verbleibende Spieltage/Stunden/Minuten und geschaetzte Realzeit.
+Termin und Geschwindigkeit aus dem aktuellen Spiel-/Serverzustand; angepasste Nachtzeiten werden beruecksichtigt.
+Laufender Blutmond und noch unbekannter Termin werden gesondert angezeigt.
+Zwoelf Spielerzeilen pro Seite, damit die feste Blutmondanzeige in den bisherigen Menurahmen passt.
+Commit und Release 0.0.0.7 bereits veroeffentlicht; 0.0.0.8 bleibt bis zum naechsten beauftragten Commit lokal.

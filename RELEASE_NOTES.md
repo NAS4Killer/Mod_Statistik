@@ -1,3 +1,23 @@
+# 0.0.0.9
+
+Mod_Statistik 0.0.0.9
+Realzeitberechnung korrigiert: Falls der Client keine direkte Zeitgeschwindigkeit bekommt, wird sie aus der eingestellten Dauer eines Spieltags berechnet.
+Gesamte feste Blutmond-Informationszeile horizontal zentriert.
+Enthaelt die vorher lokal getesteten Aenderungen aus 0.0.0.8: kurzer GitHub-Button, zentrierte Version, eingerichtete GitHub-Updatequelle und feste Anzeige von Blutmondtag, Ingame-Restzeit und Realzeit.
+Countdown verwendet den Spiel-/Servertermin und beruecksichtigt angepasste Nachtzeiten.
+
+# 0.0.0.8
+
+Mod_Statistik 0.0.0.8
+GitHub-Button oben rechts von 205 auf 105 Pixel verkuerzt; Standardbeschriftung GitHub.
+Versionsanzeige mittig ueber die gesamte Kopfzeile.
+Updatequelle NAS4Killer/Mod_Statistik eingerichtet; Updatequelle fehlt entfernt.
+Feste Informationszeile unter den Spielerzeilen: naechster Blutmondtag samt Startzeit, verbleibende Spieltage/Stunden/Minuten und geschaetzte Realzeit.
+Termin und Geschwindigkeit aus dem aktuellen Spiel-/Serverzustand; angepasste Nachtzeiten werden beruecksichtigt.
+Laufender Blutmond und noch unbekannter Termin werden gesondert angezeigt.
+Zwoelf Spielerzeilen pro Seite, damit die feste Blutmondanzeige in den bisherigen Menurahmen passt.
+Commit und Release 0.0.0.7 bereits veroeffentlicht; 0.0.0.8 bleibt bis zum naechsten beauftragten Commit lokal.
+
 # 0.0.0.7
 
 Mod_Statistik 0.0.0.7
