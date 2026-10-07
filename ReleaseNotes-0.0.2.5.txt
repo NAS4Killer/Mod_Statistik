@@ -1,0 +1,6 @@
+Mod_Statistik 0.0.2.5 - Native Gruppencontroller im Layouttest
+
+Testzeilen verwenden den originalen PartyEntry-Controller mit isolierten Testspielerobjekten.
+Namen, Entfernungsformat, Entfernungsfarbe und Pfeildrehung stammen aus den nativen Datenbindungen.
+Testobjekte werden nicht in die Welt oder echte Gruppe eingetragen und beim Weltwechsel entfernt.
+Rangsterne stehen acht Pixel hinter der gerenderten Killzahl; die Zahlen bleiben linksbuendig.

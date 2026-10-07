@@ -1,4 +1,4 @@
-# Mod_Statistik 0.0.2.0 - Direkt-Sync
+# Mod_Statistik 0.1.0.0 - Direkt-Sync
 
 Dieser Zweig uebertraegt Blutmondstatistik ueber die bestehende Spielverbindung.
 Im Einzelspieler und beim Gastgeber liegt die TXT unter
@@ -76,3 +76,17 @@ Ausloggen und Weltende sichern zusaetzlich den letzten Stand.
 Die Realzeitberechnung verwendet die Tagesdauer; kein GetFloat-Zugriff auf TimeOfDayIncPerSec.
 
 Die rote lokale Kill-Zahl bleibt nach dem Blutmond 60 echte Sekunden mit dem Endwert sichtbar.
+
+## Dedizierter Server
+
+Der dedizierte Spielserver zeichnet auch ohne geoeffnetes Spielermenue auf.
+Die TXT liegt im Server-Mod-Ordner unter Data/bloodmoon_kills.txt.
+Vor dem ersten Start wird die originale SecondMap-TXT gesichert und an diesen Pfad uebernommen.
+Die alte Kill-Aufzeichnung muss bei der Umstellung angehalten werden; SSH bleibt aktiv.
+Ein Client wartet auf die Verbindung und erzeugt selbst keine Aufzeichnungsdatei.
+NUC-Installation und echter Direkt-Sync sind bestaetigt; der echte Gruppentest waehrend eines Blutmonds steht noch aus.
+
+Die rote eigene Killzahl funktioniert lokal und ueber Direkt-Sync auf einem Server.
+Waehrend des Blutmonds fordert der Client auch bei geschlossenem Menue einmal pro echter Sekunde die Werte an.
+Nach Empfang des Abschlusses bleibt der endgueltige eigene Wert 60 echte Sekunden sichtbar.
+Der uebertragene Blutmondstatus benoetigt Version 0.1.0.0 auf Server und Clients.

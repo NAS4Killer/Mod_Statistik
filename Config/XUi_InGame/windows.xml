@@ -7,7 +7,7 @@
           <headerbg />
           <sprite depth="1" style="icon32px" pos="4,-5" sprite="ui_game_symbol_players" />
           <label style="header.name" text="Blutmond-Statistik" />
-          <label name="statisticsVersion" pos="0,-22" width="1320" height="28" font_size="26" justify="center" text="Version 0.0.2.0" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
+          <label name="statisticsVersion" pos="0,-22" width="1320" height="28" font_size="26" justify="center" text="Version 0.1.0.0" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
           <simplebutton name="statisticsUpdate" pos="1200,-5" width="105" height="34" caption="GitHub" font_size="20" />
           <simplebutton name="statisticsReleaseNotes" pos="1050,-5" width="140" height="34" caption="Release Notes" font_size="18" visible="false" />
           <label name="statisticsUpdateStatus" pos="1020,-22" width="170" height="28" font_size="20" justify="right" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />

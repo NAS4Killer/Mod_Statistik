@@ -13,10 +13,9 @@ public sealed class XUiC_BloodmoonKills : XUiController
         nextRefresh = Time.unscaledTime + 0.2f;
         var player = xui.playerUI.entityPlayer;
         long kills;
-        bool visible = player != null && BloodmoonHudDisplay.TryValue(BloodmoonRecording.LiveNight,
-            BloodmoonRecording.FinishedNight, BloodmoonRecording.FinishedAt, Time.unscaledTime, player.EntityName, out kills);
+        kills = 0;
+        bool visible = player != null && StatisticsSync.TryHudValue(player.EntityName, out kills);
         label.IsVisible = visible;
-        if (visible) label.Text = BloodmoonHudDisplay.Value(BloodmoonRecording.LiveNight,
-            BloodmoonRecording.FinishedNight, player.EntityName).ToString(CultureInfo.InvariantCulture);
+        if (visible) label.Text = kills.ToString(CultureInfo.InvariantCulture);
     }
 }
