@@ -1,0 +1,5 @@
+Mod_Statistik 0.0.2.6 - Namensfehler der Gruppen-Vorschau
+
+Die Testnamen werden direkt ueber die originale name-Bindung geliefert.
+Dadurch benoetigen die isolierten Testobjekte keinen gespeicherten Spielerprofil-Eintrag fuer den Namen.
+Echte Gruppenmitglieder verwenden weiter die native Namensabfrage. Originale Textattribute, Entfernungsberechnung und Pfeildrehung bleiben erhalten.

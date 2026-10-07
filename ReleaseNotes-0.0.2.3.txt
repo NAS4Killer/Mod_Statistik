@@ -1,0 +1,7 @@
+Mod_Statistik 0.0.2.3 - Gruppen-HUD und Layouttest
+
+Feste Killspalte rechts neben den Entfernungen der Gruppenliste.
+Eigene Werte rot, andere weiss; roter Stern fuer den hoechsten positiven Gruppenwert, auch bei Gleichstand.
+Ohne echte Gruppe erscheint voruebergehend eine gekennzeichnete Layoutvorschau mit Beispielwerten.
+Diese Werte werden nicht gespeichert oder uebertragen und sind keine echten Statistikwerte.
+Die Vorschau verwendet dieselben Spalten und Zeilenabstaende wie die echte Gruppe.

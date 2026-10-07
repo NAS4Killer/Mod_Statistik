@@ -1,3 +1,91 @@
+# 0.1.0.0
+
+Mod_Statistik 0.1.0.0 - Direkt-Sync und Gruppen-Killanzeige
+
+- Dedizierte Server zeichnen Blutmond-Kills auf und uebertragen laufende sowie abgeschlossene Naechte ueber die Spielverbindung. Clients warten auf die Verbindung und schreiben keine eigene Serverstatistik.
+- Die rote eigene Killzahl funktioniert auch auf dem Server und wird waehrend des Blutmonds sekündlich aktualisiert, auch bei geschlossenem Statistikmenue.
+- Nach dem empfangenen Blutmondabschluss bleibt der eigene Endwert 60 echte Sekunden sichtbar.
+- Originale Gruppenzeilen erhalten eine linksbuendige Killspalte: eigene Werte rot, andere weiss. Ein roter Stern markiert den hoechsten positiven Gruppenwert, bei Gleichstand alle Fuehrenden.
+- Rangsterne verwenden native Spielgrafiken und stehen acht Pixel hinter der gerenderten Killzahl. Testvorschau und simulierte Spieler sind entfernt.
+- SecondMap liest die Mod-Statistik; ihre alte Kill-Aufzeichnung ist deaktiviert. Zeit- und Positionsabfragen bleiben bestehen.
+- Screenshot1.png dokumentiert den bestaetigten Tabellenstand 0.0.2.7 und bleibt unveraendert.
+
+Pruefungen: Client- und Serverbuilds, automatisierter Direkt-Sync mit acht simulierten Spielern, HUD-Abschluss und 60-Sekunden-Grenze, Gruppenrangfolge und Gleichstaende. Echter NUC-Start und Direkt-Sync vom Nutzer bestaetigt.
+Noch offen: echter Gruppentest waehrend eines Blutmonds, 60 Sekunden Nachanzeige und Neustart.
+Diese Veroeffentlichung installiert keine neue Version auf PC oder NUC.
+
+# 0.0.2.7
+
+Mod_Statistik 0.0.2.7 - Gruppenanzeige ohne Testvorschau
+
+Testvorschau, simulierte Spieler und zusaetzliche eigene Gruppenzeile entfernt.
+Killzahlen und Rangsterne erweitern ausschliesslich die originalen Gruppenzeilen und folgen deren Sichtbarkeit.
+Die bisherige eigene rote Blutmond-Killanzeige ist wieder aktiv.
+Die Zahlen bleiben linksbuendig; der Stern steht acht Pixel hinter der jeweiligen Zahl.
+
+# 0.0.2.6
+
+Mod_Statistik 0.0.2.6 - Namensfehler der Gruppen-Vorschau
+
+Die Testnamen werden direkt ueber die originale name-Bindung geliefert.
+Dadurch benoetigen die isolierten Testobjekte keinen gespeicherten Spielerprofil-Eintrag fuer den Namen.
+Echte Gruppenmitglieder verwenden weiter die native Namensabfrage. Originale Textattribute, Entfernungsberechnung und Pfeildrehung bleiben erhalten.
+
+# 0.0.2.5
+
+Mod_Statistik 0.0.2.5 - Native Gruppencontroller im Layouttest
+
+Testzeilen verwenden den originalen PartyEntry-Controller mit isolierten Testspielerobjekten.
+Namen, Entfernungsformat, Entfernungsfarbe und Pfeildrehung stammen aus den nativen Datenbindungen.
+Testobjekte werden nicht in die Welt oder echte Gruppe eingetragen und beim Weltwechsel entfernt.
+Rangsterne stehen acht Pixel hinter der gerenderten Killzahl; die Zahlen bleiben linksbuendig.
+
+# 0.0.2.4
+
+Mod_Statistik 0.0.2.4 - Originalgetreue Gruppen-Vorschau
+
+Die Layoutvorschau verwendet die originale Gruppenzeile mit Gesundheitsbalken, Rahmen, Symbolen und Entfernungsanzeige.
+Die Beispielwerte ersetzen nur die Datenbindungen; Killspalte und Rangsterne verwenden dasselbe Layout wie echte Gruppen.
+Rangsterne sind jetzt native ui_game_symbol_star-Sprites statt fehlerhaft dargestellter Unicode-Zeichen.
+Die eigene zusaetzliche Gruppenzeile verwendet ebenfalls das originale Zeilenlayout.
+Die Vorschau bleibt bis zum Abschluss des Layouttests aktiv.
+
+# 0.0.2.3
+
+Mod_Statistik 0.0.2.3 - Gruppen-HUD und Layouttest
+
+Feste Killspalte rechts neben den Entfernungen der Gruppenliste.
+Eigene Werte rot, andere weiss; roter Stern fuer den hoechsten positiven Gruppenwert, auch bei Gleichstand.
+Ohne echte Gruppe erscheint voruebergehend eine gekennzeichnete Layoutvorschau mit Beispielwerten.
+Diese Werte werden nicht gespeichert oder uebertragen und sind keine echten Statistikwerte.
+Die Vorschau verwendet dieselben Spalten und Zeilenabstaende wie die echte Gruppe.
+
+# 0.0.2.2
+
+Mod_Statistik 0.0.2.2 - Direkt-Sync
+
+Die rote eigene Killzahl funktioniert jetzt auch beim Spielen auf einem Server.
+Waehrend des Blutmonds werden die Serverwerte einmal pro echter Sekunde angefordert, auch bei geschlossenem Statistikmenue.
+Nach dem empfangenen Blutmondabschluss bleibt der letzte eigene Wert 60 echte Sekunden sichtbar.
+Beim Weltwechsel werden die HUD-Werte verworfen; ein Beitritt nach Abschluss zeigt keine alte Nacht an.
+Server und Clients benoetigen diese Version fuer den uebertragenen Blutmondstatus.
+
+# 0.0.2.1
+
+Mod_Statistik 0.0.2.1 - Servervorbereitung
+
+- Dedizierte Server werden ausdruecklich ueber den Spielserver-Status erkannt.
+- Bei einem verzogerten Verbindungsstart wartet ein Client auf die Festlegung; es werden keine lokalen Statistikdateien angelegt.
+- Die Server-/Client-Unterscheidung bleibt anschliessend fuer die Welt gespeichert.
+- Der dedizierte Server zeichnet Kills in Data/bloodmoon_kills.txt seines Mod-Ordners auf und liefert laufende sowie abgeschlossene Naechte ueber Direkt-Sync.
+- Bestehende TXT-Historie bleibt beim Ergaenzen erhalten.
+
+Pruefungen: Build gegen die installierten Spielbibliotheken; simulierter dedizierter Server mit acht Spielern,
+vorhandener TXT-Historie, sekuendlicher Aufzeichnung und Paketuebertragung zum Client;
+verzogerter Clientstart ohne Schreibzugriff bestanden.
+Die Installation und der Test auf dem echten NUC-Server erfolgen in Schritt 2.
+Die originale SecondMap-TXT wird erst bei dieser Umstellung gesichert und uebernommen.
+
 # 0.0.2.0
 
 Mod_Statistik 0.0.2.0 - Fehlerkorrektur und 60 Sekunden Nachanzeige

@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<configs>
+  <set xpath="/templates/party_entry/rect/@controller">StatistikPartyEntry, Mod_Statistik</set>
+  <set xpath="/templates/party_entry/rect/label[@text='{distance}']/@width">112</set>
+  <set xpath="/templates/party_entry/rect/label[@text='{distance}']/@overflow">ShrinkContent</set>
+  <append xpath="/templates/party_entry/rect">
+    <label name="bloodmoonGroupKills" pos="360,-6" width="120" height="30" font_size="26" justify="left" pivot="topleft" color="255,255,255,255" text="" visible="false" depth="9" effect="outline" overflow="ShrinkContent" support_bb_code="false" />
+    <sprite name="bloodmoonGroupStar" pos="486,-6" width="26" height="26" depth="9" sprite="ui_game_symbol_star" color="255,0,0,255" visible="false" />
+  </append>
+</configs>
