@@ -1,8 +1,0 @@
-Mod_Statistik 0.0.0.7
-Updatebutton oben rechts neben der Version nach dem MiniMap-Ablauf.
-Automatische Releasepruefung beim Oeffnen; Download und Installieren jeweils durch Buttonklick.
-Verfuegbare Updates gruen; Release Notes zur angebotenen Version.
-SHA256, Dateiliste, Versionsnummer und Mod-Metadaten werden vor Installation geprueft.
-Versteckter Installer wartet auf Spielende, sichert Dateien und stellt sie bei Fehlern wieder her.
-Lokale Statistikdatei und Updatequellen-Konfiguration bleiben bei Updates erhalten.
-GitHub-Updatequelle noch nicht hinterlegt: Config/UpdateRepository.txt. Bis dahin zeigt der Button Updatequelle fehlt.

@@ -1,7 +1,0 @@
-Mod_Statistik 0.0.0.10
-Release-Notes-Button direkt links neben den Updatebutton verschoben.
-Wenn der Release-Notes-Button nach dem Installationsauftrag verschwindet, erscheint links neben dem Updatebutton der rote Hinweis Spiel neu starten.
-Doppel-I-Tastenkombination samt Hotkey-Komponente und Eingabeauswertung entfernt.
-Blutmond-Tab bleibt ueber das normale Spielermenue erreichbar.
-Realzeitkorrektur und zentrierte Blutmondanzeige aus 0.0.0.9 enthalten.
-Nur lokal erstellt und installiert; kein Commit und kein GitHub-Upload.

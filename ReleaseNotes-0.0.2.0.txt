@@ -1,10 +1,7 @@
-Mod_Statistik 0.0.2.0 - Fehlerkorrektur und 60 Sekunden Nachanzeige
+Mod_Statistik 0.0.2.0 - Fehlerkorrektur und Anzeige nach dem Blutmond
 
-- Die rote eigene Kill-Zahl bleibt nach dem Blutmond 60 echte Sekunden sichtbar.
-- Angezeigt wird der endgueltig erfasste Kill-Wert; anschliessend wird die Zahl ausgeblendet.
-- Beim Weltwechsel wird die Nachanzeige zurueckgesetzt; eine neue Nacht zeigt ihre eigenen Werte.
-- Die Realzeitberechnung verwendet die Tagesdauer ohne den fehlerhaften GetFloat-Zugriff auf TimeOfDayIncPerSec.
-- TODO-Liste ergaenzt: Servereinrichtung, SecondMap-SSH-Abfragen abschalten bzw. umstellen und Server-HUD.
+- Die eigene rote Killzahl bleibt nach Ende des Blutmonds mit dem endgültigen Wert 60 echte Sekunden sichtbar.
+- Bei Weltwechsel wird die Anzeige zurückgesetzt; eine neue Nacht verwendet ihre eigenen Werte.
+- Der fehlerhafte Zugriff auf TimeOfDayIncPerSec wurde entfernt; die Realzeit wird über die Tagesdauer berechnet.
 
-Pruefung: Build gegen installierte Spielbibliotheken und automatisierte Grenzwertpruefungen fuer 60 Sekunden.
-Der Nutzer hat bestaetigt: Fehlermeldungen verschwunden und 60 Sekunden Nachanzeige funktionieren im Spiel.
+Geprüft: Build und automatisierte 60-Sekunden-Grenztests. Der Nutzer bestätigt, dass Fehlermeldungen verschwunden sind und die Anzeige nach dem Blutmond funktioniert.
