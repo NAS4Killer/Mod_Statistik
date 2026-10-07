@@ -1,3 +1,4 @@
+<?xml version='1.0' encoding='utf-8'?>
 <configs>
   <append xpath="/xui/window_group[@name='compass']">
     <window name="windowBloodmoonKills" />
