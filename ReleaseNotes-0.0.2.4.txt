@@ -1,7 +1,0 @@
-Mod_Statistik 0.0.2.4 - Originalgetreue Gruppen-Vorschau
-
-Die Layoutvorschau verwendet die originale Gruppenzeile mit Gesundheitsbalken, Rahmen, Symbolen und Entfernungsanzeige.
-Die Beispielwerte ersetzen nur die Datenbindungen; Killspalte und Rangsterne verwenden dasselbe Layout wie echte Gruppen.
-Rangsterne sind jetzt native ui_game_symbol_star-Sprites statt fehlerhaft dargestellter Unicode-Zeichen.
-Die eigene zusaetzliche Gruppenzeile verwendet ebenfalls das originale Zeilenlayout.
-Die Vorschau bleibt bis zum Abschluss des Layouttests aktiv.

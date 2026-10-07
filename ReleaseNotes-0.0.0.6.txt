@@ -1,7 +1,0 @@
-Mod_Statistik 0.0.0.6
-Namensspalte auf 180 Pixel verkleinert, lange Namen passen durch ShrinkContent.
-Elf Blutmond-Tage pro Seite; Rekordspalte direkt nach dem Namen.
-TXT-URL und Quellenhinweis in der Fussleiste vertikal mittig ausgerichtet.
-Button Server / Lokal als deaktivierte Vorbereitung; Umschaltfunktion folgt spaeter.
-Aktuelle lokale Quelle wird konkret als Data/bloodmoon_kills.txt angezeigt.
-Keine Server-URL eingerichtet; das URL-Feld zeigt eine gespeicherte Serveradresse, sobald eine eingerichtet wurde.

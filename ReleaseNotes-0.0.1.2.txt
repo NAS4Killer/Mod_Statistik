@@ -1,6 +1,0 @@
-Mod_Statistik 0.0.1.2
-
-- Rote Kill-Zahl nach dem Blutmond fuer 60 echte Sekunden anzeigen statt 69.
-- Endwert bleibt bis zum Ausblenden erhalten.
-
-Pruefung: Spielbibliotheken-Build und Nachanzeige-Grenzwerte bestanden.

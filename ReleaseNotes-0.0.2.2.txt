@@ -1,7 +1,0 @@
-Mod_Statistik 0.0.2.2 - Direkt-Sync
-
-Die rote eigene Killzahl funktioniert jetzt auch beim Spielen auf einem Server.
-Waehrend des Blutmonds werden die Serverwerte einmal pro echter Sekunde angefordert, auch bei geschlossenem Statistikmenue.
-Nach dem empfangenen Blutmondabschluss bleibt der letzte eigene Wert 60 echte Sekunden sichtbar.
-Beim Weltwechsel werden die HUD-Werte verworfen; ein Beitritt nach Abschluss zeigt keine alte Nacht an.
-Server und Clients benoetigen diese Version fuer den uebertragenen Blutmondstatus.

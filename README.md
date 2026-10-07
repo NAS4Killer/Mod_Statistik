@@ -1,92 +1,51 @@
-# Mod_Statistik 0.1.0.0 - Direkt-Sync
+# Mod_Statistik
 
-Dieser Zweig uebertraegt Blutmondstatistik ueber die bestehende Spielverbindung.
-Im Einzelspieler und beim Gastgeber liegt die TXT unter
-`Mods/Mod_Statistik/Data/bloodmoon_kills.txt`. Auf einem dedizierten Server gilt
-derselbe relative Pfad innerhalb seiner Mod-Installation.
-Die Mod erstellt eine fehlende TXT und zeichnet neue Blutmondnaechte selbst auf.
-Sie liest die Spielzeit im laufenden Spiel und beginnt beim konfigurierten
-Blutmondstart (normal 22 Uhr). Dann erfasst sie die Zombie-Kill-Startwerte
-und zaehlt die Zuwachse bis zum konfigurierten Ende (normal 4 Uhr).
-Ausserhalb der Nacht werden fuer die Aufzeichnung keine Kill-Zaehler gelesen.
+Blutmond-Kills für 7 Days to Die: laufende Werte, persönliche Rekorde und abgeschlossene Nächte im Spiel anzeigen.
 
-Zwischenstaende liegen unter Data/bloodmoon_state-<Weltkennung>.json,
-werden bei Aenderungen alle 5 echten Sekunden und beim Ausloggen/Weltende
-gesichert und nach einem Neustart fortgesetzt. Spaetere Beitritte beginnen
-mit dem dann vorhandenen Gesamtzaehler. Werte ausgeloggter Spieler bleiben
-erhalten; ein Zaehlerreset zieht keine bereits gezaehlten Kills ab.
-Der END-Block entspricht dem vorhandenen TXT-Format. Abgeschlossene Tage
-werden nicht doppelt geschrieben. Das Protokoll bleibt eine Datei im
-Mod-Ordner; Tage bereits vorhandener Historie werden dabei beibehalten.
+**Aktuelle Version: 0.1.0.0 · Direkt-Sync**
 
-Fehlerhafte TXT-Dateien werden vor dem Neuanlegen unveraendert als
-bloodmoon_kills.txt.invalid-*.bak gesichert. Beschadigte JSON-Zwischenstaende
-und Schreibfehler stoppen die Aufzeichnung mit einem Hinweis.
-Mod-Updates erhalten den gesamten vorhandenen Data-Ordner.
-Wird die Mod mitten in einer Nacht aktiviert, beginnt die Zaehlung erst dann.
-Bei einem Absturz koennen seit der letzten Sicherung entstandene Kills fehlen.
-Die externe Server-Aufzeichnung darf nicht gleichzeitig in dieselbe TXT schreiben.
+[Aktuelle Version herunterladen](https://github.com/NAS4Killer/Mod_Statistik/releases/tag/direkt-sync-v0.1.0.0) · [Versionsübersicht](CHANGELOG.md) · [Offene Aufgaben](TODO.md)
 
+## Anzeige
 
-Server und Spieler brauchen dieselbe Direkt-Sync-Version dieser Mod.
-Bei verbundenen Spielern liest die Mod keine eigene lokale Statistikdatei.
-Beim Oeffnen des Blutmond-Tabs und alle 5 Sekunden bei offenem Tab fragt sie
-den Server automatisch an. Empfangene Werte bleiben im Arbeitsspeicher.
-Unveraenderte Werte werden mit einer kurzen Antwort bestaetigt.
-Eine vollstaendige neue Statistik wird in begrenzten Teilpaketen uebertragen
-und vor der Anzeige mit SHA256 geprueft. Bei Fehlern bleiben die letzten
-gueltigen Werte sichtbar; beim Weltwechsel wird dieser Zwischenspeicher geleert.
+- Im Spielermenü zeigt der Tab **Blutmond** die Spieler untereinander, ihren Rekord und die Blutmondtage. Höchstwerte sind rot markiert, auch bei Gleichstand.
+- Unter der Tabelle stehen der nächste Blutmond, die verbleibenden Spieltage und die geschätzte Realzeit.
+- Die eigene rote Killzahl wird während des Blutmonds aktualisiert und bleibt danach 60 echte Sekunden sichtbar.
+- Originale Gruppenzeilen erhalten eine Killspalte. Eigene Werte sind rot, andere weiß; ein roter Stern kennzeichnet den höchsten positiven Gruppenwert. Bei Gleichstand erhalten alle Führenden einen Stern.
 
-Spieler stehen untereinander, Rekord und Tage oben. Hoechstwerte und
-Rekordhalter sind rot markiert, einschliesslich Gleichstaenden.
-Die zentrierte Zeile unter der Tabelle zeigt den naechsten Blutmond und
-verbleibende Spielzeit sowie geschaetzte Realzeit aus dem Spielzustand.
-Seitenwechsel stehen unten rechts im Stil des Originalmenues.
+![Blutmond-Statistik](Screenshot1.png)
 
-## Installation und Updates
+Screenshot1 zeigt den bestätigten Tabellenstand **0.0.2.7**. Spielernamen sind anonymisiert; die aktuelle Veröffentlichung ist **0.1.0.0**.
 
-Bei beendetem Spiel bzw. Server das ZIP in dessen Mods-Ordner entpacken.
-Vorhandene echte Protokolldaten sichern und wieder in Data/bloodmoon_kills.txt
-ablegen. Die mitgelieferte Datei ist ein alter Datenstand fuer die Anzeige; neue Naechte werden ergaenzt.
+## Installation
 
-GitHub-Updates verwenden Config/UpdateRepository.txt und ausschliesslich
-Release-Tags `direkt-sync-vA.B.C.D` mit
-`Mod_Statistik-direkt-sync-vA.B.C.D.zip`. Die Kennung SYNC_MODE verhindert
-Paketwechsel zum URL-Zweig. Der Installer erhaelt die vorhandene TXT und
-Updateadresse und wartet auf das Ende des Spiels. Release Notes bzw. der
-Neustarthinweis stehen links neben dem Updatebutton.
+1. Spiel bzw. Spielserver beenden und vorhandene Mod-Daten sichern.
+2. Das Release-ZIP im `Mods`-Ordner entpacken. Danach liegt `Mod_Statistik/ModInfo.xml` direkt darunter.
+3. Auf einem Server benötigen Server und alle Spieler dieselbe Mod-Version.
+4. Bei einer Aktualisierung den vorhandenen gesamten Ordner `Mod_Statistik/Data` erhalten. Die mitgelieferte TXT enthält historische Beispieldaten; eine eigene Statistik nicht damit überschreiben.
 
-Pruefungen: erfolgreicher Build gegen die Spielbibliotheken; automatisierte
-Protokoll- und simulierte Server-/Client-Pruefungen. Der gemeinsame Test mit
-einem laufenden Spielserver steht noch aus.
+**Wechsel von älteren Versionen auf 0.1.0.0:** manuell aus dem ZIP installieren. Die alten Updater akzeptieren die hinzugekommene Gruppen-Template-Datei noch nicht. Der Updater ab 0.1.0.0 unterstützt diese Datei.
 
-Die Gastgeber-/Client-Rolle wird beim Weltwechsel bestimmt und fuer die Sitzung gespeichert.
+## Aufzeichnung und Übertragung
 
-Automatische Aufzeichnung durch automatisierte Ablauf- und Dateifehlerpruefungen geprueft.
-Ein Test waehrend eines echten Blutmonds steht noch aus.
+Die Mod erstellt und ergänzt `Data/bloodmoon_kills.txt` im Mod-Ordner. Im lokalen Spiel zeichnet das Spiel auf; auf einem dedizierten Server zeichnet der Server auf. Verbundene Spieler erhalten die Statistik über die bestehende Spielverbindung.
 
-## Laufende Anzeige
+Die Zählung beginnt zum konfigurierten Blutmondstart, normalerweise um 22 Uhr, und endet zum konfigurierten Ende, normalerweise um 4 Uhr. Währenddessen werden Killwerte einmal pro echter Sekunde erfasst. Zwischenstände werden bei Änderungen alle fünf echten Sekunden und beim Ausloggen bzw. Weltende gesichert.
 
-Waehrend der Nacht werden Kill-Zaehler regulaer einmal pro echter Sekunde gelesen.
-Die laufende Nacht steht in der Tabelle; nur der geoeffnete Tab wird sekuendlich aktualisiert.
-Oben links im lokalen Spiel erscheint waehrend der Nacht die eigene Kill-Zahl rot.
-Die HUD-Anzeige verwendet die lokale Aufzeichnung und liest keine eigenen Kill-Zaehler.
-Ausloggen und Weltende sichern zusaetzlich den letzten Stand.
+Bestehende Nächte bleiben erhalten. Ein Beitritt mitten in der Nacht zählt ab diesem Zeitpunkt. Bei einem Absturz kann der noch nicht gesicherte Zeitraum fehlen. Eine externe Aufzeichnung darf nicht gleichzeitig dieselbe TXT beschreiben.
 
-Die Realzeitberechnung verwendet die Tagesdauer; kein GetFloat-Zugriff auf TimeOfDayIncPerSec.
+Die SecondMap kann die Mod-Daten lesen; ihre bisherige Kill-Aufzeichnung muss dabei deaktiviert werden. Diese externe Einrichtung gehört nicht zum Installationspaket der Mod.
 
-Die rote lokale Kill-Zahl bleibt nach dem Blutmond 60 echte Sekunden mit dem Endwert sichtbar.
+## Prüfstand
 
-## Dedizierter Server
+Lokale Aufzeichnung, Fehlerkorrektur und 60-Sekunden-Anzeige wurden im Spiel bestätigt. Der NUC-Server startet mit der Mod; die echte Statistikübertragung und das Tabellenlayout sind bestätigt. Automatisierte Tests prüfen unter anderem acht simulierte Spieler, Paketübertragung, Gruppenrangfolge und Gleichstände.
 
-Der dedizierte Spielserver zeichnet auch ohne geoeffnetes Spielermenue auf.
-Die TXT liegt im Server-Mod-Ordner unter Data/bloodmoon_kills.txt.
-Vor dem ersten Start wird die originale SecondMap-TXT gesichert und an diesen Pfad uebernommen.
-Die alte Kill-Aufzeichnung muss bei der Umstellung angehalten werden; SSH bleibt aktiv.
-Ein Client wartet auf die Verbindung und erzeugt selbst keine Aufzeichnungsdatei.
-NUC-Installation und echter Direkt-Sync sind bestaetigt; der echte Gruppentest waehrend eines Blutmonds steht noch aus.
+**Noch offen:** gemeinsamer Test mit einer echten Gruppe während des Blutmonds, Anzeige der Endwerte für 60 Sekunden und Verhalten nach einem Neustart.
 
-Die rote eigene Killzahl funktioniert lokal und ueber Direkt-Sync auf einem Server.
-Waehrend des Blutmonds fordert der Client auch bei geschlossenem Menue einmal pro echter Sekunde die Werte an.
-Nach Empfang des Abschlusses bleibt der endgueltige eigene Wert 60 echte Sekunden sichtbar.
-Der uebertragene Blutmondstatus benoetigt Version 0.1.0.0 auf Server und Clients.
+## Veröffentlichungen
+
+| Version | Schwerpunkt |
+| --- | --- |
+| [0.1.0.0](https://github.com/NAS4Killer/Mod_Statistik/releases/tag/direkt-sync-v0.1.0.0) | Dedizierter Server, Server-HUD und Gruppen-Killanzeige |
+| [0.0.2.0](https://github.com/NAS4Killer/Mod_Statistik/releases/tag/direkt-sync-v0.0.2.0) | Fehlerkorrektur und 60 Sekunden Anzeige nach dem Blutmond |
+| [0.0.1.0](https://github.com/NAS4Killer/Mod_Statistik/releases/tag/direkt-sync-v0.0.1.0) | Direkt-Sync und automatische Blutmondstatistik |

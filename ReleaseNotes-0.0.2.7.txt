@@ -1,6 +1,0 @@
-Mod_Statistik 0.0.2.7 - Gruppenanzeige ohne Testvorschau
-
-Testvorschau, simulierte Spieler und zusaetzliche eigene Gruppenzeile entfernt.
-Killzahlen und Rangsterne erweitern ausschliesslich die originalen Gruppenzeilen und folgen deren Sichtbarkeit.
-Die bisherige eigene rote Blutmond-Killanzeige ist wieder aktiv.
-Die Zahlen bleiben linksbuendig; der Stern steht acht Pixel hinter der jeweiligen Zahl.
