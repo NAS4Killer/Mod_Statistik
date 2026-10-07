@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>Mod_Statistik</AssemblyName>
     <RootNamespace>ModStatistik</RootNamespace>
-    <Version>0.0.1.0</Version>
+    <Version>0.0.2.0</Version>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <DebugType>none</DebugType>
     <DebugSymbols>false</DebugSymbols>

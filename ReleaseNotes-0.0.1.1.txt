@@ -1,0 +1,10 @@
+Mod_Statistik 0.0.1.1 - Fehlerkorrektur und 69 Sekunden Nachanzeige
+
+- Die rote eigene Kill-Zahl bleibt nach dem Blutmond noch 69 echte Sekunden sichtbar.
+- Die Nachanzeige verwendet den endgueltig erfassten Kill-Wert, danach wird sie ausgeblendet.
+- Beim Weltwechsel werden diese Werte zurueckgesetzt; eine neue Nacht zeigt ihre eigenen Werte.
+- Enthalten ist die Fehlerkorrektur aus 0.0.1.0: kein GetFloat-Zugriff auf TimeOfDayIncPerSec.
+- Realzeit wird weiterhin aus der eingestellten Tagesdauer berechnet.
+
+Pruefungen: Build gegen Spielbibliotheken, 69-Sekunden-Grenze, Endwert,
+Ausblenden, neue Nacht und bisherige Aufzeichnungs-/Live-/Paketpruefungen.

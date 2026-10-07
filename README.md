@@ -1,4 +1,4 @@
-# Mod_Statistik 0.0.1.0 - Direkt-Sync
+# Mod_Statistik 0.0.2.0 - Direkt-Sync
 
 Dieser Zweig uebertraegt Blutmondstatistik ueber die bestehende Spielverbindung.
 Im Einzelspieler und beim Gastgeber liegt die TXT unter
@@ -74,3 +74,5 @@ Die HUD-Anzeige verwendet die lokale Aufzeichnung und liest keine eigenen Kill-Z
 Ausloggen und Weltende sichern zusaetzlich den letzten Stand.
 
 Die Realzeitberechnung verwendet die Tagesdauer; kein GetFloat-Zugriff auf TimeOfDayIncPerSec.
+
+Die rote lokale Kill-Zahl bleibt nach dem Blutmond 60 echte Sekunden mit dem Endwert sichtbar.
