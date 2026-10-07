@@ -19,13 +19,34 @@ namespace ModStatistik
     {
         private static string localFile;
         private static object activeWorld;
-        private static bool serverMode;
+        private static bool serverMode, roleReady;
         private static BloodmoonLog data, historical, mergedHistorical;
         private static BloodmoonNight mergedLive;
         private static byte[] payload, digest;
         private static string error;
         private static int sequence, pendingRequest;
-        private static float deadline, nextRead;
+        private static float deadline, nextRead, nextHudRequest;
+        private static BloodmoonNight remoteLive, remoteFinished;
+        private static float remoteFinishedAt;
+        internal static bool TryHudValue(string name, out long kills)
+        {
+            Tick();
+            kills = 0;
+            if (!roleReady) return false;
+            return BloodmoonHudDisplay.TryValue(serverMode ? BloodmoonRecording.LiveNight : remoteLive,
+                serverMode ? BloodmoonRecording.FinishedNight : remoteFinished,
+                serverMode ? BloodmoonRecording.FinishedAt : remoteFinishedAt, Time.unscaledTime, name, out kills);
+        }
+        private static bool InsideBloodmoon(World world)
+        {
+            ulong now = world.GetWorldTime();
+            int day = GameStats.GetInt(EnumGameStats.BloodMoonDay);
+            if (day <= 0) return false;
+            var hours = GameUtils.CalcDuskDawnHours(GameStats.GetInt(EnumGameStats.DayLightLength));
+            ulong start = (ulong)(day - 1) * 24000UL + (ulong)hours.Item1 * 1000UL;
+            ulong end = (ulong)day * 24000UL + (ulong)hours.Item2 * 1000UL;
+            return now >= start && now < end;
+        }
         private static readonly StatisticsTransfer Transfer = new StatisticsTransfer();
         private static readonly Dictionary<ClientInfo, float> Requests = new Dictionary<ClientInfo, float>();
 
@@ -49,12 +70,21 @@ namespace ModStatistik
             if (!ReferenceEquals(world, activeWorld))
             {
                 activeWorld = world;
-                serverMode = world != null && (ConnectionManager.Instance == null || ConnectionManager.Instance.IsServer);
-                BloodmoonRecording.SetWorld(world as World, serverMode);
+                serverMode = false; roleReady = false;
+                BloodmoonRecording.SetWorld(null, false);
                 data = null; historical = null; mergedHistorical = null; mergedLive = null; payload = null; digest = null; error = null;
-                pendingRequest = 0; Transfer.Reset(); Requests.Clear(); nextRead = 0;
+                pendingRequest = 0; Transfer.Reset(); Requests.Clear(); nextRead = 0; nextHudRequest = 0;
+                remoteLive = null; remoteFinished = null; remoteFinishedAt = 0;
             }
             if (world == null) return;
+            if (!roleReady)
+            {
+                var connection = ConnectionManager.Instance;
+                if (!GameManager.IsDedicatedServer && connection == null) return;
+                serverMode = GameManager.IsDedicatedServer || connection.IsServer;
+                roleReady = true;
+                BloodmoonRecording.SetWorld(world as World, serverMode);
+            }
             bool server = serverMode;
             if (server)
             {
@@ -72,6 +102,12 @@ namespace ModStatistik
                     if (clients == null || !clients.Contains(client)) Requests.Remove(client);
             }
             if (server) RefreshLive();
+            if (!server && pendingRequest == 0 && now >= nextHudRequest &&
+                (remoteLive != null || InsideBloodmoon(world as World)))
+            {
+                nextHudRequest = now + 1f;
+                Request();
+            }
             if (!server && pendingRequest != 0 && now >= deadline)
             {
                 pendingRequest = 0; Transfer.Reset();
@@ -105,7 +141,7 @@ namespace ModStatistik
             var live = BloodmoonRecording.LiveNight;
             if (historical == null || (ReferenceEquals(historical, mergedHistorical) && ReferenceEquals(live, mergedLive))) return;
             var combined = live == null ? historical : BloodmoonLog.FromNights(historical.Nights.Where(n => n.Day != live.Day).Concat(new[] { live }));
-            byte[] encoded = StatisticsWire.Encode(combined);
+            byte[] encoded = StatisticsWire.Encode(combined, live == null ? 0 : live.Day);
             byte[] hash = StatisticsWire.Hash(encoded);
             if (!StatisticsWire.Equal(hash, digest)) { data = combined; payload = encoded; digest = hash; }
             mergedHistorical = historical; mergedLive = live;
@@ -114,7 +150,7 @@ namespace ModStatistik
         internal static void Request()
         {
             Tick();
-            if (activeWorld == null || IsServer || pendingRequest != 0) return;
+            if (activeWorld == null || !roleReady || IsServer || pendingRequest != 0) return;
             sequence = sequence == int.MaxValue ? 1 : sequence + 1;
             pendingRequest = sequence; Transfer.Reset(); deadline = Time.unscaledTime + 10f; error = null;
             try
@@ -170,7 +206,16 @@ namespace ModStatistik
                 }
                 byte[] completed = Transfer.Accept(id, index, count, total, hash, chunk);
                 if (completed == null) return;
-                var parsed = StatisticsWire.Decode(completed);
+                int activeDay;
+                var parsed = StatisticsWire.Decode(completed, out activeDay);
+                var previousLive = remoteLive;
+                remoteLive = activeDay == 0 ? null : parsed.Nights.Single(n => n.Day == activeDay);
+                if (remoteLive != null) { remoteFinished = null; remoteFinishedAt = 0; }
+                else if (previousLive != null)
+                {
+                    remoteFinished = parsed.Nights.FirstOrDefault(n => n.Day == previousLive.Day);
+                    remoteFinishedAt = Time.unscaledTime;
+                }
                 data = parsed; digest = StatisticsWire.Hash(completed); error = null; pendingRequest = 0;
             }
             catch (Exception)

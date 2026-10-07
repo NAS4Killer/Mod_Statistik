@@ -185,7 +185,7 @@ internal static class StatisticsUpdater
     internal static void ExtractPackage(byte[] bytes, string directory, string version)
     {
         var allowed = new HashSet<string>(StringComparer.Ordinal) {
-            "ModInfo.xml", "Mod_Statistik.dll", "SYNC_MODE", "Config/XUi_InGame/windows.xml", "Config/XUi_InGame/xui.xml",
+            "ModInfo.xml", "Mod_Statistik.dll", "SYNC_MODE", "Config/XUi_InGame/templates.xml", "Config/XUi_InGame/windows.xml", "Config/XUi_InGame/xui.xml",
             "Config/Localization.txt", "Config/UpdateRepository.txt", "Data/bloodmoon_kills.txt", "VERSION", "README.md", "ReleaseNotes-" + version + ".txt"
         };
         var found = new HashSet<string>(StringComparer.Ordinal);

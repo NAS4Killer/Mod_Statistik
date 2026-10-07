@@ -20,7 +20,7 @@ try {
     [xml]$info = Get-Content -LiteralPath (Join-Path $Payload 'ModInfo.xml') -Raw
     if ($info.xml.Version.value -ne $ExpectedVersion -or $info.xml.Name.value -ne 'Mod_Statistik') { throw 'Ungültiges Paket.' }
     if ((Get-Content -LiteralPath (Join-Path $Payload 'SYNC_MODE') -Raw).Trim() -ne 'direkt-sync') { throw 'Falscher Entwicklungszweig.' }
-    $files = @('Mod_Statistik.dll','ModInfo.xml','SYNC_MODE','Config\XUi_InGame\windows.xml','Config\XUi_InGame\xui.xml','Config\Localization.txt','VERSION','README.md',('ReleaseNotes-'+$ExpectedVersion+'.txt'))
+    $files = @('Mod_Statistik.dll','ModInfo.xml','SYNC_MODE','Config\XUi_InGame\templates.xml','Config\XUi_InGame\windows.xml','Config\XUi_InGame\xui.xml','Config\Localization.txt','VERSION','README.md',('ReleaseNotes-'+$ExpectedVersion+'.txt'))
     foreach ($relative in $files) { if (!(Test-Path -LiteralPath (Join-Path $Payload $relative) -PathType Leaf)) { throw 'Paket unvollständig.' } }
     # Never kill the game or replace its loaded assembly.
     $game = Get-Process -Id $GameProcessId -ErrorAction SilentlyContinue

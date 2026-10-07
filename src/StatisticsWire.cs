@@ -16,13 +16,17 @@ namespace ModStatistik
         private static readonly UTF8Encoding Utf8 = new UTF8Encoding(false, true);
 
         internal static byte[] Encode(BloodmoonLog data)
+        { return Encode(data, -1); }
+        internal static byte[] Encode(BloodmoonLog data, int activeDay)
         {
+            if (data == null || activeDay < -1 || (activeDay > 0 && !data.Nights.Any(n => n.Day == activeDay))) throw new InvalidDataException("Ungueltiger aktiver Tag.");
             if (data == null || data.Nights.Count > MaximumNights || data.Players.Count > MaximumPlayers)
                 throw new InvalidDataException("Statistik zu gross.");
             using (var memory = new MemoryStream())
             using (var writer = new BinaryWriter(memory, Utf8))
             {
-                writer.Write((byte)1);
+                writer.Write((byte)(activeDay < 0 ? 1 : 2));
+                if (activeDay >= 0) writer.Write(activeDay);
                 writer.Write((ushort)data.Nights.Count);
                 foreach (var night in data.Nights)
                 {
@@ -44,13 +48,18 @@ namespace ModStatistik
         }
 
         internal static BloodmoonLog Decode(byte[] bytes)
+        { int activeDay; return Decode(bytes, out activeDay); }
+        internal static BloodmoonLog Decode(byte[] bytes, out int activeDay)
         {
+            activeDay = 0;
             if (bytes == null || bytes.Length < 3 || bytes.Length > MaximumBytes)
                 throw new InvalidDataException("Ungueltige Statistikgroesse.");
             using (var memory = new MemoryStream(bytes, false))
             using (var reader = new BinaryReader(memory, Utf8))
             {
-                if (reader.ReadByte() != 1) throw new InvalidDataException("Unbekanntes Statistikformat.");
+                byte format = reader.ReadByte();
+                if (format != 1 && format != 2) throw new InvalidDataException("Unbekanntes Statistikformat.");
+                if (format == 2) { activeDay = reader.ReadInt32(); if (activeDay < 0) throw new InvalidDataException("Ungueltiger aktiver Tag."); }
                 int count = reader.ReadUInt16();
                 if (count > MaximumNights) throw new InvalidDataException("Zu viele Naechte.");
                 var nights = new List<BloodmoonNight>();
@@ -82,6 +91,7 @@ namespace ModStatistik
                     nights.Add(night);
                 }
                 if (memory.Position != memory.Length) throw new InvalidDataException("Zusaetzliche Statistikdaten.");
+                if (activeDay > 0 && !days.Contains(activeDay)) throw new InvalidDataException("Aktiver Tag fehlt.");
                 return BloodmoonLog.FromNights(nights);
             }
         }
