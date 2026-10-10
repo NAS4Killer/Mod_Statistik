@@ -1,0 +1,8 @@
+Mod_Statistik 0.1.0.2 - Ausschließlich lokale Oberfläche
+
+- Server überträgt keine Statistik-Menüs oder modabhängigen UI-Controller mehr an Spieler ohne Mod.
+- Oberfläche in die Mod-DLL eingebettet und erst beim lokalen UI-Laden eingebunden.
+- Private Kopien der UI-Daten erhalten die unveränderte Konfiguration, die ein lokales Spiel an andere Spieler weitergeben kann.
+- Tabelle, Gruppen-Kills und eigene Killanzeige stehen weiterhin Spielern mit Mod zur Verfügung.
+- Alte automatische XUi-Patchdateien aus dem Paket entfernt; Updater entfernt deren installierte Reste mit Sicherung und Rollback.
+- Übertragung über den vorhandenen Standardpakettyp bleibt bestehen.

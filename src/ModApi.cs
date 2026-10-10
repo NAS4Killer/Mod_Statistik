@@ -8,6 +8,7 @@ namespace ModStatistik
     {
         public void InitMod(Mod mod)
         {
+            StatisticsTransport.Initialize();
             StatisticsRuntime.Initialize(mod.Path);
             if (!GameManager.IsDedicatedServer) StatisticsUpdater.Configure(mod.Path);
             Debug.Log("[Mod_Statistik] Version " + StatisticsRuntime.Version + " geladen.");
@@ -16,7 +17,7 @@ namespace ModStatistik
 
     internal static class StatisticsRuntime
     {
-        internal const string Version = "0.1.0.0";
+        internal const string Version = "0.2.0.0";
         internal static void Initialize(string modPath)
         {
             StatisticsSync.Initialize(modPath);

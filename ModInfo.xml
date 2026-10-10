@@ -1,7 +1,8 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <xml>
   <Name value="Mod_Statistik" />
-  <DisplayName value="Blutmond-Statistik ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· Direkt-Sync" />
-  <Description value="Blutmond-Statistik direkt ueber die Spielverbindung. Derselbe Mod-Stand auf Server und Clients erforderlich." />
-  <Version value="0.1.0.0" />
+  <DisplayName value="Blutmond-Statistik · Direkt-Sync" />
+  <Description value="Blutmond-Statistik direkt über die Spielverbindung. Spieler ohne Mod können beitreten; zusätzliche Anzeigen benötigen die Client-Mod." />
+  <Author value="NAS4Killer" />
+  <Version value="0.2.0.0" />
 </xml>

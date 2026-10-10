@@ -1,0 +1,10 @@
+Mod_Statistik 0.1.0.1 - Optionaler Spielclient
+
+- Eigene Netzwerk-Pakettypen entfernt: sie verhinderten den Beitritt von Spielern ohne Mod bereits während der Paketzuordnung.
+- Statistikübertragung auf den vorhandenen zuverlässigen NetPackageChat umgestellt; reservierte Nachrichten werden vor Chat-Anzeige und Weiterleitung abgefangen.
+- Server antwortet weiterhin nur auf Anfragen authentifizierter Mod-Spieler. Spieler ohne Mod werden serverseitig mitgezählt.
+- Statistikformat, Live-Tabelle, eigene und Gruppen-Killanzeige sowie 60 Sekunden Nachanzeige bleiben erhalten.
+- Harmony-Bibliothek für das Abfangen des Standardpakets beigelegt; Build und Update-Paketprüfung angepasst.
+- Wechsel von früheren Versionen erfordert manuelle Installation des vollständigen Pakets.
+- Automatisiert geprüft: tatsächliches Harmony-Abfangen am Paket-Stand-in, normaler Chat, keine unaufgeforderte Übertragung, Herkunftsprüfung, mehrteilige Nachrichten, acht Spieler, Live-Werte und 60-Sekunden-Anzeige. Client- und Server-DLL gebaut.
+- Nur im Projekt umgesetzt; nicht installiert oder veröffentlicht.

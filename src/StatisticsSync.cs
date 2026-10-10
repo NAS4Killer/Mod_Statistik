@@ -155,7 +155,7 @@ namespace ModStatistik
             pendingRequest = sequence; Transfer.Reset(); deadline = Time.unscaledTime + 10f; error = null;
             try
             {
-                ConnectionManager.Instance.SendToServer(NetPackageManager.GetPackage<NetPackageStatisticsRequest>().Setup(sequence, digest), false);
+                StatisticsTransport.SendRequest(sequence, digest);
             }
             catch (Exception)
             {
@@ -175,12 +175,12 @@ namespace ModStatistik
             Requests[sender] = Time.unscaledTime;
             if (payload == null || error != null)
             {
-                sender.SendPackage(NetPackageManager.GetPackage<NetPackageStatisticsReply>().Setup(id, 2, 0, 0, 0, null, new byte[0]));
+                StatisticsTransport.SendReply(sender, id, 2, 0, 0, 0, null, new byte[0]);
                 return;
             }
             if (StatisticsWire.Equal(knownHash, digest))
             {
-                sender.SendPackage(NetPackageManager.GetPackage<NetPackageStatisticsReply>().Setup(id, 1, 0, 0, 0, digest, new byte[0]));
+                StatisticsTransport.SendReply(sender, id, 1, 0, 0, 0, digest, new byte[0]);
                 return;
             }
             int count = (payload.Length + StatisticsWire.ChunkBytes - 1) / StatisticsWire.ChunkBytes;
@@ -188,7 +188,7 @@ namespace ModStatistik
             {
                 byte[] chunk = new byte[Math.Min(StatisticsWire.ChunkBytes, payload.Length - i * StatisticsWire.ChunkBytes)];
                 Buffer.BlockCopy(payload, i * StatisticsWire.ChunkBytes, chunk, 0, chunk.Length);
-                sender.SendPackage(NetPackageManager.GetPackage<NetPackageStatisticsReply>().Setup(id, 0, i, count, payload.Length, digest, chunk));
+                StatisticsTransport.SendReply(sender, id, 0, i, count, payload.Length, digest, chunk);
             }
         }
 
