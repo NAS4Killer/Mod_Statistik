@@ -2,9 +2,9 @@
 
 Blutmond-Kills für 7 Days to Die: laufende Werte, persönliche Rekorde und abgeschlossene Nächte im Spiel anzeigen.
 
-**Aktuelle Version: 0.1.0.0 · Direkt-Sync**
+**Projektversion: 0.2.0.0 · Direkt-Sync**
 
-[Aktuelle Version herunterladen](https://github.com/NAS4Killer/Mod_Statistik/releases/tag/direkt-sync-v0.1.0.0) · [Versionsübersicht](CHANGELOG.md) · [Offene Aufgaben](TODO.md)
+[Aktuelle Version herunterladen](https://github.com/NAS4Killer/Mod_Statistik/releases/tag/direkt-sync-v0.2.0.0) · [Versionsübersicht](CHANGELOG.md) · [Offene Aufgaben](TODO.md)
 
 ## Anzeige
 
@@ -15,16 +15,16 @@ Blutmond-Kills für 7 Days to Die: laufende Werte, persönliche Rekorde und abge
 
 ![Blutmond-Statistik](Screenshot1.png)
 
-Screenshot1 zeigt den bestätigten Tabellenstand **0.0.2.7**. Spielernamen sind anonymisiert; die aktuelle Veröffentlichung ist **0.1.0.0**.
+Screenshot1 zeigt den bestätigten Tabellenstand **0.0.2.7**. Spielernamen sind anonymisiert; die aktuelle Veröffentlichung ist **0.2.0.0**.
 
 ## Installation
 
 1. Spiel bzw. Spielserver beenden und vorhandene Mod-Daten sichern.
 2. Das Release-ZIP im `Mods`-Ordner entpacken. Danach liegt `Mod_Statistik/ModInfo.xml` direkt darunter.
-3. Auf einem Server benötigen Server und alle Spieler dieselbe Mod-Version.
+3. Der Server benötigt die Mod. Spieler ohne Mod können beitreten und werden mitgezählt. Für Tabelle und zusätzliche Killanzeigen benötigen Spieler die passende Mod-Version.
 4. Bei einer Aktualisierung den vorhandenen gesamten Ordner `Mod_Statistik/Data` erhalten. Die mitgelieferte TXT enthält historische Beispieldaten; eine eigene Statistik nicht damit überschreiben.
 
-**Wechsel von älteren Versionen auf 0.1.0.0:** manuell aus dem ZIP installieren. Die alten Updater akzeptieren die hinzugekommene Gruppen-Template-Datei noch nicht. Der Updater ab 0.1.0.0 unterstützt diese Datei.
+**Wechsel auf 0.2.0.0:** manuell aus dem ZIP installieren, den vorhandenen Data-Ordner erhalten und die alten Config/XUi_InGame-Patchdateien entfernen. Ältere Updater unterstützen die neuen Abhängigkeiten noch nicht.
 
 ## Aufzeichnung und Übertragung
 
@@ -40,12 +40,23 @@ Die SecondMap kann die Mod-Daten lesen; ihre bisherige Kill-Aufzeichnung muss da
 
 Lokale Aufzeichnung, Fehlerkorrektur und 60-Sekunden-Anzeige wurden im Spiel bestätigt. Der NUC-Server startet mit der Mod; die echte Statistikübertragung und das Tabellenlayout sind bestätigt. Automatisierte Tests prüfen unter anderem acht simulierte Spieler, Paketübertragung, Gruppenrangfolge und Gleichstände.
 
+Serverbeitritt ohne Mod und Gegentest mit Mod wurden vom Nutzer bestätigt.
+
 **Noch offen:** gemeinsamer Test mit einer echten Gruppe während des Blutmonds, Anzeige der Endwerte für 60 Sekunden und Verhalten nach einem Neustart.
 
 ## Veröffentlichungen
 
 | Version | Schwerpunkt |
 | --- | --- |
+| [0.2.0.0](https://github.com/NAS4Killer/Mod_Statistik/releases/tag/direkt-sync-v0.2.0.0) | Serverbeitritt mit und ohne Mod; ausschließlich lokale Oberfläche |
 | [0.1.0.0](https://github.com/NAS4Killer/Mod_Statistik/releases/tag/direkt-sync-v0.1.0.0) | Dedizierter Server, Server-HUD und Gruppen-Killanzeige |
 | [0.0.2.0](https://github.com/NAS4Killer/Mod_Statistik/releases/tag/direkt-sync-v0.0.2.0) | Fehlerkorrektur und 60 Sekunden Anzeige nach dem Blutmond |
 | [0.0.1.0](https://github.com/NAS4Killer/Mod_Statistik/releases/tag/direkt-sync-v0.0.1.0) | Direkt-Sync und automatische Blutmondstatistik |
+
+## Übertragung ab 0.1.0.1
+
+Die Statistik nutzt den vorhandenen zuverlässigen Pakettyp NetPackageChat. Reservierte Statistiknachrichten werden vor Anzeige und Weiterleitung abgefangen. Der normale Chat bleibt erhalten. Es gibt keine eigenen NetPackage-Unterklassen mehr. Der Server antwortet ausschließlich dem authentifizierten Spieler, dessen Mod die Statistik angefordert hat. Die mitgelieferte Harmony-Bibliothek mit ihren Abhängigkeiten dient dem Abfangen der Nachrichten.
+
+## Lokale Oberfläche ab 0.1.0.2
+
+Die Menüdefinitionen liegen in der DLL. Sie werden ausschließlich auf dem Mod-Spielclient in private Kopien der UI-Daten eingefügt. Spieler ohne Mod erhalten das unveränderte Menü. Bei manuellen Updates müssen die alten Dateien Config/XUi_InGame/windows.xml, templates.xml und xui.xml aus dieser Mod entfernt werden; das vollständige alte Mod-Verzeichnis unter Erhalt der Data-Dateien ersetzen.

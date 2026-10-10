@@ -20,7 +20,7 @@ try {
     [xml]$info = Get-Content -LiteralPath (Join-Path $Payload 'ModInfo.xml') -Raw
     if ($info.xml.Version.value -ne $ExpectedVersion -or $info.xml.Name.value -ne 'Mod_Statistik') { throw 'Ungültiges Paket.' }
     if ((Get-Content -LiteralPath (Join-Path $Payload 'SYNC_MODE') -Raw).Trim() -ne 'direkt-sync') { throw 'Falscher Entwicklungszweig.' }
-    $files = @('Mod_Statistik.dll','ModInfo.xml','SYNC_MODE','Config\XUi_InGame\templates.xml','Config\XUi_InGame\windows.xml','Config\XUi_InGame\xui.xml','Config\Localization.txt','VERSION','README.md',('ReleaseNotes-'+$ExpectedVersion+'.txt'))
+    $files = @('ThirdPartyNotices.txt','Mod_Statistik.dll','0Harmony.dll','Mono.Cecil.dll','Mono.Cecil.Mdb.dll','Mono.Cecil.Pdb.dll','Mono.Cecil.Rocks.dll','MonoMod.Backports.dll','MonoMod.Core.dll','MonoMod.Iced.dll','MonoMod.ILHelpers.dll','MonoMod.RuntimeDetour.dll','MonoMod.Utils.dll','System.ValueTuple.dll','ModInfo.xml','SYNC_MODE','Config\Localization.txt','VERSION','README.md',('ReleaseNotes-'+$ExpectedVersion+'.txt'))
     foreach ($relative in $files) { if (!(Test-Path -LiteralPath (Join-Path $Payload $relative) -PathType Leaf)) { throw 'Paket unvollständig.' } }
     # Never kill the game or replace its loaded assembly.
     $game = Get-Process -Id $GameProcessId -ErrorAction SilentlyContinue
@@ -30,7 +30,8 @@ try {
     if ($currentInfo.xml.Name.value -ne 'Mod_Statistik' -or [version]$currentInfo.xml.Version.value -ge [version]$ExpectedVersion) { throw 'Installation geändert oder bereits aktuell. Update abgebrochen.' }
     New-Item -ItemType Directory -Path $backup -Force | Out-Null
     # Back up every destination before changing any installed file.
-    foreach ($relative in $files) {
+    $obsolete = @('Config\XUi_InGame\templates.xml','Config\XUi_InGame\windows.xml','Config\XUi_InGame\xui.xml')
+    foreach ($relative in ($files + $obsolete)) {
         $destination = Join-Path $Target $relative
         $existing[$relative] = Test-Path -LiteralPath $destination
         if ($existing[$relative]) {
@@ -45,6 +46,10 @@ try {
         $changed += $relative
         Copy-Item -LiteralPath (Join-Path $Payload $relative) -Destination $destination -Force
         if ((Get-FileHash -LiteralPath $destination).Hash -ne (Get-FileHash -LiteralPath (Join-Path $Payload $relative)).Hash) { throw 'Installationsprüfung fehlgeschlagen.' }
+    }
+    foreach ($relative in $obsolete) {
+        $destination = Join-Path $Target $relative
+        if (Test-Path -LiteralPath $destination) { $changed += $relative; Remove-Item -LiteralPath $destination }
     }
     [IO.File]::WriteAllText($log, ('Erfolgreich installiert: '+$ExpectedVersion), [Text.UTF8Encoding]::new($false))
 } catch {

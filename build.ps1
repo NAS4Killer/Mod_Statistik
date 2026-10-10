@@ -13,7 +13,9 @@ foreach ($name in $references) {
     if (!(Test-Path -LiteralPath $reference)) { throw "Spielreferenz fehlt: $reference" }
     $arguments += '/reference:' + $reference
 }
+$arguments += '/reference:' + (Join-Path $repo '0Harmony.dll')
 $arguments += '/resource:' + (Join-Path $repo 'src\UpdateInstaller.ps1') + ',ModStatistik.UpdateInstaller.ps1'
+foreach ($uiName in @('windows','templates','xui')) { $arguments += '/resource:' + (Join-Path $repo ('src\LocalUI\' + $uiName + '.xml')) + ',ModStatistik.LocalUI.' + $uiName + '.xml' }
 $arguments += (Get-ChildItem -LiteralPath (Join-Path $repo 'src') -Filter '*.cs').FullName
 & $compiler @arguments
 if ($LASTEXITCODE -ne 0) { throw 'Kompilierung fehlgeschlagen.' }
