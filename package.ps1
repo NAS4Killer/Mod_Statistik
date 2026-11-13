@@ -17,6 +17,7 @@ $tar=Join-Path $tmp 'commit.zip'
 & git -c "safe.directory=$($r.Replace('\','/'))" -C $r archive --format=zip "--output=$tar" $sha
 if($LASTEXITCODE -ne 0){throw 'Commit-Export fehlgeschlagen'}
 Add-Type -AssemblyName System.IO.Compression.FileSystem
+Add-Type -AssemblyName System.IO.Compression
 [IO.Compression.ZipFile]::ExtractToDirectory($tar,(Join-Path $tmp 'source'))
 $source=Join-Path $tmp 'source'
 $files=@('ModInfo.xml','Mod_Statistik.dll','ThirdPartyNotices.txt','SYNC_MODE','Config\Localization.txt','Config\UpdateRepository.txt','Data\bloodmoon_kills.txt','VERSION','README.md',('ReleaseNotes-'+$version+'.txt'),'0Harmony.dll','Mono.Cecil.dll','Mono.Cecil.Mdb.dll','Mono.Cecil.Pdb.dll','Mono.Cecil.Rocks.dll','MonoMod.Backports.dll','MonoMod.Core.dll','MonoMod.Iced.dll','MonoMod.ILHelpers.dll','MonoMod.RuntimeDetour.dll','MonoMod.Utils.dll','System.ValueTuple.dll')
@@ -36,7 +37,13 @@ foreach($kind in @('client','server')){
  $suffix=if($kind -eq 'server'){'-server'}else{''}
  $zip=Join-Path $OutputDirectory ('Mod_Statistik-direkt-sync-v'+$version+$suffix+'.zip')
  if(Test-Path -LiteralPath $zip){throw "Ausgabedatei existiert bereits: $zip. Anderen Ausgabeordner waehlen."}
- [IO.Compression.ZipFile]::CreateFromDirectory($folder,$zip)
+ $archive=[IO.Compression.ZipFile]::Open($zip,[IO.Compression.ZipArchiveMode]::Create)
+ try{
+  foreach($file in (Get-ChildItem -LiteralPath $mod -File -Recurse | Sort-Object FullName)){
+   $entryName='Mod_Statistik/'+$file.FullName.Substring($mod.Length+1).Replace('\','/')
+   [IO.Compression.ZipFileExtensions]::CreateEntryFromFile($archive,$file.FullName,$entryName,[IO.Compression.CompressionLevel]::Optimal) | Out-Null
+  }
+ }finally{$archive.Dispose()}
  $hashes+=((Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLower()+'  '+[IO.Path]::GetFileName($zip))
 }
 $hashes | Set-Content -LiteralPath (Join-Path $OutputDirectory 'SHA256.txt') -Encoding ASCII
