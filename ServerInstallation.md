@@ -1,6 +1,6 @@
 # Aktueller Entwicklungs- und Installationsstand
 
-Siehe [DEVELOPMENT.md](DEVELOPMENT.md). Veroeffentlicht ist 0.2.0.0. Lokal auf dem PC wurde 0.3.0.1 mit Blutmond-Trefferquote und HUD-Anzeige installiert und vom Nutzer bestaetigt; dieser Stand wird im Repository als 0.3.1.0 versioniert. Die folgenden Serverprotokolle dokumentieren fruehere Installationen.
+Siehe [DEVELOPMENT.md](DEVELOPMENT.md). Aktueller GitHub-Release ist 0.3.1.0. Lokal auf dem PC wurde 0.3.0.1 mit Blutmond-Trefferquote und HUD-Anzeige installiert und vom Nutzer bestaetigt; dieser Stand wird im Repository als 0.3.1.0 versioniert. Die folgenden Serverprotokolle dokumentieren fruehere Installationen.
 
 Die folgenden Abschnitte sind historische Protokolle; Vorschauen und fruehere offene Einzeltests beschreiben nicht den aktuellen Funktionsstand. Die Pfade sind anonymisierte Beispiele.
 

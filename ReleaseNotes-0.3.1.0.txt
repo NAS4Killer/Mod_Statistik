@@ -37,10 +37,11 @@ Farben und Positionierung sind durch automatisierte Pruefungen abgedeckt.
 Der Nutzer hat die lokale Schusserfassung und danach die HUD-Anzeige im Spiel
 bestaetigt, mit den Zwischenstaenden 0.3.0.0 und 0.3.0.1 gegen V3.4.0 (b10).
 
-Die letzte bestaetigte Installation auf dem PC bleibt 0.3.0.1. Version 0.3.1.0
-fasst denselben bestaetigten Funktionsstand fuer den Commit zusammen.
-Fuer diese Erweiterung wurde kein Server veraendert. Die letzte oeffentliche
-Veroeffentlichung bleibt 0.2.0.0.
+Der GitHub-Release 0.3.1.0 fasst diesen bestaetigten Funktionsstand in
+Client- und Server-Paketen zusammen:
+https://github.com/NAS4Killer/Mod_Statistik/releases/tag/direkt-sync-v0.3.1.0
+Die letzte bestaetigte Installation auf dem PC bleibt 0.3.0.1.
+Fuer diese Erweiterung wurde kein Server veraendert.
 
 Weiterhin ausstehend: gemeinsamer Test mit einer echten Gruppe waehrend des
 Blutmonds samt Abschluss, 60 Sekunden Nachanzeige und Neustart. Die lokale

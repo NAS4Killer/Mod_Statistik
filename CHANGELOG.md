@@ -10,7 +10,7 @@ Mod_Statistik 0.3.1.0 - Trefferquote in Tabelle und HUD
 
 Geprüft: Client- und Server-DLL 0.3.1.0 lokal gegen V3.4.0 (b10) erstellt; 13 Testsuiten einschließlich 326 Protokollprüfungen, 15 Trefferstatistik-Integrationsfällen, Schuss-Hooks, HUD-Farben, Gleichständen, Gruppenwechsel und Positionierung bestanden. Der Nutzer hat die Schusserfassung und anschließend die HUD-Anzeige lokal im Spiel bestätigt. Die Bestätigung erfolgte mit den Zwischenständen 0.3.0.0 und 0.3.0.1; 0.3.1.0 fasst diesen Funktionsstand zusammen.
 
-Die letzte bestätigte lokale Installation bleibt 0.3.0.1, die letzte öffentliche Veröffentlichung 0.2.0.0. Für diese Erweiterung wurde kein Server verändert. Offen bleibt der gemeinsame Blutmond-Gruppentest einschließlich Abschluss, Nachanzeige und Neustart. Weitere Einzelheiten: [ReleaseNotes-0.3.1.0.txt](ReleaseNotes-0.3.1.0.txt).
+GitHub-Release: [0.3.1.0 mit Client- und Server-Paketen](https://github.com/NAS4Killer/Mod_Statistik/releases/tag/direkt-sync-v0.3.1.0). Die letzte bestätigte lokale Installation bleibt 0.3.0.1. Für diese Erweiterung wurde kein Server verändert. Offen bleibt der gemeinsame Blutmond-Gruppentest einschließlich Abschluss, Nachanzeige und Neustart. Weitere Einzelheiten: [ReleaseNotes-0.3.1.0.txt](ReleaseNotes-0.3.1.0.txt).
 
 # 0.2.0.0
 

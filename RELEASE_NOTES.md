@@ -11,6 +11,6 @@
 
 Prüfstand: Client- und Server-DLL 0.3.1.0 wurden lokal gegen die vorhandenen V3.4.0-(b10)-Bibliotheken erstellt. Alle 13 Testsuiten bestanden, einschließlich 326 Protokollprüfungen, 15 Trefferstatistik-Integrationsfällen sowie Prüfungen für Schuss-Hooks, Gleichstände, Gruppenwechsel, Farben und Positionierung. Der Nutzer hat die lokale Schusserfassung und danach die zusätzliche HUD-Anzeige im Spiel bestätigt. Diese Spielbestätigung erfolgte mit den Zwischenständen 0.3.0.0 und 0.3.0.1 gegen V3.4.0 (b10).
 
-Die letzte bestätigte Installation auf dem PC bleibt 0.3.0.1. Version 0.3.1.0 fasst denselben bestätigten Funktionsstand für den Commit zusammen. Für diese Erweiterung wurde kein Server verändert; 0.2.0.0 bleibt die letzte öffentliche Veröffentlichung.
+Der GitHub-Release [0.3.1.0](https://github.com/NAS4Killer/Mod_Statistik/releases/tag/direkt-sync-v0.3.1.0) fasst diesen bestätigten Funktionsstand in Client- und Server-Paketen zusammen. Die letzte bestätigte Installation auf dem PC bleibt 0.3.0.1. Für diese Erweiterung wurde kein Server verändert.
 
 Weiterhin ausstehend: gemeinsamer Test mit einer echten Gruppe während des Blutmonds einschließlich Abschluss, 60 Sekunden Nachanzeige und Neustart. Die lokale Spielbestätigung deckt diese Bedingungen nicht ab.

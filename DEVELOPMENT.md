@@ -1,8 +1,11 @@
 # Weiterentwicklung von Mod_Statistik
 
 Projektstand: 13.11.2026, Version 0.3.1.0 mit Trefferquote in Tabelle und HUD.
-Der Funktionsstand ist lokal im Spiel bestaetigt und noch nicht veroeffentlicht.
-Veroeffentlicht bleibt 0.2.0.0, Zweig direkt-sync,
+Der Funktionsstand ist lokal im Spiel bestaetigt. Aktuelle Releaseversion: 0.3.1.0,
+Zweig direkt-sync, Tag direkt-sync-v0.3.1.0.
+GitHub-Release: https://github.com/NAS4Killer/Mod_Statistik/releases/tag/direkt-sync-v0.3.1.0
+Das Repository ist privat; Releasezugriff erfordert eine GitHub-Anmeldung mit
+Repository-Zugriff. Historischer Release 0.2.0.0:
 Commit f3234b3e2f6fdce4428db2f9b5e9ffbcf48a4d34.
 
 ## Einstieg und Voraussetzungen
@@ -235,9 +238,9 @@ DLL und Versionsdateien wurden nach Installation per SHA-256 geprueft;
 bestehende Mod-Daten, Abhaengigkeiten und originale Spielassemblies blieben erhalten.
 Der Nutzer hat zuerst die Schusserfassung von 0.3.0.0 und danach die HUD-Ergaenzung
 von 0.3.0.1 im Spiel bestaetigt. Alle 13 Testsuiten bestanden, darunter 326
-Protokollpruefungen und 15 Trefferstatistik-Integrationsfaelle. Version 0.3.1.0
-fasst diesen Funktionsstand zusammen; sie bezeichnet hier keine bestaetigte neue
-Installation oder Veroeffentlichung. Kein Server wurde fuer diese Erweiterung veraendert.
+Protokollpruefungen und 15 Trefferstatistik-Integrationsfaelle. Releaseversion
+0.3.1.0 fasst diesen Funktionsstand zusammen. Die lokale Installation bleibt
+0.3.0.1. Kein Server wurde fuer diese Erweiterung veraendert.
 Die verifizierte Sicherung liegt unter
 E:\Git\7D2D\_Sicherungen\Mod_Statistik\20261113-130154 und umfasst das Projekt
 (483 Dateien), die Spielinstallation (23180 Dateien), Spielstaende (940 Dateien)
@@ -245,6 +248,6 @@ und die gesicherten Registry-Einstellungen. Diese Sicherung liegt ausserhalb des
 aktiven Projekt- und Mod-Verzeichnisses. Vor der HUD-Ergaenzung wurden Projekt,
 installierte Mod und aktuelle Spielstaende unter
 E:\Git\7D2D\_Sicherungen\Mod_Statistik\20261113-183759-HUD erneut gesichert und
-per SHA-256 geprueft. 0.2.0.0 bleibt die letzte Veroeffentlichung.
+per SHA-256 geprueft. Aktuelle Releaseversion ist 0.3.1.0.
 ReleaseNotes-0.3.1.0.txt fasst die aktuelle Version zusammen; die Dateien fuer
 0.3.0.0 und 0.3.0.1 dokumentieren die damaligen lokalen Teststaende.
