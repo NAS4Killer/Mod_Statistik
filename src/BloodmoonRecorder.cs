@@ -39,6 +39,8 @@ namespace ModStatistik
         internal BloodmoonNight LiveNight { get { if (!state.Active) return null; if (live == null) live = new BloodmoonNight(state.Day, state.Players.ToDictionary(p => p.Name, p => p.Kills, StringComparer.Ordinal)); return live; } }
         private HashSet<int> completed;
         internal bool Active { get { return state.Active; } }
+        internal string PlayerName(string id, int day)
+        { var player = state.Day == day ? state.Players.FirstOrDefault(p => p.Id == id) : null; return player == null ? null : player.Name; }
 
         internal BloodmoonRecorder(string directory, string worldKey)
         {

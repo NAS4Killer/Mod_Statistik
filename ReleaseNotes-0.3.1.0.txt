@@ -1,0 +1,47 @@
+Mod_Statistik 0.3.1.0 - Trefferquote in Tabelle und HUD
+Stand: 13.11.2026
+
+- Trefferquote pro Spieler und Blutmondnacht unter der Killzahl in der Tabelle
+  sowie rechts neben den eigenen und den Gruppen-Kills.
+- Hoechste angezeigte Trefferquote der Gruppe gruen; bei Gleichstand alle
+  Bestplatzierten gruen. Andere Quoten weiss. Fehlende Daten und null Schuesse
+  erscheinen als Gedankenstrich und erhalten keine Spitzenmarkierung.
+- Eine abgefeuerte Patrone zaehlt einmal. Mindestens ein Treffer auf einen
+  lebenden Zombie oder ein Zombie-Tier macht den Schuss erfolgreich.
+  Toedliche Treffer zaehlen; Schrotpellets und Durchschuesse ergeben hoechstens
+  einen Erfolg pro Patrone. Die Quote kann dadurch 100 % nicht ueberschreiten.
+- Erfasst werden Vanilla-Patronenwaffen waehrend der Blutmondnacht. Boegen,
+  Armbrueste, Raketen, Sprengstoffe, andere Projektilwaffen, Werkzeuge,
+  Geschuetztuerme und Admin-Waffen sind ausgeschlossen.
+- Kumulative Schussmeldungen je Mod-Client und Zaehlsitzung vermeiden
+  Doppelzaehlung. Der Host ordnet sie dem authentifizierten Spieler zu.
+  Spieler ohne Mod behalten ihre Killstatistik und haben keine Trefferquote.
+- Separate weltbezogene Trefferhistorie mit gebuendelter atomarer Speicherung.
+  Die vorhandene Kill-TXT und ihre bisherigen Leser behalten ihr Format.
+  Bei Aktualisierungen den gesamten vorhandenen Data-Ordner erhalten.
+- Die laufende Nacht wird etwa einmal pro Sekunde separat uebertragen.
+  Abgeschlossene Historie wird nur beim ersten Abruf und bei Aenderungen
+  uebertragen. Einzelne Schuesse loesen weder eigene Dateioperationen noch
+  vollstaendige Historientransfers aus.
+- Killfarben, Rekorde, Rangsterne und 60 Sekunden Nachanzeige bleiben erhalten.
+  Die Trefferquote steht hinter der Zahl beziehungsweise dem Stern und folgt
+  derselben Nachanzeigezeit.
+
+Pruefstand
+
+Client- und Server-DLL 0.3.1.0 wurden lokal erfolgreich gegen die vorhandenen
+Spielbibliotheken von V3.4.0 (b10) erstellt.
+Alle 13 Testsuiten bestanden, darunter 326 Protokollpruefungen und 15
+Trefferstatistik-Integrationsfaelle. Schuss-Hooks, Gleichstaende, Gruppenwechsel,
+Farben und Positionierung sind durch automatisierte Pruefungen abgedeckt.
+Der Nutzer hat die lokale Schusserfassung und danach die HUD-Anzeige im Spiel
+bestaetigt, mit den Zwischenstaenden 0.3.0.0 und 0.3.0.1 gegen V3.4.0 (b10).
+
+Die letzte bestaetigte Installation auf dem PC bleibt 0.3.0.1. Version 0.3.1.0
+fasst denselben bestaetigten Funktionsstand fuer den Commit zusammen.
+Fuer diese Erweiterung wurde kein Server veraendert. Die letzte oeffentliche
+Veroeffentlichung bleibt 0.2.0.0.
+
+Weiterhin ausstehend: gemeinsamer Test mit einer echten Gruppe waehrend des
+Blutmonds samt Abschluss, 60 Sekunden Nachanzeige und Neustart. Die lokale
+Spielbestaetigung deckt diese Bedingungen nicht ab.

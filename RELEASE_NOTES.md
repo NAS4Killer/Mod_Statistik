@@ -1,12 +1,16 @@
-Mod_Statistik 0.2.0.0 - Serverbeitritt mit und ohne Mod
+# Mod_Statistik 0.3.1.0 - Trefferquote in Tabelle und HUD
 
-- Spieler ohne Client-Mod können den Server betreten und werden weiterhin in der Blutmondstatistik mitgezählt.
-- Statistikübertragung verwendet den vorhandenen Standardpakettyp des Spiels. Reservierte Nachrichten werden vor der Chatanzeige abgefangen; normaler Chat bleibt erhalten.
-- Server antwortet nur auf authentifizierte Statistikanfragen. Spieler ohne Mod erhalten keine Statistiknachrichten.
-- Oberfläche ist in der DLL eingebettet und wird nur auf Clients mit Mod eingebunden. Spieler ohne Mod erhalten weder Blutmond-Tab noch modabhängige UI-Controller.
-- Tabelle, eigene rote Killzahl, 60 Sekunden Nachanzeige und Erweiterung der originalen Gruppenzeilen bleiben für Spieler mit Mod erhalten.
-- Harmony-Abhängigkeiten und Lizenzhinweise sind im Installationspaket enthalten. Der Updater entfernt alte XUi-Patchdateien mit Sicherung und Rollback.
+- Trefferquote pro Spieler und Blutmondnacht unter der Killzahl in der Tabelle sowie rechts neben den eigenen und den Gruppen-Kills.
+- Die höchste angezeigte Trefferquote der Gruppe ist grün. Bei Gleichstand sind alle Bestplatzierten grün; andere Quoten bleiben weiß. Fehlende Daten und null Schüsse erscheinen als Gedankenstrich und erhalten keine Spitzenmarkierung.
+- Eine abgefeuerte Patrone zählt einmal. Mindestens ein Treffer auf einen lebenden Zombie oder ein Zombie-Tier macht den Schuss erfolgreich. Tödliche Treffer zählen; Schrotpellets und Durchschüsse ergeben höchstens einen Erfolg pro Patrone.
+- Erfasst werden Vanilla-Patronenwaffen während der Blutmondnacht. Bögen, Armbrüste, Raketen, Sprengstoffe, andere Projektilwaffen, Werkzeuge, Geschütztürme und Admin-Waffen sind ausgeschlossen.
+- Jeder Mod-Client meldet kumulative Schusswerte; wiederholte Meldungen werden nicht doppelt gezählt. Der Host ordnet sie dem authentifizierten Spieler zu. Spieler ohne Mod behalten ihre Killstatistik und haben keine Trefferquote.
+- Die Trefferhistorie wird getrennt und weltbezogen gespeichert. Die bestehende Kill-TXT behält ihr Format und ihre bisherigen Leser. Den gesamten Data-Ordner bei Aktualisierungen erhalten.
+- Die laufende Nacht wird etwa einmal pro Sekunde separat übertragen. Die abgeschlossene Historie wird nur beim ersten Abruf und bei Änderungen übertragen. Einzelne Schüsse lösen keine eigenen Dateioperationen oder vollständigen Historientransfers aus.
+- Killfarben, Rekorde, Rangsterne und die 60 Sekunden Nachanzeige bleiben erhalten. Die Trefferquote steht hinter der Killzahl beziehungsweise dem Stern und folgt derselben Nachanzeigezeit.
 
-Prüfungen: Client- und Serverbuilds, automatisierte Übertragungs-, UI- und Updater-Prüfungen. Serverbeitritt ohne Mod sowie Gegentest mit installierter Mod vom Nutzer bestätigt. Statistikdaten bei Installation erhalten.
-Noch offen: gemeinsamer Gruppentest während eines Blutmonds mit Endwerten, 60 Sekunden Nachanzeige und Neustart.
-Wechsel von älteren Versionen: manuell installieren, bisherigen Data-Ordner erhalten und alte Config/XUi_InGame-Patchdateien entfernen. Keine Neuinstallation durch diese Veröffentlichung.
+Prüfstand: Client- und Server-DLL 0.3.1.0 wurden lokal gegen die vorhandenen V3.4.0-(b10)-Bibliotheken erstellt. Alle 13 Testsuiten bestanden, einschließlich 326 Protokollprüfungen, 15 Trefferstatistik-Integrationsfällen sowie Prüfungen für Schuss-Hooks, Gleichstände, Gruppenwechsel, Farben und Positionierung. Der Nutzer hat die lokale Schusserfassung und danach die zusätzliche HUD-Anzeige im Spiel bestätigt. Diese Spielbestätigung erfolgte mit den Zwischenständen 0.3.0.0 und 0.3.0.1 gegen V3.4.0 (b10).
+
+Die letzte bestätigte Installation auf dem PC bleibt 0.3.0.1. Version 0.3.1.0 fasst denselben bestätigten Funktionsstand für den Commit zusammen. Für diese Erweiterung wurde kein Server verändert; 0.2.0.0 bleibt die letzte öffentliche Veröffentlichung.
+
+Weiterhin ausstehend: gemeinsamer Test mit einer echten Gruppe während des Blutmonds einschließlich Abschluss, 60 Sekunden Nachanzeige und Neustart. Die lokale Spielbestätigung deckt diese Bedingungen nicht ab.

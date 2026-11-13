@@ -12,5 +12,12 @@ namespace ModStatistik
         }
         internal static long Value(BloodmoonNight live, BloodmoonNight finished, string name)
         { return (live ?? finished).Kills[name]; }
+        internal static bool TryAccuracy(BloodmoonNight live, BloodmoonNight finished, float finishedAt, float now, string name, out ShotAccuracy value)
+        {
+            value = null;
+            if (string.IsNullOrEmpty(name)) return false;
+            if (live != null) return live.Accuracy.TryGetValue(name, out value);
+            return finished != null && now >= finishedAt && now - finishedAt < HoldSeconds && finished.Accuracy.TryGetValue(name, out value);
+        }
     }
 }

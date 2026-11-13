@@ -17,7 +17,7 @@ namespace ModStatistik
 
     internal static class StatisticsRuntime
     {
-        internal const string Version = "0.2.0.0";
+        internal const string Version = "0.3.1.0";
         internal static void Initialize(string modPath)
         {
             StatisticsSync.Initialize(modPath);

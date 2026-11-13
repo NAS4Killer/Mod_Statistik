@@ -1,0 +1,19 @@
+Mod_Statistik 0.3.0.1 - lokaler Teststand
+
+- Trefferquote rechts neben der eigenen Killzahl und in den Gruppenzeilen.
+- Hoechste angezeigte Trefferquote der Gruppe gruen; alle Gleichstaende ebenfalls
+  gruen. Andere Werte weiss. Spieler ohne Schuesse oder Daten erhalten keine
+  Spitzenmarkierung. Solo ist die eigene gemessene Quote der Spitzenwert.
+- Bestehende Killfarben und rote Kill-Sterne bleiben erhalten. Die Quote wird
+  mit Abstand hinter der Zahl beziehungsweise dem vorhandenen Stern platziert.
+- Trefferquote bleibt wie die Killzahl nach dem Blutmond 60 Sekunden sichtbar.
+  Spaet eintreffende Abschlusswerte aktualisieren die Quote ohne Zeitverlaengerung.
+
+Build gegen V3.4.0 (b10) erfolgreich. Alle 13 Testsuiten bestanden, einschliesslich
+Gleichstaenden, Gruppenwechsel, Farbwechseln, Layout und 15 Integrationsfaellen.
+Der Nutzer hat den lokalen Grundtest der Schusserfassung von 0.3.0.0 bestaetigt.
+Der Spieltest der neuen HUD-Anzeige folgt nach LocalTest-0.3.0.1.txt.
+
+Sicherung vor dieser Aenderung:
+E:\Git\7D2D\_Sicherungen\Mod_Statistik\20261113-183759-HUD
+Projekt, installierte Mod und aktuelle Spielstaende wurden per SHA-256 geprueft.

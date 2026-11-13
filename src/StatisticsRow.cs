@@ -12,14 +12,17 @@ public sealed class XUiC_StatistikRow : XUiController
         SetLabel("record", player == null ? "" : record.ToString(), player != null && record == recordMaximum);
         for (int i=0; i<11; i++)
         {
-            string text = ""; bool red = false;
+            string text = "", accuracy = ""; bool red = false;
             if (player != null && offset+i < data.Nights.Count)
             {
                 var night = data.Nights[offset+i]; long kills;
                 text = night.Kills.TryGetValue(player, out kills) ? kills.ToString() : "—";
                 red = night.Kills.ContainsKey(player) && kills == night.Kills.Values.Max();
+                ShotAccuracy shots;
+                accuracy = night.Accuracy.TryGetValue(player, out shots) ? shots.Percentage : "\u2014";
             }
             SetLabel("value"+i, text, red);
+            SetLabel("accuracy"+i, accuracy, false);
         }
     }
     private void SetLabel(string id, string text, bool red)

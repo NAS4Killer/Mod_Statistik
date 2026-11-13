@@ -17,6 +17,8 @@ namespace ModStatistik
         internal static float FinishedAt { get; private set; }
         private static ulong lastTime = ulong.MaxValue;
         internal static string Error { get; private set; }
+        internal static string PlayerName(string id, int day)
+        { return recorder == null ? null : recorder.PlayerName(id, day); }
 
         internal static void Initialize(string path)
         {

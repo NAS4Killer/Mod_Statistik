@@ -1,0 +1,73 @@
+Mod_Statistik 0.3.0.0 - lokaler Spieltest
+Stand: 13.11.2026. Unveroeffentlichter lokaler Teststand.
+
+Version 0.3.0.0 ist lokal installiert; DLL und Versionsdateien sind per SHA-256
+geprueft. Jetzt folgt der Spieltest. Die veroeffentlichte Version bleibt 0.2.0.0.
+
+Voraussetzungen
+
+- Die lokal installierte Mod zeigt im Blutmond-Tab Version 0.3.0.0.
+- Der vorbereitete Build wurde erfolgreich gegen V3.4.0 (b10) erstellt.
+- Das Spiel normal starten. Easy Anti-Cheat muss fuer diese DLL-Mod deaktiviert
+  sein, wie bereits fuer die vorhandene Mod-Installation erforderlich.
+- Eine lokale Welt verwenden und deren regulaere Blutmondnacht abwarten.
+  Konsolenbefehle und Aenderungen an Spielstaenden sind fuer diesen Test nicht noetig.
+- Fuer einen eindeutigen 50-%-Test in dieser Nacht vorher keine Patronen abfeuern.
+
+Testablauf
+
+1. Waehrend der Blutmondnacht mit einer Vanilla-Pistole genau vier Patronen abfeuern:
+   zweimal einen lebenden Zombie treffen und zweimal gezielt in freien Boden
+   schiessen. Beide Treffer muessen auf einen vor dem Einschlag lebenden Zombie
+   gehen. Nach einem Kill fuer den naechsten Treffer einen anderen lebenden Zombie
+   nehmen; Treffer auf Leichen sind Fehlschuesse fuer diese Quote.
+
+2. Im Spielermenue den Tab Blutmond oeffnen. Unter der eigenen Killzahl der
+   aktuellen Nacht muss nach der naechsten Aktualisierung 50 % stehen.
+   Auch ein toedlicher Treffer gehoert zu den erfolgreichen Schuessen.
+   Ein Gedankenstrich steht fuer keine Schussdaten oder null abgefeuerte Patronen.
+
+3. Zusaetzliche Schrotpatronen auf lebende Zombies abfeuern. Auch wenn mehrere
+   Pellets oder ein Durchschuss mehrere Zombies treffen, darf die Quote nie
+   ueber 100 % liegen. Jede Patrone erhoeht die Zahl erfolgreicher Schuesse
+   hoechstens einmal. Die Quote nach Schritt 1 darf sich dabei regulaer aendern.
+
+4. Den angezeigten Wert merken, mindestens fuenf echte Sekunden fuer den
+   Zwischenstand verstreichen lassen und die lokale Welt normal verlassen.
+   Die Welt wieder laden: Die bereits gespeicherte Quote derselben Nacht muss
+   erhalten bleiben. Weitere Schuesse waehrend eines noch laufenden Blutmonds
+   werden zu den bisherigen Werten addiert.
+
+5. Nach Ende der Blutmondnacht deren abschliessende Quote merken. Tagsueber
+   oder an einem anderen Tag ohne Blutmond schiessen: Der gespeicherte Wert
+   dieser Nacht muss unveraendert bleiben. Eine spaetere Blutmondnacht erhaelt
+   ihre eigenen Schusswerte.
+
+Umfang der Erfassung
+
+Quote = Patronen mit mindestens einem Treffer auf einen lebenden Zombie oder
+ein Zombie-Tier / abgefeuerte Patronen * 100.
+Unterstuetzt werden aktuelle Vanilla-Patronenwaffen. Boegen, Armbrueste, Raketen,
+Sprengstoffe, andere Projektilwaffen, Werkzeuge, Geschuetztuerme und Admin-Waffen
+sind ausgeschlossen. Nachladen oder ein leerer Abzug zaehlt nicht als Schuss.
+
+Im Mehrspielermodus liefern nur Spieler mit der neuen Mod Trefferwerte. Spieler
+ohne Mod werden weiterhin bei den Kills mitgezaehlt und erhalten fuer die Quote
+einen Gedankenstrich. Die Schusswerte stammen vom jeweiligen Mod-Client.
+
+Sicherung und Pruefstand
+
+Vorbereitete, verifizierte Vollsicherung:
+E:\Git\7D2D\_Sicherungen\Mod_Statistik\20261113-130154
+
+Umfang: Projekt 483 Dateien, Spielinstallation 23180 Dateien, Spielstaende
+940 Dateien und Registry-Einstellungen. Kein Server wurde fuer diesen lokalen
+Arbeitsstand veraendert. Die vorhandene Kill-TXT behaelt ihr Format; Trefferdaten
+werden separat unter Data\bloodmoon_accuracy-<Weltkennung>.json gespeichert.
+
+Alle elf Testsuiten bestanden, darunter 326 Protokollpruefungen und 14
+Integrationsfaelle fuer Trefferquoten, Speicherung, Wiederverbindung, Nachtende,
+Abschlussmeldungen und getrennte Historienuebertragung. Harmony-Hooks und lokale
+Oberflaeche wurden ebenfalls isoliert geprueft. Bestehende Mod-Daten,
+Abhaengigkeiten und originale Spielassemblies sind bei Installation unveraendert.
+Der oben beschriebene echte Spieltest ist noch auszufuehren.

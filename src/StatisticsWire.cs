@@ -13,23 +13,36 @@ namespace ModStatistik
         internal const int ChunkBytes = 8192;
         internal const int MaximumNights = 512;
         internal const int MaximumPlayers = 128;
+        internal const long MaximumShots = 1000000000;
         private static readonly UTF8Encoding Utf8 = new UTF8Encoding(false, true);
 
         internal static byte[] Encode(BloodmoonLog data)
         { return Encode(data, -1); }
         internal static byte[] Encode(BloodmoonLog data, int activeDay)
+        { return EncodeCore(data, activeDay, false); }
+
+        internal static byte[] EncodeAccuracy(BloodmoonLog data, int activeDay)
+        { return EncodeCore(data, activeDay, true); }
+
+        private static byte[] EncodeCore(BloodmoonLog data, int activeDay, bool withAccuracy)
         {
-            if (data == null || activeDay < -1 || (activeDay > 0 && !data.Nights.Any(n => n.Day == activeDay))) throw new InvalidDataException("Ungueltiger aktiver Tag.");
+            if (data == null || activeDay < (withAccuracy ? 0 : -1) || (activeDay > 0 && !data.Nights.Any(n => n.Day == activeDay))) throw new InvalidDataException("Ungueltiger aktiver Tag.");
             if (data == null || data.Nights.Count > MaximumNights || data.Players.Count > MaximumPlayers)
                 throw new InvalidDataException("Statistik zu gross.");
             using (var memory = new MemoryStream())
             using (var writer = new BinaryWriter(memory, Utf8))
             {
-                writer.Write((byte)(activeDay < 0 ? 1 : 2));
+                writer.Write((byte)(withAccuracy ? 3 : activeDay < 0 ? 1 : 2));
                 if (activeDay >= 0) writer.Write(activeDay);
                 writer.Write((ushort)data.Nights.Count);
+                var days = new HashSet<int>();
                 foreach (var night in data.Nights)
                 {
+                    if (night.Day <= 0 || !days.Add(night.Day) || night.Kills.Count > MaximumPlayers)
+                        throw new InvalidDataException("Ungueltiger Blutmondtag.");
+                    long total = night.Total;
+                    if (withAccuracy && night.Accuracy.Keys.Any(name => !night.Kills.ContainsKey(name)))
+                        throw new InvalidDataException("Trefferquote ohne Spielerwert.");
                     writer.Write(night.Day);
                     writer.Write((ushort)night.Kills.Count);
                     foreach (var record in night.Kills.OrderBy(k => k.Key, StringComparer.Ordinal))
@@ -40,6 +53,19 @@ namespace ModStatistik
                         writer.Write((byte)name.Length);
                         writer.Write(name);
                         writer.Write(record.Value);
+                        if (withAccuracy)
+                        {
+                            ShotAccuracy accuracy;
+                            bool known = night.Accuracy.TryGetValue(record.Key, out accuracy);
+                            writer.Write((byte)(known ? 1 : 0));
+                            if (known)
+                            {
+                                if (accuracy == null) throw new InvalidDataException("Fehlende Trefferwerte.");
+                                ValidateAccuracy(accuracy.Shots, accuracy.Hits);
+                                writer.Write(accuracy.Shots);
+                                writer.Write(accuracy.Hits);
+                            }
+                        }
                     }
                     if (memory.Length > MaximumBytes) throw new InvalidDataException("Statistik zu gross.");
                 }
@@ -58,8 +84,8 @@ namespace ModStatistik
             using (var reader = new BinaryReader(memory, Utf8))
             {
                 byte format = reader.ReadByte();
-                if (format != 1 && format != 2) throw new InvalidDataException("Unbekanntes Statistikformat.");
-                if (format == 2) { activeDay = reader.ReadInt32(); if (activeDay < 0) throw new InvalidDataException("Ungueltiger aktiver Tag."); }
+                if (format != 1 && format != 2 && format != 3) throw new InvalidDataException("Unbekanntes Statistikformat.");
+                if (format >= 2) { activeDay = reader.ReadInt32(); if (activeDay < 0) throw new InvalidDataException("Ungueltiger aktiver Tag."); }
                 int count = reader.ReadUInt16();
                 if (count > MaximumNights) throw new InvalidDataException("Zu viele Naechte.");
                 var nights = new List<BloodmoonNight>();
@@ -72,6 +98,7 @@ namespace ModStatistik
                     if (day <= 0 || !days.Add(day) || entries > MaximumPlayers)
                         throw new InvalidDataException("Ungueltiger Blutmondtag.");
                     var kills = new Dictionary<string, long>(StringComparer.Ordinal);
+                    var accuracy = new Dictionary<string, ShotAccuracy>(StringComparer.Ordinal);
                     for (int j = 0; j < entries; j++)
                     {
                         int length = reader.ReadByte();
@@ -83,10 +110,21 @@ namespace ModStatistik
                         long value = reader.ReadInt64();
                         if (value < 0 || kills.ContainsKey(name)) throw new InvalidDataException("Ungueltiger Killwert.");
                         kills.Add(name, value);
+                        if (format == 3)
+                        {
+                            byte known = reader.ReadByte();
+                            if (known > 1) throw new InvalidDataException("Ungueltige Trefferverfuegbarkeit.");
+                            if (known == 1)
+                            {
+                                long shots = reader.ReadInt64(), hits = reader.ReadInt64();
+                                ValidateAccuracy(shots, hits);
+                                accuracy.Add(name, new ShotAccuracy(shots, hits));
+                            }
+                        }
                         players.Add(name);
                         if (players.Count > MaximumPlayers) throw new InvalidDataException("Zu viele Spieler.");
                     }
-                    var night = new BloodmoonNight(day, kills);
+                    var night = new BloodmoonNight(day, kills, accuracy);
                     long total = night.Total;
                     nights.Add(night);
                 }
@@ -94,6 +132,12 @@ namespace ModStatistik
                 if (activeDay > 0 && !days.Contains(activeDay)) throw new InvalidDataException("Aktiver Tag fehlt.");
                 return BloodmoonLog.FromNights(nights);
             }
+        }
+
+        internal static void ValidateAccuracy(long shots, long hits)
+        {
+            if (shots < 0 || shots > MaximumShots || hits < 0 || hits > shots)
+                throw new InvalidDataException("Ungueltige Trefferwerte.");
         }
 
         private static void ValidateName(string name, int bytes)

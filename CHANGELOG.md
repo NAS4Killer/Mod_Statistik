@@ -1,3 +1,17 @@
+# 0.3.1.0
+
+Mod_Statistik 0.3.1.0 - Trefferquote in Tabelle und HUD
+
+- Trefferquote je Spieler und Blutmondnacht unter den Tabellen-Kills sowie rechts neben den eigenen und den Gruppen-Kills.
+- Höchste angezeigte Quote der Gruppe grün; bei Gleichstand sind alle Bestplatzierten grün. Fehlende Daten und null Schüsse erhalten keine Spitzenmarkierung.
+- Tatsächlich abgefeuerte Patronen und mindestens ein Treffer auf einen lebenden Zombie oder ein Zombie-Tier werden erfasst. Schrot und Durchschüsse zählen höchstens einmal pro Patrone; tödliche Treffer zählen mit.
+- Kumulative Schussmeldungen des jeweiligen Mod-Clients, getrennte weltbezogene Trefferhistorie und gebündelte Speicherung. Bestehende Kill-TXT, Killfarben, Rekorde und Rangsterne bleiben erhalten.
+- Laufende Nacht und abgeschlossene Historie werden getrennt übertragen. Spieler ohne Mod behalten ihre Killstatistik; ältere Mod-Versionen verwenden weiterhin den bisherigen Kill-Sync.
+
+Geprüft: Client- und Server-DLL 0.3.1.0 lokal gegen V3.4.0 (b10) erstellt; 13 Testsuiten einschließlich 326 Protokollprüfungen, 15 Trefferstatistik-Integrationsfällen, Schuss-Hooks, HUD-Farben, Gleichständen, Gruppenwechsel und Positionierung bestanden. Der Nutzer hat die Schusserfassung und anschließend die HUD-Anzeige lokal im Spiel bestätigt. Die Bestätigung erfolgte mit den Zwischenständen 0.3.0.0 und 0.3.0.1; 0.3.1.0 fasst diesen Funktionsstand zusammen.
+
+Die letzte bestätigte lokale Installation bleibt 0.3.0.1, die letzte öffentliche Veröffentlichung 0.2.0.0. Für diese Erweiterung wurde kein Server verändert. Offen bleibt der gemeinsame Blutmond-Gruppentest einschließlich Abschluss, Nachanzeige und Neustart. Weitere Einzelheiten: [ReleaseNotes-0.3.1.0.txt](ReleaseNotes-0.3.1.0.txt).
+
 # 0.2.0.0
 
 Mod_Statistik 0.2.0.0 - Serverbeitritt mit und ohne Mod

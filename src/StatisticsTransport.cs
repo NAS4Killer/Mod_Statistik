@@ -36,6 +36,21 @@ namespace ModStatistik
                 total, hash, chunk), -1, EMessageSender.Server));
         }
 
+        internal static void SendExtendedRequest(int id, byte[] hash, AccuracyReport report)
+        {
+            var player = GameManager.Instance.World.GetPrimaryPlayer();
+            if (player == null) throw new InvalidOperationException("Spieler noch nicht bereit.");
+            ConnectionManager.Instance.SendToServer(Package(StatisticsMessage.RequestExtended(id, hash, report),
+                player.entityId, EMessageSender.SenderIdAsPlayer), false);
+        }
+
+        internal static void SendExtendedReply(ClientInfo client, int id, byte result, int index,
+            int count, int total, byte[] hash, byte[] chunk)
+        {
+            client.SendPackage(Package(StatisticsMessage.ReplyExtended(id, result, index, count,
+                total, hash, chunk), -1, EMessageSender.Server));
+        }
+
         internal static bool Process(NetPackageChat package, string message, EChatType type,
             int senderEntityId, EMessageSender origin, World world)
         {
@@ -53,7 +68,12 @@ namespace ModStatistik
             try
             {
                 var frame = StatisticsMessage.Decode(message);
-                if (server && frame.IsRequest)
+                if (server && frame.IsRequest && frame.Extended)
+                    StatisticsSync.HandleExtendedRequest(package.Sender, frame.Id, frame.Hash, frame.Report);
+                else if (!server && !frame.IsRequest && frame.Extended)
+                    StatisticsSync.HandleExtendedReply(frame.Id, frame.Result, frame.Index, frame.Count,
+                        frame.Total, frame.Hash, frame.Chunk);
+                else if (server && frame.IsRequest)
                     StatisticsSync.HandleRequest(package.Sender, frame.Id, frame.Hash);
                 else if (!server && !frame.IsRequest)
                     StatisticsSync.HandleReply(frame.Id, frame.Result, frame.Index, frame.Count,

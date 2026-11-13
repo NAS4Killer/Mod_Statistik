@@ -10,12 +10,18 @@ namespace ModStatistik
     {
         public int Day { get; private set; }
         public IReadOnlyDictionary<string, long> Kills { get; private set; }
+        public IReadOnlyDictionary<string, ShotAccuracy> Accuracy { get; private set; }
         public long Total { get { return Kills.Values.Sum(); } }
 
-        internal BloodmoonNight(int day, Dictionary<string, long> kills)
+        internal BloodmoonNight(int day, Dictionary<string, long> kills) : this(day, kills, null) { }
+
+        internal BloodmoonNight(int day, Dictionary<string, long> kills, Dictionary<string, ShotAccuracy> accuracy)
         {
             Day = day;
             Kills = new System.Collections.ObjectModel.ReadOnlyDictionary<string, long>(kills);
+            Accuracy = new System.Collections.ObjectModel.ReadOnlyDictionary<string, ShotAccuracy>(
+                accuracy == null ? new Dictionary<string, ShotAccuracy>(StringComparer.Ordinal) :
+                new Dictionary<string, ShotAccuracy>(accuracy, StringComparer.Ordinal));
         }
     }
 

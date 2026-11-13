@@ -1,0 +1,12 @@
+Mod_Statistik 0.3.0.1 - HUD-Test
+
+1. Spiel starten und die lokale Welt laden. Der Blutmond-Tab zeigt Version 0.3.0.1.
+2. Waehrend einer Blutmondnacht schiessen. Rechts neben der roten eigenen Killzahl
+   steht nun die Trefferquote. Allein ist die eigene gemessene Quote gruen.
+3. In einer Gruppe stehen die Quoten auch neben deren Killzahlen. Der hoechste
+   angezeigte Prozentwert ist gruen. Haben mehrere Spieler diesen Wert, sind
+   alle diese Quoten gruen. Andere Werte sind weiss; ohne Schuesse steht dort —.
+4. Nach Ende des Blutmonds bleiben Killzahl und Trefferquote gemeinsam 60 Sekunden
+   sichtbar und werden danach ausgeblendet.
+
+Die Zaehlregeln und der 50-%-Grundtest stehen in LocalTest-0.3.0.0.txt.

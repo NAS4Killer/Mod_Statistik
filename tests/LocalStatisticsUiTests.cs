@@ -44,22 +44,31 @@ class LocalUiTests
             var localWindows = XUiFromXml.Observed;
             Need(localWindows.Descendants().Count(e => (string)e.Attribute("name") == "bloodmoonStatistics") == 1, "local tab added");
             Need(localWindows.Descendants().Count(e => (string)e.Attribute("name") == "windowBloodmoonKills") == 1, "local kills window added");
+            var killsWindow = localWindows.Descendants("window").Single(e => (string)e.Attribute("name") == "windowBloodmoonKills");
+            Need(killsWindow.Elements("label").Count(e => (string)e.Attribute("name") == "liveAccuracy") == 1, "own HUD accuracy label added once");
+            Need((string)killsWindow.Elements("label").Single(e => (string)e.Attribute("name") == "liveKills").Attribute("color") == "255,0,0,255", "own kill color preserved");
+            Need((string)killsWindow.Elements("label").Single(e => (string)e.Attribute("name") == "liveAccuracy").Attribute("visible") == "false", "own accuracy initially hidden");
             Need(windows.ToString() == initialWindows, "original shared windows unchanged");
             XUiFromXml.Windows(localWindows);
             Need(XUiFromXml.Observed.Descendants().Count(e => (string)e.Attribute("name") == "bloodmoonStatistics") == 1, "windows not duplicated");
+            Need(XUiFromXml.Observed.Descendants().Count(e => (string)e.Attribute("name") == "liveAccuracy") == 1, "own HUD accuracy not duplicated");
             XUiFromXml.Templates(templates.Root);
             var localTemplates = XUiFromXml.Observed;
             var party = localTemplates.XPathSelectElement("/templates/party_entry/rect");
             Need((string)party.Attribute("controller") == "StatistikPartyEntry, Mod_Statistik", "native group controller extended");
             Need(party.Elements().Count(e => (string)e.Attribute("name") == "bloodmoonGroupKills") == 1, "group count added");
+            Need(party.Elements("label").Count(e => (string)e.Attribute("name") == "bloodmoonGroupAccuracy") == 1, "group accuracy label added once");
+            Need((string)party.Elements("label").Single(e => (string)e.Attribute("name") == "bloodmoonGroupAccuracy").Attribute("visible") == "false", "group accuracy initially hidden");
+            Need((string)party.Elements("sprite").Single(e => (string)e.Attribute("name") == "bloodmoonGroupStar").Attribute("color") == "255,0,0,255", "group kill star remains red");
             Need((string)party.Elements("label").Single(e => (string)e.Attribute("text") == "{distance}").Attribute("width") == "112", "missing distance attribute added");
             Need(templates.ToString() == initialTemplates, "original shared templates unchanged");
             XUiFromXml.Templates(localTemplates);
             Need(XUiFromXml.Observed.Descendants().Count(e => (string)e.Attribute("name") == "bloodmoonGroupKills") == 1, "group not duplicated");
+            Need(XUiFromXml.Observed.Descendants().Count(e => (string)e.Attribute("name") == "bloodmoonGroupAccuracy") == 1, "group accuracy not duplicated");
             XUiFromXml.Load(xui);
             Need(XUiFromXml.Observed.Descendants().Any(e => (string)e.Attribute("name") == "windowBloodmoonKills"), "HUD window linked locally");
             Need(xui.XmlDoc.ToString() == initialXui, "original shared xui unchanged");
-            Console.WriteLine("PASS: dedicated server UI unchanged; client tab, own HUD and native group extension; originals preserved for unmodded clients and hosted games; idempotent loading.");
+            Console.WriteLine("PASS: dedicated server UI unchanged; client tab, own/party HUD accuracy and red kill markers; originals preserved for unmodded clients and hosted games; idempotent loading.");
             return 0;
         }
         catch (Exception e) { Console.Error.WriteLine(e); return 1; }

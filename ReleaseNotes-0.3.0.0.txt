@@ -1,0 +1,40 @@
+Mod_Statistik 0.3.0.0 - lokaler, unveroeffentlichter Teststand
+Stand: 13.11.2026
+
+Umgesetzte Aenderungen
+
+- Trefferquote je Spieler und Blutmondnacht unter der bisherigen Killzahl.
+  Anzeige mit hoechstens einer deutschen Dezimalstelle; fehlende Daten und null
+  Schuesse erscheinen als Gedankenstrich, ausschliessliche Fehlschuesse als 0 %.
+- Zaehlt abgefeuerte Patronen aktueller Vanilla-Patronenwaffen und Schuesse mit
+  mindestens einem Treffer auf einen lebenden Zombie oder ein Zombie-Tier.
+  Der toedliche Treffer zaehlt. Schrotpellets und Durchschuesse ergeben hoechstens
+  einen Erfolg pro Patrone; die Trefferquote ueberschreitet dadurch 100 % nicht.
+- Boegen, Armbrueste, Raketen, Sprengstoffe, andere Projektilwaffen, Werkzeuge,
+  Geschuetztuerme und Admin-Waffen sind von dieser Erfassung ausgeschlossen.
+- Separate weltbezogene Trefferhistorie mit atomarer Speicherung geaenderter
+  Werte alle fuenf Sekunden sowie beim Ausloggen/Weltende. Bestehende Kill-TXT
+  und ihre bisherigen Leser behalten das bisherige Format.
+- Kumulative Meldungen pro Sitzung vermeiden Doppelzaehlung bei wiederholten
+  Nachrichten; Wiederverbindung und Neustart behalten gespeicherte Werte.
+- Laufende Nacht separat etwa einmal pro Sekunde uebertragen. Abgeschlossene
+  Historie wird nur beim ersten Abruf und bei Aenderungen uebertragen.
+  Einzelne Schuesse loesen keine eigenen Dateioperationen oder vollstaendigen
+  Historientransfers aus.
+- Trefferwerte werden vom jeweiligen Mod-Client geliefert. Spieler ohne Mod
+  bleiben in der Killstatistik enthalten und haben keine Trefferquote.
+  Die bisherige Killuebertragung bleibt fuer aeltere Mod-Versionen erhalten.
+- Lokale Oberflaeche und nativer Pakettyp bleiben erhalten; zwoelf Tabellenzeilen,
+  Killrekorde und rote Hoechstwerte behalten ihre bisherige Funktion.
+
+Pruefstand
+
+Build 0.3.0.0 erfolgreich gegen die tatsaechlich vorhandenen Spielbibliotheken
+von V3.4.0 (b10) erstellt.
+Alle elf Testsuiten bestanden, darunter 326 Protokollpruefungen, 14
+Trefferstatistik-Integrationsfaelle, echte Harmony-Patches gegen Spiel-Stubs
+und die lokale Oberflaeche gegen originale XUi-Dateien.
+Version 0.3.0.0 ist lokal installiert und per SHA-256 geprueft. Der Spieltest
+folgt nach LocalTest-0.3.0.0.txt. Kein Server wurde fuer diesen Arbeitsstand
+veraendert. Es wurde kein Release 0.3.0.0 veroeffentlicht;
+die letzte oeffentliche Version bleibt 0.2.0.0.

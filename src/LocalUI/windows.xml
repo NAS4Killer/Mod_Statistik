@@ -7,7 +7,7 @@
           <headerbg />
           <sprite depth="1" style="icon32px" pos="4,-5" sprite="ui_game_symbol_players" />
           <label style="header.name" text="Blutmond-Statistik" />
-          <label name="statisticsVersion" pos="0,-22" width="1320" height="28" font_size="26" justify="center" text="Version 0.2.0.0" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
+          <label name="statisticsVersion" pos="0,-22" width="1320" height="28" font_size="26" justify="center" text="Version 0.3.1.0" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
           <simplebutton name="statisticsUpdate" pos="1200,-5" width="105" height="34" caption="GitHub" font_size="20" />
           <simplebutton name="statisticsReleaseNotes" pos="1050,-5" width="140" height="34" caption="Release Notes" font_size="18" visible="false" />
           <label name="statisticsUpdateStatus" pos="1020,-22" width="170" height="28" font_size="20" justify="right" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
@@ -15,7 +15,8 @@
         <rect name="statisticsHeader" pos="0,-43" height="50" width="1320">
           <sprite name="background" color="[mediumGrey]" height="44" width="1314" type="sliced" pos="3,-3" />
           <sprite name="backgroundMain" depth="10" sprite="menu_empty3px" width="1320" height="47" color="[black]" type="sliced" fillcenter="false" />
-          <label name="nameHeader" pos="12,-25" width="180" height="38" font_size="26" justify="left" text="Name" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
+          <label name="nameHeader" pos="12,-17" width="180" height="26" font_size="26" justify="left" text="Name" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
+          <label name="accuracyHelp" pos="12,-38" width="180" height="14" font_size="13" justify="left" text="Kills / Trefferquote" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
           <label name="recordHeader" pos="195,-25" width="95" height="38" font_size="26" justify="center" text="Rekord" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
           <label name="nightHeader0" pos="290,-25" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
           <label name="nightHeader1" pos="382,-25" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
@@ -35,17 +36,28 @@
             <sprite name="backgroundMain" depth="10" sprite="menu_empty3px" width="1320" height="46" color="[black]" type="sliced" fillcenter="false" />
             <label name="playerName" pos="12,-24" width="180" height="38" font_size="26" justify="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
             <label name="record" pos="195,-24" width="95" height="38" font_size="26" justify="center" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
-            <label name="value0" pos="290,-24" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="value1" pos="382,-24" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="value2" pos="474,-24" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="value3" pos="566,-24" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="value4" pos="658,-24" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="value5" pos="750,-24" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="value6" pos="842,-24" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="value7" pos="934,-24" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="value8" pos="1026,-24" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="value9" pos="1118,-24" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="value10" pos="1210,-24" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="value0" pos="290,-14" width="92" height="24" font_size="22" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="accuracy0" pos="290,-35" width="92" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="value1" pos="382,-14" width="92" height="24" font_size="22" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="accuracy1" pos="382,-35" width="92" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="value2" pos="474,-14" width="92" height="24" font_size="22" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="accuracy2" pos="474,-35" width="92" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="value3" pos="566,-14" width="92" height="24" font_size="22" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="accuracy3" pos="566,-35" width="92" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="value4" pos="658,-14" width="92" height="24" font_size="22" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="accuracy4" pos="658,-35" width="92" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="value5" pos="750,-14" width="92" height="24" font_size="22" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="accuracy5" pos="750,-35" width="92" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="value6" pos="842,-14" width="92" height="24" font_size="22" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="accuracy6" pos="842,-35" width="92" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="value7" pos="934,-14" width="92" height="24" font_size="22" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="accuracy7" pos="934,-35" width="92" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="value8" pos="1026,-14" width="92" height="24" font_size="22" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="accuracy8" pos="1026,-35" width="92" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="value9" pos="1118,-14" width="92" height="24" font_size="22" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="accuracy9" pos="1118,-35" width="92" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="value10" pos="1210,-14" width="92" height="24" font_size="22" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <label name="accuracy10" pos="1210,-35" width="92" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
           </rect>
         </grid>
         <rect pos="0,-691" width="1320" height="49" depth="3">
@@ -64,8 +76,9 @@
     </rect>
   </insertAfter>
   <append xpath="/windows">
-    <window name="windowBloodmoonKills" anchor="TopLeft" pos="16,-16" width="180" height="48" controller="BloodmoonKills, Mod_Statistik">
-      <label name="liveKills" pos="0,0" width="180" height="48" font_size="36" color="255,0,0,255" text="" visible="false" justify="left" support_bb_code="false" />
+    <window name="windowBloodmoonKills" anchor="TopLeft" pos="16,-16" width="380" height="48" controller="BloodmoonKills, Mod_Statistik">
+      <label name="liveKills" pos="0,0" width="180" height="48" font_size="36" color="255,0,0,255" text="" visible="false" justify="left" support_bb_code="false" overflow="ShrinkContent" />
+      <label name="liveAccuracy" pos="192,0" width="180" height="48" font_size="30" color="255,255,255,255" text="" visible="false" justify="left" support_bb_code="false" overflow="ShrinkContent" />
     </window>
   </append>
 </configs>
