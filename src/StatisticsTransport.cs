@@ -36,19 +36,19 @@ namespace ModStatistik
                 total, hash, chunk), -1, EMessageSender.Server));
         }
 
-        internal static void SendExtendedRequest(int id, byte[] hash, AccuracyReport report)
+        internal static void SendExtendedRequest(int id, byte[] hash, AccuracyReport report, bool headshots = false)
         {
             var player = GameManager.Instance.World.GetPrimaryPlayer();
             if (player == null) throw new InvalidOperationException("Spieler noch nicht bereit.");
-            ConnectionManager.Instance.SendToServer(Package(StatisticsMessage.RequestExtended(id, hash, report),
+            ConnectionManager.Instance.SendToServer(Package(StatisticsMessage.RequestExtended(id, hash, report, headshots),
                 player.entityId, EMessageSender.SenderIdAsPlayer), false);
         }
 
         internal static void SendExtendedReply(ClientInfo client, int id, byte result, int index,
-            int count, int total, byte[] hash, byte[] chunk)
+            int count, int total, byte[] hash, byte[] chunk, bool headshots = false)
         {
             client.SendPackage(Package(StatisticsMessage.ReplyExtended(id, result, index, count,
-                total, hash, chunk), -1, EMessageSender.Server));
+                total, hash, chunk, headshots), -1, EMessageSender.Server));
         }
 
         internal static bool Process(NetPackageChat package, string message, EChatType type,
@@ -69,10 +69,10 @@ namespace ModStatistik
             {
                 var frame = StatisticsMessage.Decode(message);
                 if (server && frame.IsRequest && frame.Extended)
-                    StatisticsSync.HandleExtendedRequest(package.Sender, frame.Id, frame.Hash, frame.Report);
+                    StatisticsSync.HandleExtendedRequest(package.Sender, frame.Id, frame.Hash, frame.Report, frame.Headshots);
                 else if (!server && !frame.IsRequest && frame.Extended)
                     StatisticsSync.HandleExtendedReply(frame.Id, frame.Result, frame.Index, frame.Count,
-                        frame.Total, frame.Hash, frame.Chunk);
+                        frame.Total, frame.Hash, frame.Chunk, frame.Headshots);
                 else if (server && frame.IsRequest)
                     StatisticsSync.HandleRequest(package.Sender, frame.Id, frame.Hash);
                 else if (!server && !frame.IsRequest)

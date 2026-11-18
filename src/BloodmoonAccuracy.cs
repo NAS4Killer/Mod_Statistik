@@ -12,15 +12,21 @@ namespace ModStatistik
     {
         public long Shots { get; private set; }
         public long Hits { get; private set; }
+        public long? Headshots { get; private set; }
+        public string HeadshotsText { get { return Headshots.HasValue ? Headshots.Value.ToString(CultureInfo.InvariantCulture) : "\u2014"; } }
         public string Percentage
         {
             get { return Shots == 0 ? "\u2014" : (100m * Hits / Shots).ToString("0.#", CultureInfo.GetCultureInfo("de-DE")) + " %"; }
         }
 
         public ShotAccuracy(long shots, long hits)
+            : this(shots, hits, null) { }
+
+        public ShotAccuracy(long shots, long hits, long? headshots)
         {
             if (shots < 0 || hits < 0 || hits > shots) throw new ArgumentOutOfRangeException("hits", "Ungueltige Schuss- oder Trefferzahl.");
-            Shots = shots; Hits = hits;
+            if (headshots.HasValue && (headshots.Value < 0 || headshots.Value > hits)) throw new ArgumentOutOfRangeException("headshots");
+            Shots = shots; Hits = hits; Headshots = headshots;
         }
     }
 
@@ -29,6 +35,7 @@ namespace ModStatistik
         internal int Day;
         internal string Session;
         internal long Shots, Hits;
+        internal long? Headshots;
         internal bool Final;
     }
 
@@ -65,6 +72,7 @@ namespace ModStatistik
         {
             [DataMember] public string Id;
             [DataMember] public long Shots, Hits;
+            [DataMember(EmitDefaultValue = false)] public long? Headshots;
         }
 
         private readonly string path;
@@ -103,6 +111,7 @@ namespace ModStatistik
             if (report == null || report.Day <= 0) throw Invalid("Ungueltiger Blutmondtag.");
             string sessionId = NormalizeSession(report.Session);
             ValidateCounters(report.Shots, report.Hits);
+            ValidateHeadshots(report.Hits, report.Headshots);
 
             SavedNight night;
             bool newNight = !byDay.TryGetValue(report.Day, out night);
@@ -124,6 +133,9 @@ namespace ModStatistik
             // together. A new successful shot therefore needs a new shot too.
             if (!newSession && (report.Shots < session.Shots || report.Hits < session.Hits ||
                 report.Hits - session.Hits > report.Shots - session.Shots)) return false;
+            if (!newSession && (report.Headshots.HasValue != session.Headshots.HasValue ||
+                (report.Headshots.HasValue && (report.Headshots.Value < session.Headshots.Value ||
+                report.Headshots.Value - session.Headshots.Value > report.Hits - session.Hits)))) return false;
             if (night.Players.Any(p => p.Id != playerId && p.Name == playerName)) throw Invalid("Doppelter Spielername.");
 
             long shots = player.Shots + report.Shots - (newSession ? 0 : session.Shots);
@@ -147,6 +159,7 @@ namespace ModStatistik
                     player.Sessions.Add(session); player.BySession.Add(sessionId, session); sessionCount++;
                 }
                 session.Shots = report.Shots; session.Hits = report.Hits;
+                session.Headshots = report.Headshots;
             }
             player.Name = playerName; player.Shots = shots; player.Hits = hits;
             dirty = true; Revision++;
@@ -158,7 +171,12 @@ namespace ModStatistik
             var result = new Dictionary<string, ShotAccuracy>(StringComparer.Ordinal);
             SavedNight night;
             if (byDay.TryGetValue(day, out night))
-                foreach (var player in night.Players) result.Add(player.Name, new ShotAccuracy(player.Shots, player.Hits));
+                foreach (var player in night.Players)
+                {
+                    long? headshots = 0;
+                    foreach (var session in player.Sessions) headshots += session.Headshots;
+                    result.Add(player.Name, new ShotAccuracy(player.Shots, player.Hits, headshots));
+                }
             return result;
         }
 
@@ -206,6 +224,7 @@ namespace ModStatistik
                         if (session == null) throw Invalid("Zaehlsitzung fehlt.");
                         session.Id = NormalizeSession(session.Id);
                         ValidateCounters(session.Shots, session.Hits);
+                        ValidateHeadshots(session.Hits, session.Headshots);
                         if (player.BySession.ContainsKey(session.Id) || ++sessionCount > MaximumSessions) throw Invalid("Ungueltige Zaehlsitzungen.");
                         player.Shots += session.Shots; player.Hits += session.Hits;
                         ValidateCounters(player.Shots, player.Hits);
@@ -232,6 +251,10 @@ namespace ModStatistik
         private static void ValidateCounters(long shots, long hits)
         {
             if (shots < 0 || shots > MaximumShots || hits < 0 || hits > shots) throw Invalid("Ungueltige Schuss- oder Trefferzahl.");
+        }
+        private static void ValidateHeadshots(long hits, long? headshots)
+        {
+            if (headshots.HasValue && (headshots.Value < 0 || headshots.Value > hits)) throw Invalid("Ungueltige Kopftrefferzahl.");
         }
         private static DataContractJsonSerializer Serializer()
         {

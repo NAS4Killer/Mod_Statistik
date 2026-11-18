@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace ModStatistik
 {
-    // Game-facing adapter. Shots only increment two counters; storage runs at most
+    // Game-facing adapter. Shots only increment counters; storage runs at most
     // once per five seconds, outside weapon execution.
     internal static class BloodmoonAccuracyRuntime
     {
@@ -69,10 +69,10 @@ namespace ModStatistik
         private static void EnsureLocal(int day)
         {
             if (day > 0 && (local == null || local.Day != day))
-                local = new AccuracyReport { Day = day, Session = session, Shots = 0, Hits = 0 };
+                local = new AccuracyReport { Day = day, Session = session, Shots = 0, Hits = 0, Headshots = 0 };
         }
 
-        internal static void RecordShot(bool hit)
+        internal static void RecordShot(bool hit, bool headshot = false)
         {
             int day = ActiveDay;
             if (day == 0) return;
@@ -80,12 +80,13 @@ namespace ModStatistik
             if (local.Shots >= 1000000000L) return;
             local.Shots++;
             if (hit) local.Hits++;
+            if (hit && headshot) local.Headshots++;
         }
 
         internal static AccuracyReport Report(bool final = false)
         {
             if (local == null) return null;
-            return new AccuracyReport { Day = local.Day, Session = local.Session, Shots = local.Shots, Hits = local.Hits, Final = final };
+            return new AccuracyReport { Day = local.Day, Session = local.Session, Shots = local.Shots, Hits = local.Hits, Headshots = local.Headshots, Final = final };
         }
 
         private static bool UpdatePhase(int day)

@@ -20,6 +20,7 @@ Test-Case 'Recorder' @('src\BloodmoonLog.cs','src\BloodmoonAccuracy.cs','src\Blo
 Test-Case 'Hud' @('src\BloodmoonLog.cs','src\BloodmoonAccuracy.cs','src\BloodmoonHudDisplay.cs','tests\BloodmoonHudDisplayTests.cs') @()
 Test-Case 'Sync' @('src\BloodmoonLog.cs','src\BloodmoonAccuracy.cs','src\BloodmoonRecorder.cs','src\BloodmoonRecording.cs','src\BloodmoonHudDisplay.cs','src\StatisticsWire.cs','src\StatisticsMessage.cs','src\StatisticsTransport.cs','src\StatisticsSync.cs','src\BloodmoonAccuracyRuntime.cs','src\StatisticsDelta.cs','tests\StatisticsSyncTests.cs') @($fixture,(Join-Path $out 'sync')) @(('/reference:'+(Join-Path $r '0Harmony.dll')))
 Test-Case 'Shots' @('src\BloodmoonShots.cs','tests\BloodmoonShotsTests.cs') @()
+Test-Case 'Headshots' @('src\BloodmoonShots.cs','src\BloodmoonLog.cs','src\BloodmoonAccuracy.cs','src\StatisticsWire.cs','src\StatisticsMessage.cs','src\StatisticsDelta.cs','tests\BloodmoonHeadshotsTests.cs') @((Join-Path $out 'headshots'))
 Test-Case 'Accuracy' @('src\BloodmoonLog.cs','src\BloodmoonAccuracy.cs','tests\BloodmoonAccuracyTests.cs') @((Join-Path $out 'accuracy'))
 Test-Case 'AccuracyWire' @('src\BloodmoonLog.cs','src\BloodmoonAccuracy.cs','src\StatisticsWire.cs','src\StatisticsMessage.cs','src\StatisticsDelta.cs','tests\StatisticsAccuracyWireTests.cs') @()
 Test-Case 'Rows' @('src\BloodmoonLog.cs','src\BloodmoonAccuracy.cs','src\StatisticsRow.cs','tests\StatisticsRowTests.cs') @($fixture)

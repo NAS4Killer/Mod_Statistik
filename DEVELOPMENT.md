@@ -208,8 +208,9 @@ einer echten Gruppe oder die ausstehenden Server- und Neustartpruefungen.
 
 Autor immer NAS4Killer; niemals eine Identitaet aus einem Windows-Profilpfad ableiten.
 Versionsschema vierteilig. Folgende Felder gemeinsam aendern: VERSION, ModInfo.xml,
-src/AssemblyInfo.cs (alle drei Attribute), src/ModApi.cs, src/Mod_Statistik.csproj,
+src/AssemblyInfo.cs (alle drei Attribute), src/Mod_Statistik.csproj,
 Versionsanzeige in src/LocalUI/windows.xml sowie README und Updater-Tests.
+Die Laufzeitversion für Anzeige, Updateprüfung und Startmeldung stammt aus der DLL.
 Danach Client und Server bauen, pruefen und ReleaseNotes-VERSION.txt erstellen.
 RELEASE_NOTES.md und CHANGELOG.md zusammenfassen; nur tatsaechlich umgesetzte und
 committete Aenderungen nennen, offene echte Tests ehrlich benennen.

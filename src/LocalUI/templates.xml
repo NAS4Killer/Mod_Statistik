@@ -4,8 +4,12 @@
   <set xpath="/templates/party_entry/rect/label[@text='{distance}']/@width">112</set>
   <set xpath="/templates/party_entry/rect/label[@text='{distance}']/@overflow">ShrinkContent</set>
   <append xpath="/templates/party_entry/rect">
-    <label name="bloodmoonGroupKills" pos="360,-6" width="120" height="30" font_size="26" justify="left" pivot="topleft" color="255,255,255,255" text="" visible="false" depth="9" effect="outline" overflow="ShrinkContent" support_bb_code="false" />
+    <label name="bloodmoonGroupKills" pos="392,-6" width="120" height="30" font_size="26" justify="left" pivot="topleft" color="255,255,255,255" text="" visible="false" depth="9" effect="outline" overflow="ShrinkContent" support_bb_code="false" />
     <sprite name="bloodmoonGroupStar" pos="486,-6" width="26" height="26" depth="9" sprite="ui_game_symbol_star" color="255,0,0,255" visible="false" />
     <label name="bloodmoonGroupAccuracy" pos="520,-6" width="110" height="30" font_size="26" justify="left" pivot="topleft" color="255,255,255,255" text="" visible="false" depth="9" effect="outline" overflow="ShrinkContent" support_bb_code="false" />
+    <sprite name="bloodmoonGroupKillsIcon" pos="360,-6" width="26" height="26" depth="9" sprite="ui_game_symbol_death" color="255,255,255,255" visible="false" />
+    <sprite name="bloodmoonGroupAccuracyIcon" pos="554,-6" width="26" height="26" depth="9" sprite="ui_game_symbol_twitch_boss_weapon_arrows_overhead" color="255,255,255,255" visible="false" />
+    <sprite name="bloodmoonGroupHeadshotsIcon" pos="704,-6" width="26" height="26" depth="9" sprite="ui_game_symbol_twitch_boss_overhead" color="255,255,255,255" visible="false" />
+    <label name="bloodmoonGroupHeadshots" pos="736,-6" width="120" height="30" font_size="26" justify="left" pivot="topleft" color="255,255,255,255" text="" visible="false" depth="9" effect="outline" overflow="ShrinkContent" support_bb_code="false" />
   </append>
 </configs>

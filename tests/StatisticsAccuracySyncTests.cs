@@ -95,10 +95,10 @@ internal static class TestAccuracySync
         return client;
     }
     private static void Send(ClientInfo authenticated, int id, AccuracyReport report, byte[] knownHash,
-        int claimedSender = 2, EMessageSender origin = EMessageSender.SenderIdAsPlayer)
+        int claimedSender = 2, EMessageSender origin = EMessageSender.SenderIdAsPlayer, bool headshots = false)
     {
         var packet = new NetPackageChat().Setup(EChatType.Whisper, claimedSender,
-            StatisticsMessage.RequestExtended(id, knownHash, report), null, origin,
+            StatisticsMessage.RequestExtended(id, knownHash, report, headshots), null, origin,
             GeneratedTextManager.BbCodeSupportMode.NotSupported);
         packet.Sender = authenticated;
         packet.ProcessPackage(GameManager.Instance.World, GameManager.Instance);
@@ -122,7 +122,7 @@ internal static class TestAccuracySync
     {
         var frame = StatisticsMessage.Decode(Deserialize(raw).Message);
         string text = frame.Extended ? StatisticsMessage.ReplyExtended(id, frame.Result, frame.Index,
-            frame.Count, frame.Total, frame.Hash, frame.Chunk) : StatisticsMessage.Reply(id,
+            frame.Count, frame.Total, frame.Hash, frame.Chunk, frame.Headshots) : StatisticsMessage.Reply(id,
             frame.Result, frame.Index, frame.Count, frame.Total, frame.Hash, frame.Chunk);
         var packet = new NetPackageChat().Setup(EChatType.Whisper, forged ? 2 : -1, text, null,
             forged ? EMessageSender.SenderIdAsPlayer : EMessageSender.Server,
@@ -405,7 +405,9 @@ internal static class TestAccuracySync
             Advance(1.99f, Start + 1);
             Need(ConnectionManager.Instance.Sent.Count == sent, "no early fallback");
             Advance(2f, Start + 2); var request = LastRequest();
-            Need(!request.Extended && ConnectionManager.Instance.Sent.Count == sent + 1, "legacy request exactly at two seconds");
+            Need(request.Extended && !request.Headshots && ConnectionManager.Instance.Sent.Count == sent + 1, "accuracy protocol at two seconds");
+            Advance(4f, Start + 4); request = LastRequest();
+            Need(!request.Extended && ConnectionManager.Instance.Sent.Count == sent + 2, "legacy request at four seconds");
             byte[] bytes = StatisticsWire.Encode(serverData, 7);
             var frame = StatisticsMessage.Reply(request.Id, 0, 0, 1, bytes.Length, StatisticsWire.Hash(bytes), bytes);
             var packet = new NetPackageChat().Setup(EChatType.Whisper, -1, frame, null, EMessageSender.Server, GeneratedTextManager.BbCodeSupportMode.NotSupported);
@@ -414,6 +416,64 @@ internal static class TestAccuracySync
             Need(snapshot.Data != null && !snapshot.Busy && snapshot.Error == null &&
                 snapshot.Data.Nights.Single(n => n.Day == 7).Kills["Remote"] == 5, "legacy kill statistics remain available");
             Need(snapshot.Data.Nights.Single(n => n.Day == 7).Accuracy.Count == 0, "legacy accuracy stays unavailable");
+        });
+
+        foreach (bool dedicated in new[] { false, true })
+        {
+            Case((dedicated ? "dedicated" : "hosted") + " headshots, old-client compatibility, live delta and final history", delegate
+            {
+                Setup(true, dedicated, true); var client = Authenticate();
+                var report = Report(Guid.NewGuid().ToString("N"), 10, 7); report.Headshots = 3;
+                BloodmoonAccuracyRuntime.RecordShot(true, true);
+                Advance(1.1f, Start + 1);
+                Send(client, 1, report, null, headshots: true);
+                byte[][] firstPackets = client.Sent.ToArray(); var first = Delta(firstPackets);
+                Need(StatisticsMessage.Decode(Deserialize(firstPackets[0]).Message).Headshots, "new response kind");
+                Need(StatisticsWire.Decode(first.LivePayload).Nights[0].Accuracy["Remote"].Headshots == 3, "server transmits remote headshots");
+                if (!dedicated) Need(Accuracy("Host").Headshots == 1, "host headshot captured");
+                client.Sent.Clear(); Advance(2.2f, Start + 2);
+                Send(client, 2, null, null);
+                var oldReply = Delta(client.Sent);
+                Need(oldReply.LivePayload[0] == 3 && !StatisticsWire.Decode(oldReply.LivePayload).Nights[0].Accuracy["Remote"].Headshots.HasValue,
+                    "0.3.1 client receives original format");
+                client.Sent.Clear(); Advance(3.3f, Start + 3);
+                report.Shots = 11; report.Hits = 8; report.Headshots = 4;
+                Send(client, 3, report, first.HistoryHash, headshots: true);
+                byte[][] secondPackets = client.Sent.ToArray(); var second = Delta(secondPackets);
+                Need(second.HistoryPayload == null && Accuracy("Remote").Headshots == 4, "only live values sent for new shot");
+                client.Sent.Clear(); Advance(5f, End);
+                Send(client, 4, null, first.HistoryHash, headshots: true);
+                byte[][] finishedPackets = client.Sent.ToArray(); var finished = Delta(finishedPackets);
+                Need(StatisticsWire.Decode(finished.HistoryPayload).Nights.Single(n => n.Day == 7).Accuracy["Remote"].Headshots == 4,
+                    "completed headshots enter history");
+                Need(new BloodmoonAccuracyStore(Path.Combine(root, "Data"), Key()).ForDay(7)["Remote"].Headshots == 4,
+                    "completed headshots saved on server");
+                Setup(false, false, false);
+                Need(LastRequest().Headshots && LastRequest().Report.Headshots == 0, "new client advertises headshots");
+                foreach (var raw in firstPackets) Reply(raw, LastRequest().Id);
+                ShotAccuracy hud;
+                Need(StatisticsSync.TryHudAccuracy("Remote", out hud) && hud.Headshots == 3, "client HUD receives headshots");
+                BloodmoonAccuracyRuntime.RecordShot(true, true); BloodmoonAccuracyRuntime.RecordShot(true, false);
+                Advance(1.1f, Start + 1);
+                Need(LastRequest().Headshots && LastRequest().Report.Headshots == 1 && LastRequest().Report.Hits == 2, "client reports body/head separately");
+                foreach (var raw in secondPackets) Reply(raw, LastRequest().Id);
+                Need(StatisticsSync.TryHudAccuracy("Remote", out hud) && hud.Headshots == 4, "client applies headshot delta");
+                Advance(2.2f, End);
+                foreach (var raw in finishedPackets) Reply(raw, LastRequest().Id);
+                Need(StatisticsSync.TryHudAccuracy("Remote", out hud) && hud.Headshots == 4, "finished HUD holds headshots");
+                BloodmoonAccuracyRuntime.RecordShot(true, true); StatisticsSync.FlushAccuracy();
+                Need(LastRequest().Headshots && LastRequest().Report.Headshots == 1 && LastRequest().Report.Final,
+                    "final report keeps headshots and excludes shots after dawn");
+            });
+        }
+        Case("0.3.1 server fallback keeps accuracy protocol after discovery", delegate
+        {
+            Setup(false, false, false); Advance(2f, Start + 1);
+            Need(LastRequest().Extended && !LastRequest().Headshots, "fallback to 0.3.1 request");
+            foreach (var raw in initialExtended) Reply(raw, LastRequest().Id);
+            Advance(3.1f, Start + 2);
+            Need(LastRequest().Extended && !LastRequest().Headshots && LastRequest().Report.Headshots == null,
+                "old-server reports remain readable");
         });
 
         Console.WriteLine("Accuracy integration: " + (cases - failures) + "/" + cases + " cases passed. Artifacts: " + output);

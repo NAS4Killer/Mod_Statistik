@@ -19,11 +19,11 @@ namespace ModStatistik
     {
         private static string localFile, lastText, error;
         private static object activeWorld;
-        private static bool serverMode, roleReady, pendingExtended;
+        private static bool serverMode, roleReady, pendingExtended, pendingHeadshots;
         private static BloodmoonLog data, rawHistory, historical, historicalSource, mergedHistorical, legacySource;
         private static BloodmoonNight sourceLive, mergedLive, remoteLive, remoteFinished;
         private static long historyRevision = -1, liveRevision = -1;
-        private static byte[] payload, digest, historyPayload, historyDigest;
+        private static byte[] payload, digest, historyPayload, historyDigest, headshotHistoryPayload, headshotHistoryDigest;
         private static int sequence, pendingRequest, protocol;
         private static float deadline, nextRead, nextHudRequest, remoteFinishedAt;
         private static readonly StatisticsTransfer Transfer = new StatisticsTransfer();
@@ -69,6 +69,7 @@ namespace ModStatistik
                 data = rawHistory = historical = historicalSource = mergedHistorical = legacySource = null;
                 sourceLive = mergedLive = null; historyRevision = liveRevision = -1;
                 payload = digest = historyPayload = historyDigest = null; error = lastText = null;
+                headshotHistoryPayload = headshotHistoryDigest = null;
                 pendingRequest = protocol = 0; pendingExtended = false;
                 Transfer.Reset(); Requests.Clear(); FinalReports.Clear(); nextRead = nextHudRequest = 0;
                 remoteLive = remoteFinished = null; remoteFinishedAt = 0;
@@ -103,11 +104,10 @@ namespace ModStatistik
             if (!serverMode && pendingRequest != 0 && now >= deadline)
             {
                 pendingRequest = 0; Transfer.Reset();
-                if (pendingExtended && protocol == 0)
+                if (pendingExtended && protocol <= 0)
                 {
-                    // An old server swallows unknown reserved frames. Try its
-                    // existing protocol once; its kill statistics remain usable.
-                    protocol = 1; SendRequest();
+                    // Probe headshots, then accuracy, then the original kill protocol.
+                    protocol = protocol == 0 ? -1 : 1; SendRequest();
                 }
                 else error = "Statistikserver antwortet nicht. Direkt-Sync auf dem Server pruefen.";
             }
@@ -153,6 +153,8 @@ namespace ModStatistik
                     var updated = BloodmoonLog.FromNights(rawHistory.Nights.Select(WithAccuracy));
                     var encoded = StatisticsWire.EncodeAccuracy(updated, 0);
                     historical = updated; historyPayload = encoded; historyDigest = StatisticsWire.Hash(encoded);
+                    headshotHistoryPayload = StatisticsWire.EncodeAccuracy(updated, 0, true);
+                    headshotHistoryDigest = StatisticsWire.Hash(headshotHistoryPayload);
                     historicalSource = rawHistory; historyRevision = revision;
                 }
                 var live = BloodmoonRecording.LiveNight;
@@ -170,17 +172,18 @@ namespace ModStatistik
         {
             Tick();
             if (activeWorld != null && roleReady && !serverMode && pendingRequest == 0 &&
-                (protocol != 2 || Time.unscaledTime >= nextHudRequest)) SendRequest();
+                (protocol < 2 || Time.unscaledTime >= nextHudRequest)) SendRequest();
         }
         private static void SendRequest()
         {
             sequence = sequence == int.MaxValue ? 1 : sequence + 1;
             pendingRequest = sequence; Transfer.Reset(); pendingExtended = protocol != 1;
-            deadline = Time.unscaledTime + (protocol == 0 ? 2f : 10f);
+            pendingHeadshots = protocol == 0 || protocol == 3;
+            deadline = Time.unscaledTime + (protocol <= 0 ? 2f : 10f);
             nextHudRequest = Time.unscaledTime + 1f; error = null;
             try
             {
-                if (pendingExtended) StatisticsTransport.SendExtendedRequest(sequence, historyDigest, BloodmoonAccuracyRuntime.Report());
+                if (pendingExtended) StatisticsTransport.SendExtendedRequest(sequence, historyDigest, BloodmoonAccuracyRuntime.Report(), pendingHeadshots);
                 else StatisticsTransport.SendRequest(sequence, digest);
             }
             catch (Exception) { pendingRequest = 0; error = "Statistik konnte nicht angefordert werden."; }
@@ -192,7 +195,7 @@ namespace ModStatistik
             try
             {
                 sequence = sequence == int.MaxValue ? 1 : sequence + 1;
-                StatisticsTransport.SendExtendedRequest(sequence, historyDigest, BloodmoonAccuracyRuntime.Report(true));
+                StatisticsTransport.SendExtendedRequest(sequence, historyDigest, BloodmoonAccuracyRuntime.Report(true), protocol == 0 || protocol == 3);
             }
             catch (Exception e) { Debug.LogWarning("[Mod_Statistik] Abschlussmeldung: " + e.GetType().Name); }
         }
@@ -228,7 +231,7 @@ namespace ModStatistik
             SendChunks(sender, id, payload, digest, false);
         }
 
-        internal static void HandleExtendedRequest(ClientInfo sender, int id, byte[] knownHash, AccuracyReport report)
+        internal static void HandleExtendedRequest(ClientInfo sender, int id, byte[] knownHash, AccuracyReport report, bool headshots = false)
         {
             if (report != null && report.Final)
             {
@@ -242,21 +245,23 @@ namespace ModStatistik
             if (report == null || !report.Final) BloodmoonAccuracyRuntime.Accept(sender.entityId, report);
             RefreshLive();
             if (historyPayload == null || error != null)
-            { StatisticsTransport.SendExtendedReply(sender, id, 2, 0, 0, 0, null, new byte[0]); return; }
+            { StatisticsTransport.SendExtendedReply(sender, id, 2, 0, 0, 0, null, new byte[0], headshots); return; }
             var liveLog = BloodmoonLog.FromNights(mergedLive == null ? new BloodmoonNight[0] : new[] { mergedLive });
-            byte[] liveBytes = StatisticsWire.EncodeAccuracy(liveLog, mergedLive == null ? 0 : mergedLive.Day);
-            byte[] delta = StatisticsDelta.Encode(historyPayload, historyDigest, liveBytes, !StatisticsWire.Equal(knownHash, historyDigest));
-            SendChunks(sender, id, delta, StatisticsWire.Hash(delta), true);
+            byte[] liveBytes = StatisticsWire.EncodeAccuracy(liveLog, mergedLive == null ? 0 : mergedLive.Day, headshots);
+            byte[] selectedPayload = headshots ? headshotHistoryPayload : historyPayload;
+            byte[] selectedDigest = headshots ? headshotHistoryDigest : historyDigest;
+            byte[] delta = StatisticsDelta.Encode(selectedPayload, selectedDigest, liveBytes, !StatisticsWire.Equal(knownHash, selectedDigest));
+            SendChunks(sender, id, delta, StatisticsWire.Hash(delta), true, headshots);
         }
 
-        private static void SendChunks(ClientInfo sender, int id, byte[] bytes, byte[] hash, bool extended)
+        private static void SendChunks(ClientInfo sender, int id, byte[] bytes, byte[] hash, bool extended, bool headshots = false)
         {
             int count = (bytes.Length + StatisticsWire.ChunkBytes - 1) / StatisticsWire.ChunkBytes;
             for (int i = 0; i < count; i++)
             {
                 byte[] chunk = new byte[Math.Min(StatisticsWire.ChunkBytes, bytes.Length - i * StatisticsWire.ChunkBytes)];
                 Buffer.BlockCopy(bytes, i * StatisticsWire.ChunkBytes, chunk, 0, chunk.Length);
-                if (extended) StatisticsTransport.SendExtendedReply(sender, id, 0, i, count, bytes.Length, hash, chunk);
+                if (extended) StatisticsTransport.SendExtendedReply(sender, id, 0, i, count, bytes.Length, hash, chunk, headshots);
                 else StatisticsTransport.SendReply(sender, id, 0, i, count, bytes.Length, hash, chunk);
             }
         }
@@ -276,7 +281,7 @@ namespace ModStatistik
         private static void BadReply()
         { pendingRequest = 0; Transfer.Reset(); error = "Ungueltige Statistikdaten empfangen; letzte gueltige Werte bleiben erhalten."; }
 
-        internal static void HandleExtendedReply(int id, byte result, int index, int count, int total, byte[] hash, byte[] chunk)
+        internal static void HandleExtendedReply(int id, byte result, int index, int count, int total, byte[] hash, byte[] chunk, bool headshots = false)
         {
             if (!ReplyAllowed(id)) return;
             try
@@ -302,7 +307,7 @@ namespace ModStatistik
                 if (liveData.Nights.Count != (activeDay == 0 ? 0 : 1)) throw new InvalidDataException();
                 var live = activeDay == 0 ? null : liveData.Nights[0];
                 var combined = live == null ? newHistory : BloodmoonLog.FromNights(newHistory.Nights.Where(n => n.Day != live.Day).Concat(new[] { live }));
-                historical = newHistory; historyDigest = delta.HistoryHash; protocol = 2;
+                historical = newHistory; historyDigest = delta.HistoryHash; protocol = headshots ? 3 : 2;
                 SetRemote(combined, live);
             }
             catch (Exception) { BadReply(); }

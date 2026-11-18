@@ -67,7 +67,8 @@ public sealed class XUiC_BloodmoonStatistics : XUiController
         var state = StatisticsSync.Snapshot();
         if (state.Data != shownData) shownData = state.Data;
         int nightPages = Math.Max(1, state.Data == null ? 0 : (state.Data.Nights.Count + 10) / 11);
-        int playerPages = Math.Max(1, state.Data == null ? 0 : (state.Data.Players.Count + 11) / 12);
+        int pageSize = rows.Length;
+        int playerPages = Math.Max(1, state.Data == null ? 0 : (state.Data.Players.Count + pageSize - 1) / pageSize);
         nightPage = Math.Min(nightPage, nightPages - 1);
         playerPage = Math.Min(playerPage, playerPages - 1);
         SetLabel("statisticsVersion", "Version " + StatisticsRuntime.Version);
@@ -81,7 +82,7 @@ public sealed class XUiC_BloodmoonStatistics : XUiController
         GetChildById("statisticsReleaseNotes").ViewComponent.IsVisible = showReleaseNotes;
         GetChildById("statisticsUpdateStatus").ViewComponent.IsVisible = !showReleaseNotes && StatisticsUpdater.Status.Length != 0;
         SetLabel("statisticsStatus", state.Error ?? message ?? (state.Busy && state.Data == null ? "Statistik wird vom Server geladen …" : ""));
-        playerPager.SetLastPageByElementsAndPageLength(state.Data == null ? 0 : state.Data.Players.Count, 12);
+        playerPager.SetLastPageByElementsAndPageLength(state.Data == null ? 0 : state.Data.Players.Count, pageSize);
         nightPager.SetLastPageByElementsAndPageLength(state.Data == null ? 0 : state.Data.Nights.Count, 11);
         playerPager.CurrentPageNumber = playerPage;
         nightPager.CurrentPageNumber = nightPage;
@@ -91,7 +92,7 @@ public sealed class XUiC_BloodmoonStatistics : XUiController
         long maximum = state.Data == null || state.Data.Players.Count == 0 ? 0 : state.Data.Nights.SelectMany(n => n.Kills.Values).Max();
         for (int i=0; i<rows.Length; i++)
         {
-            int index = playerPage*12+i;
+            int index = playerPage*pageSize+i;
             rows[i].Render(state.Data, state.Data != null && index < state.Data.Players.Count ? state.Data.Players[index] : null, nightPage*11, maximum, i);
         }
     }

@@ -21,10 +21,10 @@ namespace ModStatistik
         internal static byte[] Encode(BloodmoonLog data, int activeDay)
         { return EncodeCore(data, activeDay, false); }
 
-        internal static byte[] EncodeAccuracy(BloodmoonLog data, int activeDay)
-        { return EncodeCore(data, activeDay, true); }
+        internal static byte[] EncodeAccuracy(BloodmoonLog data, int activeDay, bool headshots = false)
+        { return EncodeCore(data, activeDay, true, headshots); }
 
-        private static byte[] EncodeCore(BloodmoonLog data, int activeDay, bool withAccuracy)
+        private static byte[] EncodeCore(BloodmoonLog data, int activeDay, bool withAccuracy, bool headshots = false)
         {
             if (data == null || activeDay < (withAccuracy ? 0 : -1) || (activeDay > 0 && !data.Nights.Any(n => n.Day == activeDay))) throw new InvalidDataException("Ungueltiger aktiver Tag.");
             if (data == null || data.Nights.Count > MaximumNights || data.Players.Count > MaximumPlayers)
@@ -32,7 +32,7 @@ namespace ModStatistik
             using (var memory = new MemoryStream())
             using (var writer = new BinaryWriter(memory, Utf8))
             {
-                writer.Write((byte)(withAccuracy ? 3 : activeDay < 0 ? 1 : 2));
+                writer.Write((byte)(withAccuracy ? (headshots ? 4 : 3) : activeDay < 0 ? 1 : 2));
                 if (activeDay >= 0) writer.Write(activeDay);
                 writer.Write((ushort)data.Nights.Count);
                 var days = new HashSet<int>();
@@ -64,6 +64,7 @@ namespace ModStatistik
                                 ValidateAccuracy(accuracy.Shots, accuracy.Hits);
                                 writer.Write(accuracy.Shots);
                                 writer.Write(accuracy.Hits);
+                                if (headshots) writer.Write(accuracy.Headshots ?? -1L);
                             }
                         }
                     }
@@ -84,7 +85,7 @@ namespace ModStatistik
             using (var reader = new BinaryReader(memory, Utf8))
             {
                 byte format = reader.ReadByte();
-                if (format != 1 && format != 2 && format != 3) throw new InvalidDataException("Unbekanntes Statistikformat.");
+                if (format < 1 || format > 4) throw new InvalidDataException("Unbekanntes Statistikformat.");
                 if (format >= 2) { activeDay = reader.ReadInt32(); if (activeDay < 0) throw new InvalidDataException("Ungueltiger aktiver Tag."); }
                 int count = reader.ReadUInt16();
                 if (count > MaximumNights) throw new InvalidDataException("Zu viele Naechte.");
@@ -110,7 +111,7 @@ namespace ModStatistik
                         long value = reader.ReadInt64();
                         if (value < 0 || kills.ContainsKey(name)) throw new InvalidDataException("Ungueltiger Killwert.");
                         kills.Add(name, value);
-                        if (format == 3)
+                        if (format >= 3)
                         {
                             byte known = reader.ReadByte();
                             if (known > 1) throw new InvalidDataException("Ungueltige Trefferverfuegbarkeit.");
@@ -118,7 +119,8 @@ namespace ModStatistik
                             {
                                 long shots = reader.ReadInt64(), hits = reader.ReadInt64();
                                 ValidateAccuracy(shots, hits);
-                                accuracy.Add(name, new ShotAccuracy(shots, hits));
+                                long? headshots = format >= 4 ? ReadHeadshots(reader, hits) : null;
+                                accuracy.Add(name, new ShotAccuracy(shots, hits, headshots));
                             }
                         }
                         players.Add(name);
@@ -138,6 +140,13 @@ namespace ModStatistik
         {
             if (shots < 0 || shots > MaximumShots || hits < 0 || hits > shots)
                 throw new InvalidDataException("Ungueltige Trefferwerte.");
+        }
+
+        internal static long? ReadHeadshots(BinaryReader reader, long hits)
+        {
+            long value = reader.ReadInt64();
+            if (value < -1 || value > hits) throw new InvalidDataException("Ungueltige Kopftrefferzahl.");
+            return value == -1 ? (long?)null : value;
         }
 
         private static void ValidateName(string name, int bytes)

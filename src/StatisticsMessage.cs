@@ -9,6 +9,7 @@ namespace ModStatistik
         internal const int MaximumTextLength = 12000;
         internal bool IsRequest;
         internal bool Extended;
+        internal bool Headshots;
         internal AccuracyReport Report;
         internal int Id, Index, Count, Total;
         internal byte Result;
@@ -20,17 +21,17 @@ namespace ModStatistik
         internal static string Request(int id, byte[] hash)
         { return WriteRequest(id, hash, null, false); }
 
-        internal static string RequestExtended(int id, byte[] historyHash, AccuracyReport report)
-        { return WriteRequest(id, historyHash, report, true); }
+        internal static string RequestExtended(int id, byte[] historyHash, AccuracyReport report, bool headshots = false)
+        { return WriteRequest(id, historyHash, report, true, headshots); }
 
-        private static string WriteRequest(int id, byte[] hash, AccuracyReport report, bool extended)
+        private static string WriteRequest(int id, byte[] hash, AccuracyReport report, bool extended, bool headshots = false)
         {
             if (id <= 0 || (hash != null && hash.Length != 32)) throw new InvalidDataException();
             if (report != null) ValidateReport(report);
             using (var stream = new MemoryStream())
             using (var writer = new BinaryWriter(stream))
             {
-                writer.Write((byte)(extended ? 3 : 1)); writer.Write(id); writer.Write(hash ?? new byte[32]);
+                writer.Write((byte)(extended ? (headshots ? 5 : 3) : 1)); writer.Write(id); writer.Write(hash ?? new byte[32]);
                 if (extended)
                 {
                     writer.Write((byte)(report == null ? 0 : 1));
@@ -38,6 +39,7 @@ namespace ModStatistik
                     {
                         writer.Write(report.Day); writer.Write(new Guid(report.Session).ToByteArray());
                         writer.Write(report.Shots); writer.Write(report.Hits);
+                        if (headshots) writer.Write(report.Headshots ?? -1L);
                         writer.Write((byte)(report.Final ? 1 : 0));
                     }
                 }
@@ -50,11 +52,11 @@ namespace ModStatistik
         { return WriteReply(id, result, index, count, total, hash, chunk, false); }
 
         internal static string ReplyExtended(int id, byte result, int index, int count, int total,
-            byte[] hash, byte[] chunk)
-        { return WriteReply(id, result, index, count, total, hash, chunk, true); }
+            byte[] hash, byte[] chunk, bool headshots = false)
+        { return WriteReply(id, result, index, count, total, hash, chunk, true, headshots); }
 
         private static string WriteReply(int id, byte result, int index, int count, int total,
-            byte[] hash, byte[] chunk, bool extended)
+            byte[] hash, byte[] chunk, bool extended, bool headshots = false)
         {
             var frame = new StatisticsMessage { Id = id, Result = result, Index = index,
                 Count = count, Total = total, Hash = hash ?? new byte[32], Chunk = chunk };
@@ -62,7 +64,7 @@ namespace ModStatistik
             using (var stream = new MemoryStream())
             using (var writer = new BinaryWriter(stream))
             {
-                writer.Write((byte)(extended ? 4 : 2)); writer.Write(id); writer.Write(result);
+                writer.Write((byte)(extended ? (headshots ? 6 : 4) : 2)); writer.Write(id); writer.Write(result);
                 writer.Write((ushort)index); writer.Write((ushort)count); writer.Write(total);
                 writer.Write(frame.Hash); writer.Write((ushort)chunk.Length); writer.Write(chunk);
                 return Prefix + Convert.ToBase64String(stream.ToArray());
@@ -80,8 +82,9 @@ namespace ModStatistik
                 byte kind = reader.ReadByte();
                 var frame = new StatisticsMessage { Id = reader.ReadInt32() };
                 if (frame.Id <= 0) throw new InvalidDataException();
-                frame.Extended = kind == 3 || kind == 4;
-                if (kind == 1 || kind == 3)
+                frame.Headshots = kind == 5 || kind == 6;
+                frame.Extended = kind == 3 || kind == 4 || frame.Headshots;
+                if (kind == 1 || kind == 3 || kind == 5)
                 {
                     frame.IsRequest = true; frame.Hash = reader.ReadBytes(32);
                     if (frame.Hash.Length != 32) throw new InvalidDataException();
@@ -96,6 +99,7 @@ namespace ModStatistik
                             if (session.Length != 16) throw new EndOfStreamException();
                             frame.Report = new AccuracyReport { Day = day, Session = new Guid(session).ToString("N"),
                                 Shots = reader.ReadInt64(), Hits = reader.ReadInt64() };
+                            if (frame.Headshots) frame.Report.Headshots = StatisticsWire.ReadHeadshots(reader, frame.Report.Hits);
                             byte final = reader.ReadByte();
                             if (final > 1) throw new InvalidDataException();
                             frame.Report.Final = final == 1;
@@ -103,7 +107,7 @@ namespace ModStatistik
                         }
                     }
                 }
-                else if (kind == 2 || kind == 4)
+                else if (kind == 2 || kind == 4 || kind == 6)
                 {
                     frame.Result = reader.ReadByte(); frame.Index = reader.ReadUInt16();
                     frame.Count = reader.ReadUInt16(); frame.Total = reader.ReadInt32();
@@ -125,6 +129,8 @@ namespace ModStatistik
             if (report.Day <= 0 || report.Session == null || !Guid.TryParseExact(report.Session, "N", out session) || session == Guid.Empty)
                 throw new InvalidDataException("Ungueltige Treffermeldung.");
             StatisticsWire.ValidateAccuracy(report.Shots, report.Hits);
+            if (report.Headshots.HasValue && (report.Headshots.Value < 0 || report.Headshots.Value > report.Hits))
+                throw new InvalidDataException("Ungueltige Kopftreffermeldung.");
         }
 
         private static void ValidateReply(StatisticsMessage frame)

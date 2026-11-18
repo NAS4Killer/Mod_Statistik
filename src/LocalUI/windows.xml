@@ -7,7 +7,7 @@
           <headerbg />
           <sprite depth="1" style="icon32px" pos="4,-5" sprite="ui_game_symbol_players" />
           <label style="header.name" text="Blutmond-Statistik" />
-          <label name="statisticsVersion" pos="0,-22" width="1320" height="28" font_size="26" justify="center" text="Version 0.3.1.0" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
+          <label name="statisticsVersion" pos="0,-22" width="1320" height="28" font_size="26" justify="center" text="Version 0.3.2.0" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
           <simplebutton name="statisticsUpdate" pos="1200,-5" width="105" height="34" caption="GitHub" font_size="20" />
           <simplebutton name="statisticsReleaseNotes" pos="1050,-5" width="140" height="34" caption="Release Notes" font_size="18" visible="false" />
           <label name="statisticsUpdateStatus" pos="1020,-22" width="170" height="28" font_size="20" justify="right" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
@@ -15,8 +15,7 @@
         <rect name="statisticsHeader" pos="0,-43" height="50" width="1320">
           <sprite name="background" color="[mediumGrey]" height="44" width="1314" type="sliced" pos="3,-3" />
           <sprite name="backgroundMain" depth="10" sprite="menu_empty3px" width="1320" height="47" color="[black]" type="sliced" fillcenter="false" />
-          <label name="nameHeader" pos="12,-17" width="180" height="26" font_size="26" justify="left" text="Name" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
-          <label name="accuracyHelp" pos="12,-38" width="180" height="14" font_size="13" justify="left" text="Kills / Trefferquote" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
+          <label name="nameHeader" pos="12,-25" width="180" height="26" font_size="26" justify="left" text="Name" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
           <label name="recordHeader" pos="195,-25" width="95" height="38" font_size="26" justify="center" text="Rekord" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
           <label name="nightHeader0" pos="290,-25" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
           <label name="nightHeader1" pos="382,-25" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
@@ -30,34 +29,78 @@
           <label name="nightHeader9" pos="1118,-25" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
           <label name="nightHeader10" pos="1210,-25" width="92" height="38" font_size="26" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
         </rect>
-        <grid name="statisticsRows" pos="0,-93" width="1320" height="552" rows="12" cols="1" cell_height="46" arrangement="vertical" repeat_content="true">
-          <rect name="row" controller="StatistikRow, Mod_Statistik" width="1320" height="46" depth="1">
-            <sprite name="background" color="[darkGrey]" height="46" width="1320" type="sliced" />
-            <sprite name="backgroundMain" depth="10" sprite="menu_empty3px" width="1320" height="46" color="[black]" type="sliced" fillcenter="false" />
-            <label name="playerName" pos="12,-24" width="180" height="38" font_size="26" justify="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
-            <label name="record" pos="195,-24" width="95" height="38" font_size="26" justify="center" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
-            <label name="value0" pos="290,-14" width="92" height="24" font_size="22" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="accuracy0" pos="290,-35" width="92" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="value1" pos="382,-14" width="92" height="24" font_size="22" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="accuracy1" pos="382,-35" width="92" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="value2" pos="474,-14" width="92" height="24" font_size="22" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="accuracy2" pos="474,-35" width="92" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="value3" pos="566,-14" width="92" height="24" font_size="22" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="accuracy3" pos="566,-35" width="92" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="value4" pos="658,-14" width="92" height="24" font_size="22" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="accuracy4" pos="658,-35" width="92" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="value5" pos="750,-14" width="92" height="24" font_size="22" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="accuracy5" pos="750,-35" width="92" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="value6" pos="842,-14" width="92" height="24" font_size="22" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="accuracy6" pos="842,-35" width="92" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="value7" pos="934,-14" width="92" height="24" font_size="22" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="accuracy7" pos="934,-35" width="92" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="value8" pos="1026,-14" width="92" height="24" font_size="22" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="accuracy8" pos="1026,-35" width="92" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="value9" pos="1118,-14" width="92" height="24" font_size="22" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="accuracy9" pos="1118,-35" width="92" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="value10" pos="1210,-14" width="92" height="24" font_size="22" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
-            <label name="accuracy10" pos="1210,-35" width="92" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+        <grid name="statisticsRows" pos="0,-93" width="1320" height="552" rows="9" cols="1" cell_height="60" arrangement="vertical" repeat_content="true">
+          <rect name="row" controller="StatistikRow, Mod_Statistik" width="1320" height="60" depth="1">
+            <sprite name="background" color="[darkGrey]" height="60" width="1320" type="sliced" />
+            <sprite name="backgroundMain" depth="10" sprite="menu_empty3px" width="1320" height="60" color="[black]" type="sliced" fillcenter="false" />
+            <label name="playerName" pos="12,-30" width="180" height="38" font_size="26" justify="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
+            <label name="record" pos="195,-30" width="95" height="38" font_size="26" justify="center" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" pivot="left" />
+            <sprite name="killsIcon0" pos="294,-2" width="16" height="16" depth="3" sprite="ui_game_symbol_death" color="255,255,255,255" visible="false" />
+            <label name="value0" pos="314,-10" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="accuracyIcon0" pos="294,-22" width="16" height="16" depth="3" sprite="ui_game_symbol_twitch_boss_weapon_arrows_overhead" color="255,255,255,255" visible="false" />
+            <label name="accuracy0" pos="314,-30" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="headshotsIcon0" pos="294,-42" width="16" height="16" depth="3" sprite="ui_game_symbol_twitch_boss_overhead" color="255,255,255,255" visible="false" />
+            <label name="headshots0" pos="314,-50" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="killsIcon1" pos="386,-2" width="16" height="16" depth="3" sprite="ui_game_symbol_death" color="255,255,255,255" visible="false" />
+            <label name="value1" pos="406,-10" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="accuracyIcon1" pos="386,-22" width="16" height="16" depth="3" sprite="ui_game_symbol_twitch_boss_weapon_arrows_overhead" color="255,255,255,255" visible="false" />
+            <label name="accuracy1" pos="406,-30" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="headshotsIcon1" pos="386,-42" width="16" height="16" depth="3" sprite="ui_game_symbol_twitch_boss_overhead" color="255,255,255,255" visible="false" />
+            <label name="headshots1" pos="406,-50" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="killsIcon2" pos="478,-2" width="16" height="16" depth="3" sprite="ui_game_symbol_death" color="255,255,255,255" visible="false" />
+            <label name="value2" pos="498,-10" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="accuracyIcon2" pos="478,-22" width="16" height="16" depth="3" sprite="ui_game_symbol_twitch_boss_weapon_arrows_overhead" color="255,255,255,255" visible="false" />
+            <label name="accuracy2" pos="498,-30" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="headshotsIcon2" pos="478,-42" width="16" height="16" depth="3" sprite="ui_game_symbol_twitch_boss_overhead" color="255,255,255,255" visible="false" />
+            <label name="headshots2" pos="498,-50" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="killsIcon3" pos="570,-2" width="16" height="16" depth="3" sprite="ui_game_symbol_death" color="255,255,255,255" visible="false" />
+            <label name="value3" pos="590,-10" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="accuracyIcon3" pos="570,-22" width="16" height="16" depth="3" sprite="ui_game_symbol_twitch_boss_weapon_arrows_overhead" color="255,255,255,255" visible="false" />
+            <label name="accuracy3" pos="590,-30" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="headshotsIcon3" pos="570,-42" width="16" height="16" depth="3" sprite="ui_game_symbol_twitch_boss_overhead" color="255,255,255,255" visible="false" />
+            <label name="headshots3" pos="590,-50" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="killsIcon4" pos="662,-2" width="16" height="16" depth="3" sprite="ui_game_symbol_death" color="255,255,255,255" visible="false" />
+            <label name="value4" pos="682,-10" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="accuracyIcon4" pos="662,-22" width="16" height="16" depth="3" sprite="ui_game_symbol_twitch_boss_weapon_arrows_overhead" color="255,255,255,255" visible="false" />
+            <label name="accuracy4" pos="682,-30" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="headshotsIcon4" pos="662,-42" width="16" height="16" depth="3" sprite="ui_game_symbol_twitch_boss_overhead" color="255,255,255,255" visible="false" />
+            <label name="headshots4" pos="682,-50" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="killsIcon5" pos="754,-2" width="16" height="16" depth="3" sprite="ui_game_symbol_death" color="255,255,255,255" visible="false" />
+            <label name="value5" pos="774,-10" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="accuracyIcon5" pos="754,-22" width="16" height="16" depth="3" sprite="ui_game_symbol_twitch_boss_weapon_arrows_overhead" color="255,255,255,255" visible="false" />
+            <label name="accuracy5" pos="774,-30" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="headshotsIcon5" pos="754,-42" width="16" height="16" depth="3" sprite="ui_game_symbol_twitch_boss_overhead" color="255,255,255,255" visible="false" />
+            <label name="headshots5" pos="774,-50" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="killsIcon6" pos="846,-2" width="16" height="16" depth="3" sprite="ui_game_symbol_death" color="255,255,255,255" visible="false" />
+            <label name="value6" pos="866,-10" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="accuracyIcon6" pos="846,-22" width="16" height="16" depth="3" sprite="ui_game_symbol_twitch_boss_weapon_arrows_overhead" color="255,255,255,255" visible="false" />
+            <label name="accuracy6" pos="866,-30" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="headshotsIcon6" pos="846,-42" width="16" height="16" depth="3" sprite="ui_game_symbol_twitch_boss_overhead" color="255,255,255,255" visible="false" />
+            <label name="headshots6" pos="866,-50" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="killsIcon7" pos="938,-2" width="16" height="16" depth="3" sprite="ui_game_symbol_death" color="255,255,255,255" visible="false" />
+            <label name="value7" pos="958,-10" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="accuracyIcon7" pos="938,-22" width="16" height="16" depth="3" sprite="ui_game_symbol_twitch_boss_weapon_arrows_overhead" color="255,255,255,255" visible="false" />
+            <label name="accuracy7" pos="958,-30" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="headshotsIcon7" pos="938,-42" width="16" height="16" depth="3" sprite="ui_game_symbol_twitch_boss_overhead" color="255,255,255,255" visible="false" />
+            <label name="headshots7" pos="958,-50" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="killsIcon8" pos="1030,-2" width="16" height="16" depth="3" sprite="ui_game_symbol_death" color="255,255,255,255" visible="false" />
+            <label name="value8" pos="1050,-10" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="accuracyIcon8" pos="1030,-22" width="16" height="16" depth="3" sprite="ui_game_symbol_twitch_boss_weapon_arrows_overhead" color="255,255,255,255" visible="false" />
+            <label name="accuracy8" pos="1050,-30" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="headshotsIcon8" pos="1030,-42" width="16" height="16" depth="3" sprite="ui_game_symbol_twitch_boss_overhead" color="255,255,255,255" visible="false" />
+            <label name="headshots8" pos="1050,-50" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="killsIcon9" pos="1122,-2" width="16" height="16" depth="3" sprite="ui_game_symbol_death" color="255,255,255,255" visible="false" />
+            <label name="value9" pos="1142,-10" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="accuracyIcon9" pos="1122,-22" width="16" height="16" depth="3" sprite="ui_game_symbol_twitch_boss_weapon_arrows_overhead" color="255,255,255,255" visible="false" />
+            <label name="accuracy9" pos="1142,-30" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="headshotsIcon9" pos="1122,-42" width="16" height="16" depth="3" sprite="ui_game_symbol_twitch_boss_overhead" color="255,255,255,255" visible="false" />
+            <label name="headshots9" pos="1142,-50" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="killsIcon10" pos="1214,-2" width="16" height="16" depth="3" sprite="ui_game_symbol_death" color="255,255,255,255" visible="false" />
+            <label name="value10" pos="1234,-10" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="accuracyIcon10" pos="1214,-22" width="16" height="16" depth="3" sprite="ui_game_symbol_twitch_boss_weapon_arrows_overhead" color="255,255,255,255" visible="false" />
+            <label name="accuracy10" pos="1234,-30" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
+            <sprite name="headshotsIcon10" pos="1214,-42" width="16" height="16" depth="3" sprite="ui_game_symbol_twitch_boss_overhead" color="255,255,255,255" visible="false" />
+            <label name="headshots10" pos="1234,-50" width="66" height="18" font_size="16" justify="center" pivot="left" text="" depth="3" support_bb_code="false" overflow="ShrinkContent" />
           </rect>
         </grid>
         <rect pos="0,-691" width="1320" height="49" depth="3">
@@ -76,9 +119,13 @@
     </rect>
   </insertAfter>
   <append xpath="/windows">
-    <window name="windowBloodmoonKills" anchor="TopLeft" pos="16,-16" width="380" height="48" controller="BloodmoonKills, Mod_Statistik">
-      <label name="liveKills" pos="0,0" width="180" height="48" font_size="36" color="255,0,0,255" text="" visible="false" justify="left" support_bb_code="false" overflow="ShrinkContent" />
-      <label name="liveAccuracy" pos="192,0" width="180" height="48" font_size="30" color="255,255,255,255" text="" visible="false" justify="left" support_bb_code="false" overflow="ShrinkContent" />
+    <window name="windowBloodmoonKills" anchor="TopLeft" pos="16,-16" width="740" height="48" controller="BloodmoonKills, Mod_Statistik">
+      <sprite name="liveKillsIcon" pos="0,-8" width="32" height="32" depth="3" sprite="ui_game_symbol_death" color="255,255,255,255" visible="false" />
+      <label name="liveKills" pos="40,0" width="180" height="48" font_size="36" color="255,0,0,255" text="" visible="false" justify="left" support_bb_code="false" overflow="ShrinkContent" />
+      <sprite name="liveAccuracyIcon" pos="232,-8" width="32" height="32" depth="3" sprite="ui_game_symbol_twitch_boss_weapon_arrows_overhead" color="255,255,255,255" visible="false" />
+      <label name="liveAccuracy" pos="272,0" width="180" height="48" font_size="30" color="255,255,255,255" text="" visible="false" justify="left" support_bb_code="false" overflow="ShrinkContent" />
+      <sprite name="liveHeadshotsIcon" pos="464,-8" width="32" height="32" depth="3" sprite="ui_game_symbol_twitch_boss_overhead" color="255,255,255,255" visible="false" />
+      <label name="liveHeadshots" pos="504,0" width="180" height="48" font_size="30" color="255,255,255,255" text="" visible="false" justify="left" support_bb_code="false" overflow="ShrinkContent" />
     </window>
   </append>
 </configs>

@@ -48,6 +48,19 @@ class LocalUiTests
             Need(killsWindow.Elements("label").Count(e => (string)e.Attribute("name") == "liveAccuracy") == 1, "own HUD accuracy label added once");
             Need((string)killsWindow.Elements("label").Single(e => (string)e.Attribute("name") == "liveKills").Attribute("color") == "255,0,0,255", "own kill color preserved");
             Need((string)killsWindow.Elements("label").Single(e => (string)e.Attribute("name") == "liveAccuracy").Attribute("visible") == "false", "own accuracy initially hidden");
+            Need(killsWindow.Elements("label").Count(e => (string)e.Attribute("name") == "liveHeadshots") == 1, "headshot HUD added");
+            string[] kinds = { "Kills", "Accuracy", "Headshots" };
+            string[] sprites = { "ui_game_symbol_death", "ui_game_symbol_twitch_boss_weapon_arrows_overhead", "ui_game_symbol_twitch_boss_overhead" };
+            for (int i = 0; i < kinds.Length; i++)
+                Need((string)killsWindow.Elements("sprite").Single(e => (string)e.Attribute("name") == "live" + kinds[i] + "Icon").Attribute("sprite") == sprites[i], "chosen HUD icon " + kinds[i]);
+            var grid = localWindows.Descendants("grid").Single(e => (string)e.Attribute("name") == "statisticsRows");
+            Need((int)grid.Attribute("rows") * (int)grid.Attribute("cell_height") <= (int)grid.Attribute("height"), "all player rows fit above countdown");
+            var row = grid.Element("rect");
+            for (int i = 0; i < 11; i++)
+            {
+                Need(row.Elements("label").Count(e => (string)e.Attribute("name") == "headshots" + i) == 1, "headshot line in every night column");
+                Need((string)row.Elements("sprite").Single(e => (string)e.Attribute("name") == "headshotsIcon" + i).Attribute("sprite") == sprites[2], "chosen headshot table icon");
+            }
             Need(windows.ToString() == initialWindows, "original shared windows unchanged");
             XUiFromXml.Windows(localWindows);
             Need(XUiFromXml.Observed.Descendants().Count(e => (string)e.Attribute("name") == "bloodmoonStatistics") == 1, "windows not duplicated");
@@ -60,6 +73,8 @@ class LocalUiTests
             Need(party.Elements("label").Count(e => (string)e.Attribute("name") == "bloodmoonGroupAccuracy") == 1, "group accuracy label added once");
             Need((string)party.Elements("label").Single(e => (string)e.Attribute("name") == "bloodmoonGroupAccuracy").Attribute("visible") == "false", "group accuracy initially hidden");
             Need((string)party.Elements("sprite").Single(e => (string)e.Attribute("name") == "bloodmoonGroupStar").Attribute("color") == "255,0,0,255", "group kill star remains red");
+            for (int i = 0; i < kinds.Length; i++)
+                Need((string)party.Elements("sprite").Single(e => (string)e.Attribute("name") == "bloodmoonGroup" + kinds[i] + "Icon").Attribute("sprite") == sprites[i], "chosen party icon " + kinds[i]);
             Need((string)party.Elements("label").Single(e => (string)e.Attribute("text") == "{distance}").Attribute("width") == "112", "missing distance attribute added");
             Need(templates.ToString() == initialTemplates, "original shared templates unchanged");
             XUiFromXml.Templates(localTemplates);

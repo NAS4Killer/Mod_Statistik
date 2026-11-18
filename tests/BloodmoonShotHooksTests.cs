@@ -28,7 +28,7 @@ public class EntityPlayerLocal : EntityAlive { }
 public class ItemClass { public FastTags<TagGroup.Global> ItemTags; }
 public class ItemInventoryData { public EntityAlive holdingEntity; public ItemClass item; }
 public class ItemActionData { public ItemInventoryData invData; public ItemActionAttack.AttackHitInfo attackDetails; }
-public class WorldRayHitInfo { public string tag = "E_BP_head"; public EntityAlive Target; public bool Kill; }
+public class WorldRayHitInfo { public string tag = "E_BP_Head"; public EntityAlive Target; public bool Kill; }
 public class ItemActionAttack
 {
     public class AttackHitInfo { }
@@ -43,6 +43,8 @@ public class ItemActionRanged
 {
     public class ItemActionDataRanged : ItemActionData { }
     public int Pellets = 1, HitPellet = -1, BodyCalls;
+    public int BodyPellet = -1;
+    public string HitTag = "E_BP_Head";
     public bool NoAmmo;
     public EntityAlive Target;
     public Exception OriginalError;
@@ -63,9 +65,12 @@ public class ItemActionRanged
     [MethodImpl(MethodImplOptions.NoInlining)]
     public virtual UnityEngine.Vector3 fireShot(int _shotIdx, ItemActionDataRanged _actionData, ref bool hitEntityFound)
     {
+        if (_shotIdx == BodyPellet)
+            ItemActionAttack.Hit(new WorldRayHitInfo { Target = Target, tag = "E_BP_Body" },
+                _actionData.invData.holdingEntity.entityId, _actionData.attackDetails);
         if (_shotIdx == HitPellet)
         {
-            var info = new WorldRayHitInfo { Target = Target, Kill = true };
+            var info = new WorldRayHitInfo { Target = Target, Kill = true, tag = HitTag };
             ItemActionAttack.Hit(info, _actionData.invData.holdingEntity.entityId, _actionData.attackDetails);
             ItemActionAttack.Hit(info, _actionData.invData.holdingEntity.entityId, _actionData.attackDetails);
         }
@@ -78,12 +83,12 @@ namespace ModStatistik
     internal static class BloodmoonAccuracyRuntime
     {
         internal static bool Recording = true, ThrowRead, ThrowRecord;
-        internal static int Shots, Hits;
+        internal static int Shots, Hits, Headshots;
         internal static bool IsRecording { get { if (ThrowRead) throw new Exception("runtime unavailable"); return Recording; } }
-        internal static void RecordShot(bool hit)
+        internal static void RecordShot(bool hit, bool headshot = false)
         {
             if (ThrowRecord) throw new Exception("storage unavailable");
-            Shots++; if (hit) Hits++;
+            Shots++; if (hit) Hits++; if (hit && headshot) Headshots++;
         }
     }
 }
@@ -112,8 +117,10 @@ internal static class HooksHarness
             gun.TryExecuteAction(data);
             Need(BloodmoonAccuracyRuntime.Shots == 2 && BloodmoonAccuracyRuntime.Hits == 1 && gun.Target.Dead,
                 "pellet, penetration and killing hit");
+            Need(BloodmoonAccuracyRuntime.Headshots == 1, "killing headshot counted once across duplicate hits");
             gun.TryExecuteAction(data);
             Need(BloodmoonAccuracyRuntime.Shots == 3 && BloodmoonAccuracyRuntime.Hits == 1, "corpse");
+            Need(BloodmoonAccuracyRuntime.Headshots == 1, "corpse headshot excluded");
             gun.NoAmmo = true; gun.TryExecuteAction(data); gun.NoAmmo = false;
             Need(BloodmoonAccuracyRuntime.Shots == 3, "empty weapon");
             data.invData.holdingEntity.isEntityRemote = true; gun.TryExecuteAction(data);
@@ -141,7 +148,17 @@ internal static class HooksHarness
             gun.TryExecuteAction(data); gun.Nested = null;
             Need(BloodmoonAccuracyRuntime.Shots == 5 && BloodmoonAccuracyRuntime.Hits == 2 && !BloodmoonShots.HasScope,
                 "nested scopes independently finalize");
-            Console.WriteLine("PASS: actual Harmony prefix/finalizer interception, local firearm filters, pellet and killing hits, misses, original exceptions and instrumentation fault isolation.");
+            int heads = BloodmoonAccuracyRuntime.Headshots;
+            gun.BodyPellet = 0; gun.HitPellet = 7; gun.Target = new EntityAlive { Zombie = true };
+            gun.TryExecuteAction(data);
+            Need(BloodmoonAccuracyRuntime.Headshots == heads + 1, "later head pellet after initial body hit");
+            gun.HitTag = "E_BP_Body"; gun.Target = new EntityAlive { Zombie = true };
+            gun.TryExecuteAction(data);
+            Need(BloodmoonAccuracyRuntime.Headshots == heads + 1, "body kill is not a headshot");
+            gun.HitTag = "E_BP_Head"; gun.Target = new EntityAlive { Zombie = false };
+            gun.TryExecuteAction(data);
+            Need(BloodmoonAccuracyRuntime.Headshots == heads + 1, "non-zombie head excluded");
+            Console.WriteLine("PASS: actual Harmony interception, head/body/corpse classification, later head pellet, local firearm filters, original exceptions and fault isolation.");
             return 0;
         }
         catch (Exception error) { Console.Error.WriteLine(error); return 1; }

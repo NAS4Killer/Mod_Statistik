@@ -57,7 +57,7 @@ public class XUiController
         XUiController child;
         if (children.TryGetValue(id, out child)) return child;
         child = new XUiController();
-        if (id == "bloodmoonGroupStar")
+        if (id == "bloodmoonGroupStar" || id.EndsWith("Icon"))
             child.ViewComponent = new XUiV_Sprite { Position = new Vector2i(486, -6), Width = 26, Height = 26, Size = new Vector2i(26, 26), Color = UnityEngine.Color.red };
         else
         {
@@ -123,7 +123,7 @@ internal static class BloodmoonHudAccuracyUiTests
             a.Party = new Party();
             a.Party.MemberList.Add(a); a.Party.MemberList.Add(b); a.Party.MemberList.Add(c);
             StatisticsSync.Kills.Add("A", 12); StatisticsSync.Kills.Add("B", 8); StatisticsSync.Kills.Add("C", 3); StatisticsSync.Kills.Add("Outside", 1000);
-            StatisticsSync.Accuracy.Add("A", new ShotAccuracy(4, 2));
+            StatisticsSync.Accuracy.Add("A", new ShotAccuracy(4, 2, 1));
             StatisticsSync.Accuracy.Add("B", new ShotAccuracy(4, 3));
             StatisticsSync.Accuracy.Add("C", new ShotAccuracy(4, 1));
             StatisticsSync.Accuracy.Add("Outside", new ShotAccuracy(4, 4));
@@ -139,6 +139,10 @@ internal static class BloodmoonHudAccuracyUiTests
             Need(Label(live, "liveKills").Text == "12" && Label(live, "liveKills").Color.Value == 1, "own standalone kills remain red");
             Need(Star(ownEntry).IsVisible && !Star(otherEntry).IsVisible && Star(ownEntry).Color.Value == 1, "red kill leader star preserved independently of accuracy winner");
             Need(GroupAccuracyRanking.Maximum(a) == 75m, "higher accuracy outside party does not affect party winner");
+            Need(Label(ownEntry, "bloodmoonGroupHeadshots").Text == "1" && Label(live, "liveHeadshots").Text == "1", "headshots in both HUDs");
+            Need(Label(otherEntry, "bloodmoonGroupHeadshots").Text == "\u2014", "old clients headshots unknown");
+            Need(Label(live, "liveHeadshots").Position.x > Label(live, "liveAccuracy").Position.x + 38, "headshots after accuracy");
+            Need(((XUiV_Sprite)live.GetChildById("liveHeadshotsIcon").ViewComponent).IsVisible, "headshot icon shown");
             int ownX = Label(ownEntry, "bloodmoonGroupAccuracy").Position.x;
             Need(ownX >= 360 + 38 + 8, "party percentage appears after rendered kills");
             Need(ownX >= Star(ownEntry).Position.x + 26, "party percentage does not overlap visible kill star");
@@ -208,6 +212,8 @@ internal static class BloodmoonHudAccuracyUiTests
             Refresh(ownEntry, live);
             Need(!Label(ownEntry, "bloodmoonGroupKills").IsVisible && !Label(ownEntry, "bloodmoonGroupAccuracy").IsVisible && !Star(ownEntry).IsVisible, "hidden party kills hide accuracy and star");
             Need(!Label(live, "liveKills").IsVisible && !Label(live, "liveAccuracy").IsVisible, "hidden solo kills hide accuracy");
+            Need(!Label(live, "liveHeadshots").IsVisible && !Label(ownEntry, "bloodmoonGroupHeadshots").IsVisible, "headshots hidden with HUD");
+            Need(!((XUiV_Sprite)live.GetChildById("liveHeadshotsIcon").ViewComponent).IsVisible, "headshot icon hidden");
             otherEntry.Player = null; live.xui.playerUI.entityPlayer = null;
             Refresh(otherEntry, live);
             Need(!Label(otherEntry, "bloodmoonGroupAccuracy").IsVisible && !Label(live, "liveAccuracy").IsVisible, "missing players hide recycled HUD labels");

@@ -17,7 +17,7 @@ namespace ModStatistik
             internal object Action, Details;
             internal int Shooter;
             internal long Version;
-            internal bool Active, Enabled, Emitted, Hit;
+            internal bool Active, Enabled, Emitted, Hit, Headshot;
         }
 
         internal struct Token
@@ -47,6 +47,7 @@ namespace ModStatistik
             scope.Active = true;
             scope.Emitted = false;
             scope.Hit = false;
+            scope.Headshot = false;
             scope.Version = unchecked(scope.Version + 1);
             current = scope;
             return new Token { Scope = scope, Version = scope.Version };
@@ -62,26 +63,32 @@ namespace ModStatistik
         internal static bool WantsHit(object details, int shooter)
         {
             var scope = current;
-            return scope != null && scope.Enabled && scope.Emitted && !scope.Hit &&
+            return scope != null && scope.Enabled && scope.Emitted && !scope.Headshot &&
                 scope.Shooter == shooter && ReferenceEquals(scope.Details, details);
         }
 
-        internal static void Hit(object details, int shooter, bool liveZombie)
+        internal static void Hit(object details, int shooter, bool liveZombie, bool headshot = false)
         {
-            if (liveZombie && WantsHit(details, shooter)) current.Hit = true;
+            if (liveZombie && WantsHit(details, shooter))
+            { current.Hit = true; current.Headshot |= headshot; }
         }
 
         // Returns true only once for a completed, actually emitted shot. The
         // generation also rejects an old token after its scope has been reused.
         internal static bool End(Token token, bool completed, out bool hit)
+        { bool headshot; return End(token, completed, out hit, out headshot); }
+
+        internal static bool End(Token token, bool completed, out bool hit, out bool headshot)
         {
             hit = false;
+            headshot = false;
             var scope = token.Scope;
             if (scope == null || !scope.Active || scope.Version != token.Version ||
                 !ReferenceEquals(current, scope)) return false;
 
             bool recorded = completed && scope.Enabled && scope.Emitted;
             hit = recorded && scope.Hit;
+            headshot = hit && scope.Headshot;
             current = scope.Previous;
             scope.Active = false;
             scope.Previous = null;

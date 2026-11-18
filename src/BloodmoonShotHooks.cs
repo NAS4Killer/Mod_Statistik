@@ -46,7 +46,8 @@ namespace ModStatistik
             var target = ItemActionAttack.FindHitEntity(hitInfo) as EntityAlive;
             // Prefix timing includes the killing hit, while rejecting corpses.
             BloodmoonShots.Hit(details, shooter,
-                target != null && !target.IsDead() && target.HasAnyTags(zombieTag));
+                target != null && !target.IsDead() && target.HasAnyTags(zombieTag),
+                string.Equals(hitInfo.tag, "E_BP_Head", StringComparison.Ordinal));
         }
 
         internal static void Warning(Exception error)
@@ -73,9 +74,9 @@ namespace ModStatistik
         {
             try
             {
-                bool hit;
-                if (BloodmoonShots.End(__state, __exception == null, out hit))
-                    BloodmoonAccuracyRuntime.RecordShot(hit);
+                bool hit, headshot;
+                if (BloodmoonShots.End(__state, __exception == null, out hit, out headshot))
+                    BloodmoonAccuracyRuntime.RecordShot(hit, headshot);
             }
             catch (Exception error) { BloodmoonShotHooks.Warning(error); }
             return __exception;

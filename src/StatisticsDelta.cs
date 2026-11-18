@@ -59,7 +59,7 @@ namespace ModStatistik
 
         private static void ValidateHistory(byte[] bytes, byte[] hash)
         {
-            if (bytes == null || bytes.Length == 0 || bytes.Length > StatisticsWire.MaximumBytes || bytes[0] != 3)
+            if (bytes == null || bytes.Length == 0 || bytes.Length > StatisticsWire.MaximumBytes || (bytes[0] != 3 && bytes[0] != 4))
                 throw new InvalidDataException("Ungueltiges Historienformat.");
             if (!StatisticsWire.Equal(StatisticsWire.Hash(bytes), hash))
                 throw new InvalidDataException("Historienpruefsumme stimmt nicht.");
@@ -70,7 +70,7 @@ namespace ModStatistik
 
         private static void ValidateLive(byte[] bytes)
         {
-            if (bytes == null || bytes.Length == 0 || bytes.Length > StatisticsWire.MaximumBytes || bytes[0] != 3)
+            if (bytes == null || bytes.Length == 0 || bytes.Length > StatisticsWire.MaximumBytes || (bytes[0] != 3 && bytes[0] != 4))
                 throw new InvalidDataException("Ungueltiges Liveformat.");
             int activeDay;
             BloodmoonLog live = StatisticsWire.Decode(bytes, out activeDay);

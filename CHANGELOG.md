@@ -1,3 +1,11 @@
+# Blutmond-Statistik 0.3.2.0
+
+- Kopftreffer mit Patronenwaffen werden während der Blutmondnacht gezählt und für spätere Vergleiche gespeichert. Pro Schuss zählt höchstens ein Kopftreffer.
+- Die eigene Anzeige und die Gruppenanzeige zeigen zusätzlich die Anzahl der Kopftreffer.
+- Neue Symbole kennzeichnen Kills, Trefferquote und Kopftreffer.
+- In der Blutmond-Statistik stehen diese drei Werte untereinander. Pro Seite werden neun Spieler angezeigt.
+- Für ältere Nächte ohne Kopftrefferaufzeichnung erscheint „—“.
+
 # 0.3.1.0
 
 Mod_Statistik 0.3.1.0 - Trefferquote in Tabelle und HUD
